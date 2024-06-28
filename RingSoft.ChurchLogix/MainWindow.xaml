@@ -8,7 +8,11 @@
                   xmlns:ac="clr-namespace:RingSoft.App.Controls;assembly=RingSoft.App.Controls"
                   xmlns:local="clr-namespace:RingSoft.ChurchLogix"
                   mc:Ignorable="d"
-                  Title="MainWindow" Height="450" Width="800">
+                  Style="{StaticResource BaseWindowStyle}"
+                  Width="500"
+                  Height="500"
+                  CloseOnEscape="False"
+                  Title="ChurchLogix" WindowState="Maximized">
     <Grid>
 
     </Grid>

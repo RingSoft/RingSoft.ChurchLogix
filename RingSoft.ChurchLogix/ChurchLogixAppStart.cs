@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using RingSoft.App.Controls;
+using RingSoft.App.Library;
 using RingSoft.ChurchLogix.Library;
 
 namespace RingSoft.ChurchLogix
@@ -10,5 +11,34 @@ namespace RingSoft.ChurchLogix
         {
             AppGlobals.InitSettings();
         }
+
+        protected override void CheckVersion()
+        {
+#if DEBUG
+            var app = RingSoftAppGlobals.IsAppVersionOld();
+            if (app != null)
+            {
+                RingSoftAppGlobals.UserVersion = app.VersionName;
+            }
+
+#else
+            base.CheckVersion();
+#endif
+        }
+
+        protected override bool DoProcess()
+        {
+            AppGlobals.AppSplashProgress += AppGlobals_AppSplashProgress;
+
+            AppGlobals.Initialize();
+
+            return base.DoProcess();
+        }
+
+        private void AppGlobals_AppSplashProgress(object? sender, AppProgressArgs e)
+        {
+            SetProgress(e.ProgressText);
+        }
+
     }
 }
