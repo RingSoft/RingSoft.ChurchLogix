@@ -13,4 +13,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RingSoft.ChurchLogix.DataAccess\RingSoft.ChurchLogix.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>
