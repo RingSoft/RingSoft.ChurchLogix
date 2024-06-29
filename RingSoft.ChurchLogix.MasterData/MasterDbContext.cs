@@ -31,6 +31,25 @@ namespace RingSoft.ChurchLogix.MasterData
 
             var firstTime = !File.Exists(MasterFilePath);
 
+            var context = new MasterDbContext();
+            context.Database.Migrate();
+
+            if (firstTime)
+            {
+                var filePath = ProgramDataFolder;
+#if DEBUG
+                var directoryInfo = Directory.GetParent(Directory.GetCurrentDirectory())?.Parent;
+                if (directoryInfo != null)
+                    if (directoryInfo.Parent != null)
+                        filePath = directoryInfo.Parent.FullName;
+#endif
+                SaveChurch(new Church()
+                {
+                    Name = "Demonstration Church",
+                    FilePath = filePath,
+                    FileName = DemoDataFileName
+                });
+            }
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -49,7 +68,7 @@ namespace RingSoft.ChurchLogix.MasterData
             modelBuilder.Entity<Church>(entity =>
             {
                 entity.HasKey(hk => hk.Id);
-
+                
                 entity.Property(p => p.Id).HasColumnType(DbConstants.IntegerColumnType);
 
                 entity.Property(p => p.Name).HasColumnType(DbConstants.StringColumnType);
@@ -93,7 +112,7 @@ namespace RingSoft.ChurchLogix.MasterData
             return context.Churches.FirstOrDefault(f => f.IsDefault);
         }
 
-        public static bool SaveOrganization(Church church)
+        public static bool SaveChurch(Church church)
         {
             var context = new MasterDbContext();
             return context.SaveEntity(context.Churches, church, "Saving Church");

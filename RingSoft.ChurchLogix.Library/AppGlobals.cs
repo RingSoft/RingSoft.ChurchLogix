@@ -49,12 +49,12 @@ namespace RingSoft.ChurchLogix.Library
 
                 MasterDbContext.ConnectToMaster();
 
-                //var defaultOrganization = MasterDbContext.GetDefaultOrganization();
-                //if (defaultOrganization != null)
-                //{
-                //    if (LoginToOrganization(defaultOrganization).IsNullOrEmpty())
-                //        LoggedInOrganization = defaultOrganization;
-                //}
+                var defaultChurch = MasterDbContext.GetDefaultChurch();
+                if (defaultChurch != null)
+                {
+                    //if (LoginToOrganization(defaultOrganization).IsNullOrEmpty())
+                    //    LoggedInOrganization = defaultOrganization;
+                }
             }
 
         }
