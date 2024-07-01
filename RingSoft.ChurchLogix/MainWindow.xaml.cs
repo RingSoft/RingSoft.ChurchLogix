@@ -10,11 +10,41 @@ namespace RingSoft.ChurchLogix
         public MainWindow()
         {
             InitializeComponent();
+
+            //SetupToolbar();
+
+            ContentRendered += (sender, args) =>
+            {
+#if DEBUG
+                ViewModel.Initialize(this);
+#else
+                try
+                {
+                    ViewModel.Initialize(this);
+                }
+                catch (Exception e)
+                {
+                    RingSoft.App.Library.RingSoftAppGlobals.HandleError(e);
+                }
+#endif
+            };
         }
 
         public bool ChangeChurch()
         {
-            return true;
+            var loginWindow = new LoginWindow { Owner = this };
+
+            var result = false;
+            var loginResult = loginWindow.ShowDialog();
+
+            if (loginResult != null && loginResult.Value == true)
+            {
+                result = (bool)loginResult;
+                ViewModel.SetChurchProps();
+            }
+
+            return result;
+
         }
 
         public bool LoginStaffPerson(int staffPersonId = 0)
