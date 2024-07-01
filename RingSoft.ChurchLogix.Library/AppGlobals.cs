@@ -1,4 +1,5 @@
 ﻿using RingSoft.App.Library;
+using RingSoft.ChurchLogix.DataAccess;
 using RingSoft.ChurchLogix.MasterData;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.EfCore;
@@ -16,7 +17,11 @@ namespace RingSoft.ChurchLogix.Library
     }
     public class AppGlobals
     {
+        public static ChurchLogixLookupContext LookupContext { get; private set; }
+
         public static bool UnitTesting { get; set; }
+
+        public static DataRepository DataRepository { get; set; }
 
         public static event EventHandler<AppProgressArgs> AppSplashProgress;
 
@@ -32,14 +37,15 @@ namespace RingSoft.ChurchLogix.Library
 
         public static void Initialize()
         {
-            //var test = SystemGlobals.DataRepository;
+            DataRepository ??= new DataRepository();
+            var test = SystemGlobals.DataRepository;
             SystemGlobals.ConvertAllDatesToUniversalTime = true;
 
             AppSplashProgress?.Invoke(null, new AppProgressArgs("Initializing Database Structure."));
 
-            //LookupContext = new DevLogixLookupContext();
-            //LookupContext.SqliteDataProcessor.FilePath = MasterDbContext.ProgramDataFolder;
-            //LookupContext.SqliteDataProcessor.FileName = MasterDbContext.DemoDataFileName;
+            LookupContext = new ChurchLogixLookupContext();
+            LookupContext.SqliteDataProcessor.FilePath = MasterDbContext.ProgramDataFolder;
+            LookupContext.SqliteDataProcessor.FileName = MasterDbContext.DemoDataFileName;
 
             //SystemGlobals.ItemRightsFactory = new DevLogixRightsFactory();
 
