@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,12 +54,27 @@ namespace RingSoft.ChurchLogix
 
         public void CloseWindow()
         {
-            throw new NotImplementedException();
+            DialogResult = ViewModel.DialogResult;
+            if (!ViewModel.CancelClose)
+            {
+                Close();
+            }
         }
 
         public void ShutDownApplication()
+
         {
-            throw new NotImplementedException();
+            Application.Current.Shutdown(0);
+        }
+
+        protected async override void OnClosing(CancelEventArgs e)
+        {
+            e.Cancel = await ViewModel.DoCancelClose();
+            if (e.Cancel)
+            {
+                return;
+            }
+            base.OnClosing(e);
         }
     }
 }

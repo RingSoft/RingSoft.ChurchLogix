@@ -3,6 +3,7 @@ using RingSoft.DataEntryControls.Engine;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Channels;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels
 {
@@ -128,11 +129,123 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
         private readonly bool _initialized;
         private bool _selectingChurch;
 
+        public LoginViewModel()
+        {
+            Items = new ObservableCollection<LoginListBoxItem>();
+            var dbChurches
+                = MasterDbContext.GetChurches();
+
+            foreach (var church in dbChurches)
+            {
+                var listBoxItem = new LoginListBoxItem
+                {
+                    Church = church,
+                    Text = church.Name
+                };
+                Items.Add(listBoxItem);
+
+                if (AppGlobals.LoggedInChurch != null && AppGlobals.LoggedInChurch.Id == church.Id)
+                {
+                    listBoxItem.Text = $"(Active) {listBoxItem.Text}";
+                    SelectedItem = listBoxItem;
+                    IsDefault = church.IsDefault;
+                }
+            }
+
+            if (SelectedItem == null && Items.Any())
+                SelectedItem = Items[0];
+
+            AddNewCommand = new RelayCommand(AddNewChurch);
+            EditCommand = new RelayCommand(EditChurch) { IsEnabled = CanDeleteChurch() };
+            DeleteCommand = new RelayCommand(DeleteChurch) { IsEnabled = CanDeleteChurch() };
+            ConnectToDataFileCommand = new RelayCommand(ConnectToDataFile);
+            LoginCommand = new RelayCommand(Login) { IsEnabled = CanLogin() };
+            CancelCommand = new RelayCommand(Cancel);
+
+            _initialized = true;
+        }
+
         public void OnViewLoaded(ILoginView loginView) => View = loginView;
+
+        private bool CanLogin() => SelectedItem != null;
+
+        private bool CanDeleteChurch()
+        {
+            if (SelectedItem == null)
+                return false;
+
+            if (SelectedItem.Church.Id == 1)
+                return false;
+
+            if (AppGlobals.LoggedInChurch != null)
+                return AppGlobals.LoggedInChurch.Id != SelectedItem.Church.Id;
+
+            return true;
+        }
+
 
         private void UpdateDefaults()
         {
         }
+
+        private void AddNewChurch()
+        {
+
+        }
+
+        private void EditChurch()
+        {
+        }
+
+        private void ConnectToDataFile()
+        {
+        }
+
+        private void ConnectToChurch(AddEditChurchViewModel connection)
+        {
+        }
+
+        private async void DeleteChurch()
+        {
+        }
+
+        private void Login()
+        {
+            if (View.LoginToChurch(SelectedItem.Church))
+            {
+                AppGlobals.LoggedInChurch = SelectedItem.Church;
+                DialogResult = true;
+                View.CloseWindow();
+            }
+        }
+
+        private void Cancel()
+        {
+            DialogResult = false;
+            View.CloseWindow();
+        }
+
+        public async Task<bool> DoCancelClose()
+        {
+            CancelClose = false;
+            if (AppGlobals.LoggedInChurch == null && !DialogResult)
+            {
+                var message = "Application will shut down if you do not login.  Do you wish to continue?";
+                if (await ControlsGlobals.UserInterface.ShowYesNoMessageBox(message, "Login Failure") ==
+                    MessageBoxButtonsResult.Yes)
+                {
+                    View.ShutDownApplication();
+                }
+                else
+                {
+                    CancelClose = true;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
 
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
