@@ -15,8 +15,8 @@
             </ResourceDictionary.MergedDictionaries>
 
             <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0.5,0" EndPoint="0.5,1">
-                <GradientStop Color="DarkCyan" Offset="0"/>
-                <GradientStop Color="Cyan" Offset="1"/>
+                <GradientStop Color="Gray" Offset="0"/>
+                <GradientStop Color="DarkGray" Offset="1"/>
             </LinearGradientBrush>
 
             <LinearGradientBrush x:Key="DbMaintenanceBarButtonBrush" StartPoint="0.5,0" EndPoint="0.5,1">

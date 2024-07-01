@@ -1,5 +1,6 @@
 ﻿using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess;
+using RingSoft.ChurchLogix.Library.ViewModels;
 using RingSoft.ChurchLogix.MasterData;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.EfCore;
@@ -22,6 +23,10 @@ namespace RingSoft.ChurchLogix.Library
         public static bool UnitTesting { get; set; }
 
         public static DataRepository DataRepository { get; set; }
+
+        public static MainViewModel MainViewModel { get; set; }
+
+        public static Church LoggedInChurch { get; set; }
 
         public static event EventHandler<AppProgressArgs> AppSplashProgress;
 
