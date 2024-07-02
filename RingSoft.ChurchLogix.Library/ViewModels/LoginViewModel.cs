@@ -190,7 +190,9 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
 
         private void AddNewChurch()
         {
-
+            var newChurch = View.ShowAddChurch();
+            if (newChurch != null)
+                AddNewChurch();
         }
 
         private void EditChurch()

@@ -12,11 +12,57 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using RingSoft.App.Controls;
+using RingSoft.App.Library;
+using RingSoft.ChurchLogix.Library;
 using RingSoft.ChurchLogix.Library.ViewModels;
 using RingSoft.ChurchLogix.MasterData;
+using RingSoft.DataEntryControls.Engine;
 
 namespace RingSoft.ChurchLogix
 {
+    public class LoginProcedure : AppProcedure
+    {
+        public override ISplashWindow SplashWindow => _splashWindow;
+
+        private ProcessingSplashWindow _splashWindow;
+        private Church _church;
+
+        public LoginProcedure(Church church)
+        {
+            _church = church;
+        }
+
+        protected override void ShowSplash()
+        {
+            _splashWindow = new ProcessingSplashWindow("Logging In");
+            _splashWindow.ShowDialog();
+        }
+
+        protected override bool DoProcess()
+        {
+            AppGlobals.AppSplashProgress += AppGlobals_AppSplashProgress;
+
+            //var result = AppGlobals.LoginToChurch(_church);
+            var result = string.Empty;
+            CloseSplash();
+            AppGlobals.AppSplashProgress -= AppGlobals_AppSplashProgress;
+
+            if (!result.IsNullOrEmpty())
+            {
+                var caption = "File access failure";
+                MessageBox.Show(result, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            return result.IsNullOrEmpty();
+        }
+
+        private void AppGlobals_AppSplashProgress(object sender, AppProgressArgs e)
+        {
+            SetProgress(e.ProgressText);
+        }
+    }
+
     /// <summary>
     /// Interaction logic for LoginWindow.xaml
     /// </summary>
@@ -39,7 +85,13 @@ namespace RingSoft.ChurchLogix
 
         public Church ShowAddChurch()
         {
-            throw new NotImplementedException();
+            var addEditChurchWindow = new AddEditChurchWindow()
+            {
+                Owner = this,
+                ShowInTaskbar = false
+            };
+            addEditChurchWindow.ShowDialog();
+            return addEditChurchWindow.ViewModel.Object;
         }
 
         public bool EditChurch(ref Church church)

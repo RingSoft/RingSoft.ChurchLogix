@@ -1,0 +1,21 @@
+﻿<dec:BaseWindow x:Class="RingSoft.ChurchLogix.AddEditChurchWindow"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:dec="clr-namespace:RingSoft.DataEntryControls.WPF;assembly=RingSoft.DataEntryControls.WPF"
+                xmlns:vm="clr-namespace:RingSoft.ChurchLogix.Library.ViewModels;assembly=RingSoft.ChurchLogix.Library"
+                xmlns:ac="clr-namespace:RingSoft.App.Controls;assembly=RingSoft.App.Controls"
+                xmlns:applib="clr-namespace:RingSoft.App.Library;assembly=RingSoft.App.Library"
+                xmlns:local="clr-namespace:RingSoft.ChurchLogix"
+                mc:Ignorable="d"
+                Style="{StaticResource BaseWindowStyle}"
+                Title="Add Church" SizeToContent="WidthAndHeight">
+    <Window.DataContext>
+        <vm:AddEditChurchViewModel x:Name="ViewModel"/>
+    </Window.DataContext>
+
+    <Grid>
+        
+    </Grid>
+</dec:BaseWindow>
