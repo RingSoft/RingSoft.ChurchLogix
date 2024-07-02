@@ -192,8 +192,22 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
         {
             var newChurch = View.ShowAddChurch();
             if (newChurch != null)
-                AddNewChurch();
+                AddNewChurch(newChurch);
         }
+
+        private void AddNewChurch(Church newChurch)
+        {
+            var item = new LoginListBoxItem
+            {
+                Church = newChurch,
+                Text = newChurch.Name
+            };
+            Items.Add(item);
+            Items = new ObservableCollection<LoginListBoxItem>(Items.OrderBy(o => o.Text));
+            MasterDbContext.SaveChurch(newChurch);
+            SelectedItem = item;
+        }
+
 
         private void EditChurch()
         {

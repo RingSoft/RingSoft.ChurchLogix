@@ -10,8 +10,4 @@
     <PackageReference Include="RingSoft.App.Library" Version="8.9.4" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Configurations\StaffManagement\" />
-  </ItemGroup>
-
 </Project>
