@@ -7,6 +7,11 @@ using RingSoft.ChurchLogix.MasterData;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.EfCore;
 using System.Runtime.InteropServices;
+using RingSoft.App.Interop;
+using RingSoft.ChurchLogix.Sqlite;
+using RingSoft.ChurchLogix.SqlServer;
+using RingSoft.DataEntryControls.Engine;
+using RingSoft.DbLookup.DataProcessor;
 
 namespace RingSoft.ChurchLogix.Library
 {
@@ -68,8 +73,8 @@ namespace RingSoft.ChurchLogix.Library
                 var defaultChurch = MasterDbContext.GetDefaultChurch();
                 if (defaultChurch != null)
                 {
-                    //if (LoginToOrganization(defaultOrganization).IsNullOrEmpty())
-                    //    LoggedInOrganization = defaultOrganization;
+                    if (LoginToChurch(defaultChurch).IsNullOrEmpty())
+                        LoggedInChurch = defaultChurch;
                 }
             }
 
@@ -80,9 +85,9 @@ namespace RingSoft.ChurchLogix.Library
             AppSplashProgress?.Invoke(null, new AppProgressArgs($"Migrating the {church.Name} Database."));
             DbPlatform = (DbPlatforms)church.Platform;
             LookupContext.SetProcessor(DbPlatform);
-            var context = SystemGlobals.DataRepository.GetDataContext();
+            var context = GetNewDbContext();
             context.SetLookupContext(LookupContext);
-            LoadDataProcessor(organization);
+            LoadDataProcessor(church);
             SystemMaster systemMaster = null;
             DbContext migrateContext = context.DbContext;
             var migrateResult = string.Empty;
@@ -90,23 +95,23 @@ namespace RingSoft.ChurchLogix.Library
             switch ((DbPlatforms)church.Platform)
             {
                 case DbPlatforms.Sqlite:
-                    if (!organization.FilePath.EndsWith('\\'))
-                        organization.FilePath += "\\";
+                    if (!church.FilePath.EndsWith('\\'))
+                        church.FilePath += "\\";
 
                     LookupContext.Initialize(context, DbPlatform);
 
-                    var newFile = !File.Exists($"{organization.FilePath}{organization.FileName}");
+                    var newFile = !File.Exists($"{church.FilePath}{church.FileName}");
 
                     if (newFile == false)
                     {
                         try
                         {
-                            var file = new FileInfo($"{organization.FilePath}{organization.FileName}");
+                            var file = new FileInfo($"{church.FilePath} {church.FileName}");
                             file.IsReadOnly = false;
                         }
                         catch (Exception e)
                         {
-                            var message = $"Can't access Organization file path: {organization.FilePath}.  You must run this program as administrator.";
+                            var message = $"Can't access Organization file path: {church.FilePath}.  You must run this program as administrator.";
                             return message;
                         }
                         migrateResult = MigrateContext(migrateContext);
@@ -116,7 +121,7 @@ namespace RingSoft.ChurchLogix.Library
                         }
 
                         systemMaster = context.SystemMaster.FirstOrDefault();
-                        if (systemMaster != null) organization.Name = systemMaster.OrganizationName;
+                        if (systemMaster != null) church.Name = systemMaster.ChurchName;
                     }
                     else
                     {
@@ -127,7 +132,7 @@ namespace RingSoft.ChurchLogix.Library
                         }
 
                         context.DbContext.Database.Migrate();
-                        systemMaster = new SystemMaster { OrganizationName = organization.Name };
+                        systemMaster = new SystemMaster { ChurchName = church.Name };
                         context.DbContext.AddNewEntity(context.SystemMaster, systemMaster, "Saving SystemMaster");
 
                     }
@@ -135,10 +140,10 @@ namespace RingSoft.ChurchLogix.Library
                     break;
                 case DbPlatforms.SqlServer:
 
-                    var databases = RingSoftAppGlobals.GetSqlServerDatabaseList(organization.Server);
+                    var databases = RingSoftAppGlobals.GetSqlServerDatabaseList(church.Server);
                     {
                         var migrate = true;
-                        if (databases.IndexOf(organization.Database) < 0)
+                        if (databases.IndexOf(church.Database) < 0)
                         {
                             migrateResult = MigrateContext(migrateContext);
                             if (!migrateResult.IsNullOrEmpty())
@@ -161,15 +166,15 @@ namespace RingSoft.ChurchLogix.Library
                         }
                     }
 
-                    if (databases.IndexOf(organization.Database) >= 0)
+                    if (databases.IndexOf(church.Database) >= 0)
                     {
                         systemMaster = context.SystemMaster.FirstOrDefault();
-                        if (systemMaster != null) organization.Name = systemMaster.OrganizationName;
+                        if (systemMaster != null) church.Name = systemMaster.ChurchName;
                     }
 
                     if (systemMaster == null)
                     {
-                        systemMaster = new SystemMaster { OrganizationName = organization.Name };
+                        systemMaster = new SystemMaster { ChurchName = church.Name };
                         context.DbContext.AddNewEntity(context.SystemMaster, systemMaster, "Saving SystemMaster");
                     }
                     LookupContext.Initialize(context, DbPlatform);
@@ -181,13 +186,100 @@ namespace RingSoft.ChurchLogix.Library
                     throw new ArgumentOutOfRangeException();
             }
 
-            SystemGlobals.Rights = new AppRights(new DevLogixRights());
+            //SystemGlobals.Rights = new AppRights(new DevLogixRights());
 
-            AppSplashProgress?.Invoke(null, new AppProgressArgs($"Connecting to the {organization.Name} Database."));
-            //var selectQuery = new SelectQuery(LookupContext.SystemMaster.TableName);
-            //LookupContext.DataProcessor.GetData(selectQuery, false);
+            AppSplashProgress?.Invoke(null, new AppProgressArgs($"Connecting to the {church.Name} Database."));
             DataAccessGlobals.SetupSysPrefs();
+
             return string.Empty;
+        }
+
+        public static bool AllowMigrate(DbDataProcessor processor = null)
+        {
+            var migrate = true;
+            var context = DataRepository.GetDataContext();
+            var table = context.GetTable<SystemMaster>();
+            var sysMaster = new SystemMaster()
+            {
+                ChurchName = Guid.NewGuid().ToString(),
+            };
+
+            var sysMasters = new List<SystemMaster>();
+            sysMasters.Add(sysMaster);
+
+            context.AddRange(sysMasters);
+            migrate = context.Commit("Checking System Master");
+            if (migrate)
+            {
+                context.RemoveRange(sysMasters);
+                migrate = context.Commit("Checking Migrate");
+            }
+
+            return migrate;
+        }
+
+        public static string MigrateContext(DbContext migrateContext)
+        {
+            try
+            {
+                migrateContext.Database.Migrate();
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+
+            return string.Empty;
+        }
+
+
+
+        public static IChurchLogixDbContext GetNewDbContext(DbPlatforms? platform = null)
+        {
+            if (platform == null)
+            {
+                platform = DbPlatform;
+            }
+            switch (platform)
+            {
+                case DbPlatforms.Sqlite:
+                    var sqliteResult = new ChurchLogixSqliteDbContext();
+                    sqliteResult.SetLookupContext(AppGlobals.LookupContext);
+                    return sqliteResult;
+                case DbPlatforms.SqlServer:
+                    var result = new ChurchLogixSqlServerDbContext();
+                    result.SetLookupContext(AppGlobals.LookupContext);
+                    return result;
+                //case DbPlatforms.MySql:
+                //    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        public static void LoadDataProcessor(Church church, DbPlatforms? platform = null)
+        {
+            if (platform == null)
+            {
+                platform = (DbPlatforms)church.Platform;
+            }
+
+            switch (platform)
+            {
+                case DbPlatforms.Sqlite:
+                    LookupContext.SqliteDataProcessor.FilePath = church.FilePath;
+                    LookupContext.SqliteDataProcessor.FileName = church.FileName;
+                    break;
+                case DbPlatforms.SqlServer:
+                    LookupContext.SqlServerDataProcessor.Server = church.Server;
+                    LookupContext.SqlServerDataProcessor.Database = church.Database;
+                    LookupContext.SqlServerDataProcessor.SecurityType = (SecurityTypes)church.AuthenticationType;
+                    LookupContext.SqlServerDataProcessor.UserName = church.Username;
+                    LookupContext.SqlServerDataProcessor.Password = church.Password.DecryptDatabasePassword();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
     }

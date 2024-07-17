@@ -43,8 +43,7 @@ namespace RingSoft.ChurchLogix
         {
             AppGlobals.AppSplashProgress += AppGlobals_AppSplashProgress;
 
-            //var result = AppGlobals.LoginToChurch(_church);
-            var result = string.Empty;
+            var result = AppGlobals.LoginToChurch(_church);
             CloseSplash();
             AppGlobals.AppSplashProgress -= AppGlobals_AppSplashProgress;
 
