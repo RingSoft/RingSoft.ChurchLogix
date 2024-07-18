@@ -8,8 +8,7 @@ namespace RingSoft.ChurchLogix.Library
     {
         public override IDbContext GetDataContext()
         {
-            //return AppGlobals.GetNewDbContext();
-            throw new NotImplementedException();
+            return AppGlobals.GetNewDbContext();
         }
 
         public override IDbContext GetDataContext(DbDataProcessor dataProcessor)
@@ -20,9 +19,7 @@ namespace RingSoft.ChurchLogix.Library
             {
                 platform = DbPlatforms.SqlServer;
             }
-            //return AppGlobals.GetNewDbContext(platform);
-
-            throw new NotImplementedException();
+            return AppGlobals.GetNewDbContext(platform);
         }
     }
 }
