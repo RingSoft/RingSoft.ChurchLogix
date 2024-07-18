@@ -28,7 +28,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
 
         Church Church { get; set; }
 
-        ChurchProcesses OrganizationProcess { get; set; }
+        ChurchProcesses ChurchProcess { get; set; }
     }
 
 

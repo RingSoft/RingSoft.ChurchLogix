@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RingSoft.App.Library;
+using RingSoft.ChurchLogix.DataAccess.Model;
+using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
+using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
 using RingSoft.DbLookup.DataProcessor;
 using RingSoft.DbLookup.EfCore;
 using RingSoft.DbLookup.ModelDefinition;
@@ -13,7 +16,10 @@ namespace RingSoft.ChurchLogix.DataAccess
         public SqliteDataProcessor SqliteDataProcessor { get; }
         public SqlServerDataProcessor SqlServerDataProcessor { get; }
 
-        
+        public TableDefinition<SystemMaster> SystemMaster { get; set; }
+        public TableDefinition<SystemPreferences> SystemPreferences { get; set; }
+        public TableDefinition<StaffPerson> Staff { get; set; }
+        public TableDefinition<Member> Members { get; set; }
 
 
         private DbContext _dbContext;

@@ -32,11 +32,14 @@ namespace RingSoft.ChurchLogix
 
             AppGlobals.Initialize();
 
+            AppGlobals.AppSplashProgress -= AppGlobals_AppSplashProgress;
+
             return base.DoProcess();
         }
 
         private void AppGlobals_AppSplashProgress(object? sender, AppProgressArgs e)
         {
+            var test = SplashWindow;
             SetProgress(e.ProgressText);
         }
 

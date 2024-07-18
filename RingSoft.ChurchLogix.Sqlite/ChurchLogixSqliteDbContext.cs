@@ -35,6 +35,12 @@ namespace RingSoft.ChurchLogix.Sqlite
 
         private static ChurchLogixLookupContext _lookupContext;
 
+        public ChurchLogixSqliteDbContext()
+        {
+            DbConstants.ConstantGenerator = new SqliteDbConstants();
+            DataAccessGlobals.DbContext = this;
+        }
+
         public override DbContextEfCore GetNewDbContextEfCore()
         {
             return new ChurchLogixSqliteDbContext();

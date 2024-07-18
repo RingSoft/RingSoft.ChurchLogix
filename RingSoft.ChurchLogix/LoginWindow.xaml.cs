@@ -79,12 +79,13 @@ namespace RingSoft.ChurchLogix
 
         public bool LoginToChurch(Church church)
         {
-            throw new NotImplementedException();
+            var loginProcedure = new LoginProcedure(church);
+            return loginProcedure.Start();
         }
 
         public Church ShowAddChurch()
         {
-            var addEditChurchWindow = new AddEditChurchWindow()
+            var addEditChurchWindow = new AddEditChurchWindow(DbLoginProcesses.Add)
             {
                 Owner = this,
                 ShowInTaskbar = false
@@ -95,8 +96,26 @@ namespace RingSoft.ChurchLogix
 
         public bool EditChurch(ref Church church)
         {
-            throw new NotImplementedException();
+            var addEditChurchWindow = new AddEditChurchWindow(DbLoginProcesses.Edit, church)
+            {
+                Owner = this,
+                ShowInTaskbar = false
+            };
+            addEditChurchWindow.ShowDialog();
+
+            if (addEditChurchWindow.ViewModel.DialogResult)
+            {
+                if (addEditChurchWindow.ViewModel.Object != null)
+                    church = addEditChurchWindow.ViewModel.Object;
+            }
+            else
+            {
+                return false;
+            }
+
+            return church != null;
         }
+
 
         public AddEditChurchViewModel GetChurchConnection()
         {

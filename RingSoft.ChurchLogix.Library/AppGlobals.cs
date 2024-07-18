@@ -106,12 +106,12 @@ namespace RingSoft.ChurchLogix.Library
                     {
                         try
                         {
-                            var file = new FileInfo($"{church.FilePath} {church.FileName}");
+                            var file = new FileInfo($"{church.FilePath}{church.FileName}");
                             file.IsReadOnly = false;
                         }
                         catch (Exception e)
                         {
-                            var message = $"Can't access Organization file path: {church.FilePath}.  You must run this program as administrator.";
+                            var message = $"Can't access Church file path: {church.FilePath}.  You must run this program as administrator.";
                             return message;
                         }
                         migrateResult = MigrateContext(migrateContext);
