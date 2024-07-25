@@ -1,4 +1,5 @@
 ﻿using RingSoft.ChurchLogix.Library.ViewModels;
+using System.Windows.Controls;
 
 namespace RingSoft.ChurchLogix
 {
@@ -11,7 +12,7 @@ namespace RingSoft.ChurchLogix
         {
             InitializeComponent();
 
-            //SetupToolbar();
+            MakeMenu();
 
             ContentRendered += (sender, args) =>
             {
@@ -54,7 +55,7 @@ namespace RingSoft.ChurchLogix
 
         public void CloseWindow()
         {
-            throw new NotImplementedException();
+            Close();
         }
 
         public void ShowAdvancedFindWindow()
@@ -64,7 +65,25 @@ namespace RingSoft.ChurchLogix
 
         public void MakeMenu()
         {
-            throw new NotImplementedException();
+            MainMenu.Items.Clear();
+
+            SetupToolbar();
+
+            var fileMenu = new MenuItem()
+            {
+                Header = "_File"
+            };
+            fileMenu.Items.Add(new MenuItem()
+            {
+                Header = $"E_xit",
+                Command = ViewModel.ExitCommand
+            });
+
+            MainMenu.Items.Add(fileMenu);
+        }
+
+        private void SetupToolbar()
+        {
         }
 
         public bool UpgradeVersion()

@@ -95,6 +95,13 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
             }
         }
 
+        public RelayCommand ExitCommand { get; }
+
+        public MainViewModel()
+        {
+            ExitCommand = new RelayCommand(Exit);
+        }
+
         public void Initialize(IMainView view)
         {
             MainView = view;
@@ -116,6 +123,11 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
                 .FirstOrDefault(p => p.NumericValue == platform).TextValue;
             DbPlatform = description;
             UserAutoFillValue = null;
+        }
+
+        private void Exit()
+        {
+            MainView.CloseWindow();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

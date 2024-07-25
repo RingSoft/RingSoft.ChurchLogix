@@ -14,11 +14,54 @@
                   Height="500"
                   CloseOnEscape="False"
                   Title="ChurchLogix" WindowState="Maximized">
-
-    <Window.DataContext>
+    <Window.Resources>
+        <Style TargetType="ac:DbMaintenanceButton" BasedOn="{StaticResource {x:Type ac:DbMaintenanceButton}}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ac:DbMaintenanceButton}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Margin="5">
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                <Image x:Name="Image" Height="64" Width="64"/>
+                                <ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" RecognizesAccessKey="True"
+                                                  TextBlock.FontSize="12">
+                                    <ContentPresenter.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center"/>
+                                            <Setter Property="Margin" Value="5"/>
+                                        </Style>
+                                    </ContentPresenter.Resources>
+                                </ContentPresenter>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+        <Window.DataContext>
         <vm:MainViewModel x:Name="ViewModel"/>
     </Window.DataContext>
-    <Grid>
+    <DockPanel>
+        <Menu x:Name="MainMenu" DockPanel.Dock="Top">
+            <MenuItem Header="E_xit..."/>
+        </Menu>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <StackPanel.Background>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="Black" Offset="0.15"/>
+                    <GradientStop Color="DarkGray" Offset="0.5"/>
+                    <GradientStop Color="Black" Offset="0.85"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
+            <ac:DbMaintenanceButton x:Name="ExitButton"  Content="E_xit" Command="{Binding ExitCommand }" ImageSource="{StaticResource ExitImage}" />
+        </StackPanel>
+        <Grid>
 
-    </Grid>
+        </Grid>
+    </DockPanel>
 </ac:AppMainWindow>
