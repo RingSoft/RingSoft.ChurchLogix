@@ -5,6 +5,7 @@ using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
 using RingSoft.DbLookup.DataProcessor;
 using RingSoft.DbLookup.EfCore;
+using RingSoft.DbLookup.Lookup;
 using RingSoft.DbLookup.ModelDefinition;
 
 namespace RingSoft.ChurchLogix.DataAccess
@@ -21,6 +22,8 @@ namespace RingSoft.ChurchLogix.DataAccess
         public TableDefinition<StaffPerson> Staff { get; set; }
         public TableDefinition<Member> Members { get; set; }
 
+        public LookupDefinition<StaffLookup, StaffPerson> StaffLookup { get; set; }
+        public LookupDefinition<MemberLookup, Member> MemberLookup { get; set; }
 
         private DbContext _dbContext;
         private DbDataProcessor _dbDataProcessor;
@@ -65,10 +68,28 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         protected override void InitializeLookupDefinitions()
         {
+            StaffLookup = new LookupDefinition<StaffLookup, StaffPerson>(Staff);
+
+            StaffLookup.AddVisibleColumnDefinition(
+                p => p.Name
+                , "Staff Person"
+                , p => p.Name, 99);
+
+            Staff.HasLookupDefinition(StaffLookup);
+
+            MemberLookup = new LookupDefinition<MemberLookup, Member>(Members);
+
+            MemberLookup.AddVisibleColumnDefinition(
+                p => p.Name
+                , "Staff Person"
+                , p => p.Name, 99);
+
+            Members.HasLookupDefinition(MemberLookup);
         }
 
         protected override void SetupModel()
         {
+            Staff.PriorityLevel = 100;
         }
     }
 }

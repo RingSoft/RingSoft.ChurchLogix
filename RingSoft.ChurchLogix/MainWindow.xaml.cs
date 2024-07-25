@@ -1,5 +1,10 @@
 ﻿using RingSoft.ChurchLogix.Library.ViewModels;
 using System.Windows.Controls;
+using RingSoft.ChurchLogix.Library;
+using RingSoft.DbLookup;
+using RingSoft.DbLookup.Controls.WPF;
+using RingSoft.DbLookup.Lookup;
+using RingSoft.DbLookup.ModelDefinition;
 
 namespace RingSoft.ChurchLogix
 {

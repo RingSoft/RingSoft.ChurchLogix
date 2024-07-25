@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using RingSoft.App.Library;
+using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
 using RingSoft.ChurchLogix.MasterData;
 using RingSoft.DataEntryControls.Engine;
+using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
+using RingSoft.DbLookup.ModelDefinition;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels
 {
@@ -61,36 +64,36 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
         }
 
 
-        private AutoFillSetup _userAutoFillSetup;
+        private AutoFillSetup _staffPersonAutoFillSetup;
 
-        public AutoFillSetup UserAutoFillSetup
+        public AutoFillSetup StaffPersonAutoFillSetup
         {
-            get => _userAutoFillSetup;
+            get => _staffPersonAutoFillSetup;
             set
             {
-                if (_userAutoFillSetup == value)
+                if (_staffPersonAutoFillSetup == value)
                 {
                     return;
                 }
 
-                _userAutoFillSetup = value;
+                _staffPersonAutoFillSetup = value;
                 OnPropertyChanged();
             }
         }
 
-        private AutoFillValue _userAutoFillValue;
+        private AutoFillValue _staffPersonAutoFillValue;
 
-        public AutoFillValue UserAutoFillValue
+        public AutoFillValue StaffPersonAutoFillValue
         {
-            get => _userAutoFillValue;
+            get => _staffPersonAutoFillValue;
             set
             {
-                if (_userAutoFillValue == value)
+                if (_staffPersonAutoFillValue == value)
                 {
                     return;
                 }
 
-                _userAutoFillValue = value;
+                _staffPersonAutoFillValue = value;
                 OnPropertyChanged();
             }
         }
@@ -111,6 +114,22 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
             if (AppGlobals.LoggedInChurch == null)
                 loadVm = view.ChangeChurch();
 
+            if (loadVm)
+            {
+                if (StaffPersonAutoFillSetup == null)
+                {
+                    StaffPersonAutoFillSetup = new AutoFillSetup(AppGlobals.LookupContext.StaffLookup);
+                }
+                var query = AppGlobals.DataRepository.GetDataContext().GetTable<StaffPerson>();
+                if (!query.Any())
+                {
+                    var message =
+                        "You must first create a master staff person.  Make sure you don't forget the password.";
+                    var caption = "Create Staff Person";
+                    ControlsGlobals.UserInterface.ShowMessageBox(message, caption, RsMessageBoxIcons.Information);
+                    SystemGlobals.TableRegistry.ShowAddOntheFlyWindow(AppGlobals.LookupContext.Staff);
+                }
+            }
         }
 
         public void SetChurchProps()
@@ -122,7 +141,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
             var description = enumTranslation.TypeTranslations
                 .FirstOrDefault(p => p.NumericValue == platform).TextValue;
             DbPlatform = description;
-            UserAutoFillValue = null;
+            StaffPersonAutoFillValue = null;
         }
 
         private void Exit()

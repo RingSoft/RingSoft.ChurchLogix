@@ -7,15 +7,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.ChurchLogix", "Rin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.ChurchLogix.DataAccess", "RingSoft.ChurchLogix.DataAccess\RingSoft.ChurchLogix.DataAccess.csproj", "{E01F3DF9-430D-4A72-A32E-5946B2D3F610}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RingSoft.ChurchLogix.Library", "RingSoft.ChurchLogix.Library\RingSoft.ChurchLogix.Library.csproj", "{4C5D317B-0C3F-4AB1-A623-74BBA42BC3F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.ChurchLogix.Library", "RingSoft.ChurchLogix.Library\RingSoft.ChurchLogix.Library.csproj", "{4C5D317B-0C3F-4AB1-A623-74BBA42BC3F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RingSoft.ChurchLogix.MasterData", "RingSoft.ChurchLogix.MasterData\RingSoft.ChurchLogix.MasterData.csproj", "{0ADEC1CF-1599-4206-BB4F-A697CEF603A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.ChurchLogix.MasterData", "RingSoft.ChurchLogix.MasterData\RingSoft.ChurchLogix.MasterData.csproj", "{0ADEC1CF-1599-4206-BB4F-A697CEF603A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RingSoft.ChurchLogix.Sqlite", "RingSoft.ChurchLogix.Sqlite\RingSoft.ChurchLogix.Sqlite.csproj", "{89332C60-583B-4441-A8BD-44F142F40FAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.ChurchLogix.Sqlite", "RingSoft.ChurchLogix.Sqlite\RingSoft.ChurchLogix.Sqlite.csproj", "{89332C60-583B-4441-A8BD-44F142F40FAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RingSoft.ChurchLogix.SqlServer", "RingSoft.ChurchLogix.SqlServer\RingSoft.ChurchLogix.SqlServer.csproj", "{5EF27232-F216-4FDE-9E8E-5FC995CFEB1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.ChurchLogix.SqlServer", "RingSoft.ChurchLogix.SqlServer\RingSoft.ChurchLogix.SqlServer.csproj", "{5EF27232-F216-4FDE-9E8E-5FC995CFEB1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RingSoft.ChurchLogix.Tests", "RingSoft.ChurchLogix.Tests\RingSoft.ChurchLogix.Tests.csproj", "{0318B985-3022-4F8D-853D-B7E9504F6905}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.ChurchLogix.Tests", "RingSoft.ChurchLogix.Tests\RingSoft.ChurchLogix.Tests.csproj", "{0318B985-3022-4F8D-853D-B7E9504F6905}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.DbLookup", "..\RingSoft.DbLookup\RingSoft.DbLookup\RingSoft.DbLookup.csproj", "{067A4464-1A97-41F3-8B48-BF56F6548C7F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.DbMaintenance", "..\RingSoft.DbLookup\RingSoft.DbMaintenance\RingSoft.DbMaintenance.csproj", "{5BA28D8A-7CC7-4794-A033-DCEA3FA59924}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.DbLookup.Controls.WPF", "..\RingSoft.DbLookup\RingSoft.DbLookup.Controls.WPF\RingSoft.DbLookup.Controls.WPF.csproj", "{7917AEA3-5B19-4445-A70E-07A233CE83ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +57,18 @@ Global
 		{0318B985-3022-4F8D-853D-B7E9504F6905}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0318B985-3022-4F8D-853D-B7E9504F6905}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0318B985-3022-4F8D-853D-B7E9504F6905}.Release|Any CPU.Build.0 = Release|Any CPU
+		{067A4464-1A97-41F3-8B48-BF56F6548C7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{067A4464-1A97-41F3-8B48-BF56F6548C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{067A4464-1A97-41F3-8B48-BF56F6548C7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{067A4464-1A97-41F3-8B48-BF56F6548C7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BA28D8A-7CC7-4794-A033-DCEA3FA59924}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BA28D8A-7CC7-4794-A033-DCEA3FA59924}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BA28D8A-7CC7-4794-A033-DCEA3FA59924}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BA28D8A-7CC7-4794-A033-DCEA3FA59924}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7917AEA3-5B19-4445-A70E-07A233CE83ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7917AEA3-5B19-4445-A70E-07A233CE83ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7917AEA3-5B19-4445-A70E-07A233CE83ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7917AEA3-5B19-4445-A70E-07A233CE83ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,11 @@
 ﻿using System.Windows;
 using RingSoft.App.Controls;
 using RingSoft.App.Library;
+using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
 using RingSoft.ChurchLogix.Library;
+using RingSoft.ChurchLogix.StaffManagement;
+using RingSoft.DbLookup;
+using RingSoft.DbLookup.Controls.WPF;
 
 namespace RingSoft.ChurchLogix
 {
@@ -33,6 +37,8 @@ namespace RingSoft.ChurchLogix
             AppGlobals.Initialize();
 
             AppGlobals.AppSplashProgress -= AppGlobals_AppSplashProgress;
+
+            LookupControlsGlobals.WindowRegistry.RegisterWindow<StaffMaintenanceWindow, StaffPerson>();
 
             return base.DoProcess();
         }
