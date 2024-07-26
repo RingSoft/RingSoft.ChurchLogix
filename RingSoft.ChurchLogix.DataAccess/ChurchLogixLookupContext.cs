@@ -81,7 +81,7 @@ namespace RingSoft.ChurchLogix.DataAccess
 
             MemberLookup.AddVisibleColumnDefinition(
                 p => p.Name
-                , "Staff Person"
+                , "Member"
                 , p => p.Name, 99);
 
             Members.HasLookupDefinition(MemberLookup);

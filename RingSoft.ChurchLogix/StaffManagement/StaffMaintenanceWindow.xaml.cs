@@ -12,6 +12,7 @@ namespace RingSoft.ChurchLogix.StaffManagement
         public StaffMaintenanceWindow()
         {
             InitializeComponent();
+            RegisterFormKeyControl(NameControl);
         }
 
         public override DbMaintenanceViewModelBase ViewModel => LocalViewModel;

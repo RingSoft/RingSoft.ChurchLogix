@@ -123,12 +123,14 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
                 var query = AppGlobals.DataRepository.GetDataContext().GetTable<StaffPerson>();
                 if (!query.Any())
                 {
-                    var message =
-                        "You must first create a master staff person.  Make sure you don't forget the password.";
-                    var caption = "Create Staff Person";
-                    ControlsGlobals.UserInterface.ShowMessageBox(message, caption, RsMessageBoxIcons.Information);
-                    SystemGlobals.TableRegistry.ShowAddOntheFlyWindow(AppGlobals.LookupContext.Staff);
+                    //var message =
+                    //    "You must first create a master staff person.  Make sure you don't forget the password.";
+                    //var caption = "Create Staff Person";
+                    //ControlsGlobals.UserInterface.ShowMessageBox(message, caption, RsMessageBoxIcons.Information);
+                    //SystemGlobals.TableRegistry.ShowAddOntheFlyWindow(AppGlobals.LookupContext.Staff);
                 }
+                //Temp Line
+                SystemGlobals.TableRegistry.ShowAddOntheFlyWindow(AppGlobals.LookupContext.Staff);
             }
         }
 
