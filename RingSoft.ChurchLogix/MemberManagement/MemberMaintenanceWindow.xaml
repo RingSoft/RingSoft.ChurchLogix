@@ -32,7 +32,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Row="0" Grid.Column="0" Content="Staff Person ID"/>
+            <Label Grid.Row="0" Grid.Column="0" Content="Member ID"/>
 
             <dec:StringReadOnlyBox Grid.Row="0" Grid.Column="1" Text="{Binding Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="50" HorizontalAlignment="Left"/>
 

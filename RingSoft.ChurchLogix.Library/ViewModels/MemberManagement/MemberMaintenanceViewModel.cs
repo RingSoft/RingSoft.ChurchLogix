@@ -142,6 +142,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
         {
             Id = newEntity.Id;
             View.RefreshView();
+            _householdLookupDefinition.FilterDefinition.ClearFixedFilters();
             _householdLookupDefinition.FilterDefinition.AddFixedFilter(
                 p => p.Id
                 , Conditions.NotEquals, Id);
