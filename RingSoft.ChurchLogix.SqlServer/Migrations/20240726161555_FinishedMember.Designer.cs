@@ -2,26 +2,36 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RingSoft.ChurchLogix.Sqlite;
+using RingSoft.ChurchLogix.SqlServer;
 
 #nullable disable
 
-namespace RingSoft.ChurchLogix.Sqlite.Migrations
+namespace RingSoft.ChurchLogix.SqlServer.Migrations
 {
-    [DbContext(typeof(ChurchLogixSqliteDbContext))]
-    partial class ChurchLogixSqliteDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ChurchLogixSqlServerDbContext))]
+    [Migration("20240726161555_FinishedMember")]
+    partial class FinishedMember
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.6");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.6")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .HasMaxLength(255)
@@ -54,6 +64,8 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .HasMaxLength(255)
@@ -92,7 +104,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                 {
                     b.Property<string>("ChurchName")
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("ChurchName");
 
@@ -103,7 +115,9 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.HasKey("Id");
 
@@ -115,6 +129,8 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool?>("Disabled")
                         .HasColumnType("bit");
@@ -131,10 +147,10 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                         .HasColumnType("integer");
 
                     b.Property<byte?>("RefreshCondition")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint");
 
                     b.Property<byte?>("RefreshRate")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint");
 
                     b.Property<int?>("RefreshValue")
                         .HasColumnType("integer");
@@ -165,10 +181,10 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                         .HasColumnType("nvarchar");
 
                     b.Property<byte>("DecimalFormatType")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint");
 
                     b.Property<byte>("FieldDataType")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("FieldName")
                         .HasMaxLength(50)
@@ -181,7 +197,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar");
 
-                    b.Property<double>("PercentWidth")
+                    b.Property<decimal>("PercentWidth")
                         .HasColumnType("numeric");
 
                     b.Property<string>("PrimaryFieldName")
@@ -213,10 +229,10 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                         .HasColumnType("bit");
 
                     b.Property<byte>("DateFilterType")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint");
 
                     b.Property<byte>("EndLogic")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("FieldName")
                         .HasMaxLength(50)
@@ -226,17 +242,17 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                         .HasColumnType("ntext");
 
                     b.Property<byte>("FormulaDataType")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("FormulaDisplayValue")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar");
 
                     b.Property<byte>("LeftParentheses")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint");
 
                     b.Property<byte>("Operand")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("Path")
                         .HasMaxLength(1000)
@@ -251,7 +267,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                         .HasColumnType("nvarchar");
 
                     b.Property<byte>("RightParentheses")
-                        .HasColumnType("smallint");
+                        .HasColumnType("tinyint");
 
                     b.Property<int?>("SearchForAdvancedFindId")
                         .HasColumnType("integer");

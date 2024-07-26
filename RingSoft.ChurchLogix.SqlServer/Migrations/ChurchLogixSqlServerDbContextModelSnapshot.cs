@@ -30,12 +30,28 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Email")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<int?>("HouseholdId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar");
 
+                    b.Property<string>("Notes")
+                        .HasColumnType("ntext");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("HouseholdId");
 
                     b.ToTable("Members");
                 });
@@ -290,6 +306,16 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.ToTable("RecordLocks");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", b =>
+                {
+                    b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", "Household")
+                        .WithMany("HouseholdMembers")
+                        .HasForeignKey("HouseholdId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Household");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.StaffManagement.StaffPerson", b =>
                 {
                     b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", "Member")
@@ -331,6 +357,8 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", b =>
                 {
+                    b.Navigation("HouseholdMembers");
+
                     b.Navigation("Staff");
                 });
 

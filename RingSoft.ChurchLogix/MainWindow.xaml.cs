@@ -1,10 +1,15 @@
-﻿using RingSoft.ChurchLogix.Library.ViewModels;
+﻿using System.Diagnostics;
+using System.Windows;
+using RingSoft.ChurchLogix.Library.ViewModels;
 using System.Windows.Controls;
 using RingSoft.ChurchLogix.Library;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.Controls.WPF;
 using RingSoft.DbLookup.Lookup;
 using RingSoft.DbLookup.ModelDefinition;
+using RingSoft.DbLookup.Controls.WPF.AdvancedFind;
+using System.Windows.Documents;
+using RingSoft.DataEntryControls.Engine;
 
 namespace RingSoft.ChurchLogix
 {
@@ -16,8 +21,6 @@ namespace RingSoft.ChurchLogix
         public MainWindow()
         {
             InitializeComponent();
-
-            MakeMenu();
 
             ContentRendered += (sender, args) =>
             {
@@ -47,6 +50,7 @@ namespace RingSoft.ChurchLogix
             {
                 result = (bool)loginResult;
                 ViewModel.SetChurchProps();
+                MakeMenu();
             }
 
             return result;
@@ -63,9 +67,18 @@ namespace RingSoft.ChurchLogix
             Close();
         }
 
+        public void ShowWindow(System.Windows.Window window)
+        {
+            window.Owner = this;
+            window.ShowInTaskbar = false;
+            window.Closed += (sender, args) => Activate();
+            window.Show();
+        }
+
+
         public void ShowAdvancedFindWindow()
         {
-            throw new NotImplementedException();
+            ShowWindow(new AdvancedFindWindow());
         }
 
         public void MakeMenu()
@@ -85,8 +98,42 @@ namespace RingSoft.ChurchLogix
             });
 
             MainMenu.Items.Add(fileMenu);
+
+            MakeStaffMenu();
+            MakeMemberMenu();
+
+            MainMenu.Items.Add(new MenuItem()
+            {
+                Header = "_Advanced Find",
+                Command = ViewModel.AdvFindCommand
+            });
         }
 
+        private void MakeStaffMenu()
+        {
+            var menuItem = new MenuItem() { Header = "_Staff Management" };
+            MainMenu.Items.Add(menuItem);
+
+            menuItem.Items.Add(new MenuItem()
+            {
+                Header = "Add/Edit _Staff...",
+                Command = ViewModel.ShowMaintenanceWindowCommand,
+                CommandParameter = AppGlobals.LookupContext.Staff,
+            });
+        }
+
+        private void MakeMemberMenu()
+        {
+            var menuItem = new MenuItem() { Header = "_Member Management" };
+            MainMenu.Items.Add(menuItem);
+
+            menuItem.Items.Add(new MenuItem()
+            {
+                Header = "Add/Edit _Members...",
+                Command = ViewModel.ShowMaintenanceWindowCommand,
+                CommandParameter = AppGlobals.LookupContext.Members,
+            });
+        }
         private void SetupToolbar()
         {
         }
@@ -99,6 +146,39 @@ namespace RingSoft.ChurchLogix
         public void ShowAbout()
         {
             throw new NotImplementedException();
+        }
+
+        internal static void ProcessSendEmailLink(TextBlock sendEmailLink, string? emailAddress)
+        {
+            if (emailAddress.IsNullOrEmpty())
+            {
+                sendEmailLink.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                sendEmailLink.Visibility = Visibility.Visible;
+                sendEmailLink.Inlines.Clear();
+                try
+                {
+                    var uri = new Uri($"mailto:{emailAddress}");
+                    var hyperLink = new Hyperlink
+                    {
+                        NavigateUri = uri
+                    };
+                    hyperLink.Inlines.Add("Send Email");
+                    hyperLink.RequestNavigate += (sender, args) =>
+                    {
+                        Process.Start(new ProcessStartInfo(uri.AbsoluteUri) { UseShellExecute = true });
+                        args.Handled = true;
+                    };
+                    sendEmailLink.Inlines.Add(hyperLink);
+                }
+                catch (Exception e)
+                {
+                    sendEmailLink.Visibility = Visibility.Collapsed;
+                }
+            }
+
         }
     }
 }

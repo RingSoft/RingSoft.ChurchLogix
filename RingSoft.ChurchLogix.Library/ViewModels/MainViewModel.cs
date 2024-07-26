@@ -100,9 +100,16 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
 
         public RelayCommand ExitCommand { get; }
 
+        public RelayCommand AdvFindCommand { get; }
+
+        public RelayCommand<TableDefinitionBase> ShowMaintenanceWindowCommand { get; }
+
         public MainViewModel()
         {
             ExitCommand = new RelayCommand(Exit);
+            AdvFindCommand = new RelayCommand(ShowAdvFind);
+
+            ShowMaintenanceWindowCommand = new RelayCommand<TableDefinitionBase>(ShowMaintenanceWindow);
         }
 
         public void Initialize(IMainView view)
@@ -134,6 +141,12 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
             }
         }
 
+        private void ShowMaintenanceWindow(TableDefinitionBase tableDefinition)
+        {
+            SystemGlobals.TableRegistry.ShowWindow(tableDefinition);
+        }
+
+
         public void SetChurchProps()
         {
             var enumTranslation = new EnumFieldTranslation();
@@ -149,6 +162,11 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
         private void Exit()
         {
             MainView.CloseWindow();
+        }
+
+        private void ShowAdvFind()
+        {
+            MainView.ShowAdvancedFindWindow();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

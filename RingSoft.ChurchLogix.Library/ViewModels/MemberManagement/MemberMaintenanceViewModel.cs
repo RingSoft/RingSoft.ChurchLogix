@@ -1,31 +1,21 @@
 ﻿using RingSoft.App.Library;
+using RingSoft.ChurchLogix.DataAccess;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
+using RingSoft.ChurchLogix.Library.ViewModels.StaffManagement;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
 using RingSoft.DbLookup.Lookup;
+using RingSoft.DbLookup.QueryBuilder;
 using RingSoft.DbMaintenance;
 
-namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
+namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 {
-    public interface IStaffView : IDbMaintenanceView
+    public interface IMemberView : IDbMaintenanceView
     {
-
-        public string GetRights();
-
-        public void LoadRights(string rightsString);
-
-        public void ResetRights();
-
         public void RefreshView();
-
-        void SetExistRecordFocus(int rowId);
-
-        string GetPassword();
-
-        void SetPassword(string password);
     }
-    public class StaffMaintenanceViewModel : AppDbMaintenanceViewModel<StaffPerson>
+    public class MemberMaintenanceViewModel : AppDbMaintenanceViewModel<Member>
     {
         private int _id;
 
@@ -43,34 +33,34 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
             }
         }
 
-        private AutoFillSetup _memberAutoFillSetup;
+        private AutoFillSetup _householdAutoFillSetup;
 
-        public AutoFillSetup MemberAutoFillSetup
+        public AutoFillSetup HouseholdAutoFillSetup
         {
-            get { return _memberAutoFillSetup; }
+            get { return _householdAutoFillSetup; }
             set
             {
-                if (_memberAutoFillSetup == value)
+                if (_householdAutoFillSetup == value)
                 {
                     return;
                 }
-                _memberAutoFillSetup = value;
+                _householdAutoFillSetup = value;
                 OnPropertyChanged(null, false);
             }
         }
 
-        private AutoFillValue _memberAutoFillValue;
+        private AutoFillValue _householdAutoFillValue;
 
-        public AutoFillValue MemberAutoFillValue
+        public AutoFillValue HouseholdAutoFillValue
         {
-            get { return _memberAutoFillValue; }
+            get { return _householdAutoFillValue; }
             set
             {
-                if (_memberAutoFillValue == value)
+                if (_householdAutoFillValue == value)
                 {
                     return;
                 }
-                _memberAutoFillValue = value;
+                _householdAutoFillValue = value;
                 OnPropertyChanged();
             }
         }
@@ -128,52 +118,58 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
             }
         }
 
-        public IStaffView View { get; private set; }
+        public IMemberView View { get; private set; }
 
-        public StaffMaintenanceViewModel()
+        private LookupDefinition<MemberLookup, Member> _householdLookupDefinition;
+
+        public MemberMaintenanceViewModel()
         {
-            MemberAutoFillSetup = new AutoFillSetup(
-                TableDefinition.GetFieldDefinition(p => p.MemberId));
+            _householdLookupDefinition = AppGlobals.LookupContext.MemberLookup.Clone();
+                
+            HouseholdAutoFillSetup = new AutoFillSetup(_householdLookupDefinition);
         }
 
         protected override void Initialize()
         {
-            View = base.View as IStaffView;
+            View = base.View as IMemberView;
             if (View == null)
-                throw new Exception($"Staff View interface must be of type '{nameof(IStaffView)}'.");
-            
+                throw new Exception($"Member View interface must be of type '{nameof(IMemberView)}'.");
+
             base.Initialize();
         }
 
-        protected override void PopulatePrimaryKeyControls(StaffPerson newEntity, PrimaryKeyValue primaryKeyValue)
+        protected override void PopulatePrimaryKeyControls(Member newEntity, PrimaryKeyValue primaryKeyValue)
         {
             Id = newEntity.Id;
             View.RefreshView();
+            _householdLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.Id
+                , Conditions.NotEquals, Id);
         }
 
-        protected override void LoadFromEntity(StaffPerson entity)
+        protected override void LoadFromEntity(Member entity)
         {
-            MemberAutoFillValue = entity.Member.GetAutoFillValue();
+            HouseholdAutoFillValue = entity.Household.GetAutoFillValue();
             Phone = entity.PhoneNumber;
             Email = entity.Email;
             Notes = entity.Notes;
         }
 
-        protected override StaffPerson GetEntityData()
+        protected override Member GetEntityData()
         {
-            var result =  new StaffPerson()
+            var result = new Member()
             {
                 Id = Id,
                 Name = KeyAutoFillValue.Text,
-                MemberId = MemberAutoFillValue.GetEntity<Member>().Id,
+                HouseholdId = HouseholdAutoFillValue.GetEntity<Member>().Id,
                 PhoneNumber = Phone,
                 Email = Email,
                 Notes = Notes
             };
 
-            if (result.MemberId == 0)
+            if (result.HouseholdId == 0)
             {
-                result.MemberId = null;
+                result.HouseholdId = null;
             }
 
             return result;
@@ -182,11 +178,12 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
         protected override void ClearData()
         {
             Id = 0;
-            MemberAutoFillValue = null;
+            HouseholdAutoFillValue = null;
             Phone = null;
             Email = null;
             Notes = null;
             View.RefreshView();
+
         }
     }
 }
