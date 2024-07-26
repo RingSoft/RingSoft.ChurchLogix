@@ -131,6 +131,22 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
             }
         }
 
+        private bool _rightsChanged;
+
+        public bool RightsChanged
+        {
+            get => _rightsChanged;
+            set
+            {
+                if (_rightsChanged == value)
+                    return;
+
+                _rightsChanged = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public IStaffView View { get; private set; }
 
         public int MasterUserId { get; private set; }
@@ -176,6 +192,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
                 View.SetPassword(_dummyPassword);
             }
             Notes = entity.Notes;
+            if (entity.Rights != null) View.LoadRights(entity.Rights.Decrypt());
             _loading = false;
         }
 
@@ -188,7 +205,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
                 MemberId = MemberAutoFillValue.GetEntity<Member>().Id,
                 PhoneNumber = Phone,
                 Email = Email,
-                Notes = Notes
+                Notes = Notes,
+                Rights = View.GetRights().Encrypt(),
             };
 
             if (result.MemberId == 0)
@@ -249,6 +267,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
             Notes = null;
             _oldPassword = string.Empty;
             View.SetPassword(string.Empty);
+            View.ResetRights();
             View.RefreshView();
         }
 

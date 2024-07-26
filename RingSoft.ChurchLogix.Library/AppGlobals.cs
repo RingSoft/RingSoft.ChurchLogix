@@ -65,7 +65,7 @@ namespace RingSoft.ChurchLogix.Library
             LookupContext.SqliteDataProcessor.FilePath = MasterDbContext.ProgramDataFolder;
             LookupContext.SqliteDataProcessor.FileName = MasterDbContext.DemoDataFileName;
 
-            //SystemGlobals.ItemRightsFactory = new DevLogixRightsFactory();
+            SystemGlobals.ItemRightsFactory = new ChurchLogixRightsFactory();
 
             if (!UnitTesting)
             {

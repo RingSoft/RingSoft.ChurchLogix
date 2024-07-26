@@ -25,18 +25,19 @@ namespace RingSoft.ChurchLogix.StaffManagement
         public override DbMaintenanceStatusBar DbStatusBar => StatusBar;
         public string GetRights()
         {
-            throw new NotImplementedException();
+            return RightsTree.GetRights();
         }
 
         public void LoadRights(string rightsString)
         {
-            throw new NotImplementedException();
+            RightsTree.LoadRights(rightsString);
         }
 
         public void ResetRights()
         {
-            throw new NotImplementedException();
+            RightsTree.Reset();
         }
+
 
         public void RefreshView()
         {

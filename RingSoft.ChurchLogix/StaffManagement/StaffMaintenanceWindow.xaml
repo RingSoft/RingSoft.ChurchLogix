@@ -78,6 +78,17 @@
 
                     </Grid>
                 </TabItem>
+
+                <TabItem Header="Rights" x:Name="RightsTab" VerticalAlignment="Stretch">
+
+                    <DockPanel>
+
+                        <lc:RightsTree x:Name="RightsTree" DataChanged="{Binding RightsChanged, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    </DockPanel>
+
+                </TabItem>
+
                 <dec:DataEntryMemoTabItem Header="Notes" VerticalAlignment="Stretch">
                     <DockPanel>
 
