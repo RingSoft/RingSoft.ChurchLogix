@@ -60,6 +60,22 @@
             </StackPanel.Background>
             <ac:DbMaintenanceButton x:Name="ExitButton"  Content="E_xit" Command="{Binding ExitCommand }" ImageSource="{StaticResource ExitImage}" />
         </StackPanel>
+        <StatusBar DockPanel.Dock="Bottom" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="Transparent">
+
+            <Label Content="Church"/>
+
+            <dec:StringReadOnlyBox Width="200" Text="{Binding Church, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Content="Database Platform"/>
+
+            <dec:StringReadOnlyBox Width="200" Text="{Binding DbPlatform, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Label Content="Staff Person"/>
+
+            <lc:AutoFillReadOnlyControl Width="200" Setup="{Binding StaffPersonAutoFillSetup}" Value="{Binding StaffPersonAutoFillValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        </StatusBar>
+
         <Grid>
 
         </Grid>

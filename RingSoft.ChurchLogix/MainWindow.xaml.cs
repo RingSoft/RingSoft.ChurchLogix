@@ -10,6 +10,7 @@ using RingSoft.DbLookup.ModelDefinition;
 using RingSoft.DbLookup.Controls.WPF.AdvancedFind;
 using System.Windows.Documents;
 using RingSoft.DataEntryControls.Engine;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace RingSoft.ChurchLogix
 {
@@ -50,7 +51,6 @@ namespace RingSoft.ChurchLogix
             {
                 result = (bool)loginResult;
                 ViewModel.SetChurchProps();
-                MakeMenu();
             }
 
             return result;
@@ -59,7 +59,19 @@ namespace RingSoft.ChurchLogix
 
         public bool LoginStaffPerson(int staffPersonId = 0)
         {
-            throw new NotImplementedException();
+            var staffPersonLoginWindow = new StaffPersonLoginWindow(staffPersonId) { Owner = this };
+            staffPersonLoginWindow.ShowDialog();
+            if (staffPersonLoginWindow.ViewModel.DialogResult)
+            {
+                if (staffPersonId > 0)
+                {
+                    return true;
+                }
+
+                MakeMenu();
+            }
+            return staffPersonLoginWindow.ViewModel.DialogResult;
+
         }
 
         public void CloseWindow()
@@ -91,6 +103,20 @@ namespace RingSoft.ChurchLogix
             {
                 Header = "_File"
             };
+
+            fileMenu.Items.Add(new MenuItem()
+            {
+                Header = $"_Change Church",
+                Command = ViewModel.ChangeChurchCommand
+            });
+
+            fileMenu.Items.Add(new MenuItem()
+            {
+                Header = $"_Logout",
+                Command = ViewModel.LogoutCommand
+            });
+
+
             fileMenu.Items.Add(new MenuItem()
             {
                 Header = $"E_xit",
@@ -107,6 +133,11 @@ namespace RingSoft.ChurchLogix
                 Header = "_Advanced Find",
                 Command = ViewModel.AdvFindCommand
             });
+        }
+
+        public void ClearMenu()
+        {
+            MainMenu.Items.Clear();
         }
 
         private void MakeStaffMenu()

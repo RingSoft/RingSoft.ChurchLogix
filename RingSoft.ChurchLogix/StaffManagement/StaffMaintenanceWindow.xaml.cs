@@ -52,12 +52,12 @@ namespace RingSoft.ChurchLogix.StaffManagement
 
         public string GetPassword()
         {
-            throw new NotImplementedException();
+            return PasswordBox.Password;
         }
 
         public void SetPassword(string password)
         {
-            throw new NotImplementedException();
+            PasswordBox.Password = password;
         }
     }
 }

@@ -8,6 +8,7 @@ using RingSoft.DbLookup;
 using RingSoft.DbLookup.EfCore;
 using System.Runtime.InteropServices;
 using RingSoft.App.Interop;
+using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
 using RingSoft.ChurchLogix.Sqlite;
 using RingSoft.ChurchLogix.SqlServer;
 using RingSoft.DataEntryControls.Engine;
@@ -35,6 +36,8 @@ namespace RingSoft.ChurchLogix.Library
         public static MainViewModel MainViewModel { get; set; }
 
         public static Church LoggedInChurch { get; set; }
+
+        public static StaffPerson LoggedInStaffPerson { get; set; }
 
         public static DbPlatforms DbPlatform { get; set; }
 

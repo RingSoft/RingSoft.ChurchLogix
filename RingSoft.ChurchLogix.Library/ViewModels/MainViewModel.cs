@@ -22,6 +22,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
 
         void MakeMenu();
 
+        void ClearMenu();
+
         bool UpgradeVersion();
 
         void ShowAbout();
@@ -98,6 +100,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
             }
         }
 
+        public RelayCommand LogoutCommand { get; }
+        public RelayCommand ChangeChurchCommand { get; }
         public RelayCommand ExitCommand { get; }
 
         public RelayCommand AdvFindCommand { get; }
@@ -108,6 +112,13 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
         {
             ExitCommand = new RelayCommand(Exit);
             AdvFindCommand = new RelayCommand(ShowAdvFind);
+            ChangeChurchCommand = new RelayCommand((() =>
+            {
+                AppGlobals.LoggedInChurch = null;
+                MainView.ClearMenu();
+                Initialize(MainView);
+            }));
+            LogoutCommand = new RelayCommand(Logout);
 
             ShowMaintenanceWindowCommand = new RelayCommand<TableDefinitionBase>(ShowMaintenanceWindow);
         }
@@ -130,14 +141,32 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
                 var query = AppGlobals.DataRepository.GetDataContext().GetTable<StaffPerson>();
                 if (!query.Any())
                 {
-                    //var message =
-                    //    "You must first create a master staff person.  Make sure you don't forget the password.";
-                    //var caption = "Create Staff Person";
-                    //ControlsGlobals.UserInterface.ShowMessageBox(message, caption, RsMessageBoxIcons.Information);
-                    //SystemGlobals.TableRegistry.ShowAddOntheFlyWindow(AppGlobals.LookupContext.Staff);
+                    var message =
+                        "You must first create a master staff person.  Make sure you don't forget the password.";
+                    var caption = "Create Staff Person";
+                    ControlsGlobals.UserInterface.ShowMessageBox(message, caption, RsMessageBoxIcons.Information);
+                    SystemGlobals.TableRegistry.ShowAddOntheFlyWindow(AppGlobals.LookupContext.Staff);
+
+                    if (!query.Any())
+                    {
+                        AppGlobals.LoggedInChurch = null;
+                        Initialize(view);
+                    }
                 }
-                //Temp Line
-                SystemGlobals.TableRegistry.ShowAddOntheFlyWindow(AppGlobals.LookupContext.Staff);
+
+                if (query.Any())
+                {
+                    loadVm = view.LoginStaffPerson();
+                    if (loadVm)
+                    {
+                        StaffPersonAutoFillValue = AppGlobals.LoggedInStaffPerson.GetAutoFillValue();
+                    }
+                    else
+                    {
+                        AppGlobals.LoggedInChurch = null;
+                        Initialize(view);
+                    }
+                }
             }
         }
 
@@ -167,6 +196,15 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
         private void ShowAdvFind()
         {
             MainView.ShowAdvancedFindWindow();
+        }
+
+        private void Logout()
+        {
+            if (MainView.LoginStaffPerson())
+            {
+                StaffPersonAutoFillValue = DbLookup.ExtensionMethods.GetAutoFillValue(AppGlobals.LoggedInStaffPerson);
+                MainView.MakeMenu();
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
