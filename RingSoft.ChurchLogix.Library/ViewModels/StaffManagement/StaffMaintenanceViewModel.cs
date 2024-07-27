@@ -283,14 +283,17 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
             var member = MemberAutoFillValue.GetEntity<Member>();
             member = table.FirstOrDefault(p => p.Id == member.Id);
 
-            if (Phone.IsNullOrEmpty())
+            if (member != null)
             {
-                Phone = member.PhoneNumber;
-            }
+                if (Phone.IsNullOrEmpty())
+                {
+                    Phone = member.PhoneNumber;
+                }
 
-            if (Email.IsNullOrEmpty())
-            {
-                Email = member.Email;
+                if (Email.IsNullOrEmpty())
+                {
+                    Email = member.Email;
+                }
             }
         }
 
