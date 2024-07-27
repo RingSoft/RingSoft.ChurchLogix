@@ -147,7 +147,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
                         "You must first create a master staff person.  Make sure you don't forget the password.";
                     var caption = "Create Staff Person";
                     ControlsGlobals.UserInterface.ShowMessageBox(message, caption, RsMessageBoxIcons.Information);
-                    SystemGlobals.TableRegistry.ShowAddOntheFlyWindow(AppGlobals.LookupContext.Staff);
+                    SystemGlobals.TableRegistry.ShowDialog(AppGlobals.LookupContext.Staff);
 
                     if (!query.Any())
                     {
