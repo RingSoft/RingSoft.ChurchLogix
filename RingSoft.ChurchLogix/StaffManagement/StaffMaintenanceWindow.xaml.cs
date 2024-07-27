@@ -6,6 +6,8 @@ using System.Windows.Controls;
 using RingSoft.ChurchLogix.Library.ViewModels.StaffManagement;
 using System.Windows.Documents;
 using RingSoft.DataEntryControls.Engine;
+using RingSoft.ChurchLogix.Library;
+using RingSoft.DbLookup;
 
 namespace RingSoft.ChurchLogix.StaffManagement
 {
@@ -42,8 +44,44 @@ namespace RingSoft.ChurchLogix.StaffManagement
         public void RefreshView()
         {
             MainWindow.ProcessSendEmailLink(SendEmailControl, LocalViewModel.Email);
-            //SetRightsVisibility();
+            SetRightsVisibility();
+        }
 
+        private void SetRightsVisibility()
+        {
+            GroupsTab.Visibility = !AppGlobals.LookupContext.Groups.HasRight(RightTypes.AllowView)
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+
+            if (LocalViewModel.TableDefinition.HasRight(RightTypes.AllowEdit))
+            {
+                RightsTab.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                RightsTab.Visibility = Visibility.Collapsed;
+            }
+            SetMasterUserMode(LocalViewModel.MasterMode);
+        }
+
+        private void ProcessRightsTabSelected()
+        {
+            if (TabControl.SelectedItem == RightsTab
+                || TabControl.SelectedItem == GroupsTab)
+            {
+                var detailsIndex = TabControl.Items.IndexOf(DetailsTab);
+                TabControl.SelectedIndex = detailsIndex;
+                TabControl.Focusable = true;
+            }
+        }
+        public void SetMasterUserMode(bool value = true)
+        {
+            if (value)
+            {
+                ProcessRightsTabSelected();
+                RightsTab.Visibility = Visibility.Collapsed;
+                GroupsTab.Visibility = Visibility.Collapsed;
+            }
         }
 
         public void SetExistRecordFocus(int rowId)

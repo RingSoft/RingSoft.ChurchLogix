@@ -115,8 +115,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
             var staffPerson = StaffPersonAutoFillValue.GetEntity<StaffPerson>();
             var context = SystemGlobals.DataRepository.GetDataContext();
             IQueryable<StaffPerson> staffTable = context.GetTable<StaffPerson>();
-            //staffTable = staffTable.Include(p => p.UserGroups).ThenInclude(p => p.Group)
-            //    .Include(p => p.Department);
+            staffTable = staffTable.Include(p => p.Groups).ThenInclude(p => p.Group);
 
             staffPerson = staffTable.FirstOrDefault(p => p.Id == staffPerson.Id);
             if (staffPerson != null)
@@ -145,15 +144,15 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
 
             AppGlobals.LoggedInStaffPerson = staffPerson;
             SystemGlobals.UserName = staffPerson.Name;
-            //SystemGlobals.Rights.UserRights.LoadRights(user.Rights.Decrypt());
+            SystemGlobals.Rights.UserRights.LoadRights(staffPerson.Rights.Decrypt());
 
-            //SystemGlobals.Rights.GroupRights.Clear();
-            //foreach (var userUserGroup in user.UserGroups)
-            //{
-            //    var rights = new DevLogixRights();
-            //    rights.LoadRights(userUserGroup.Group.Rights.Decrypt());
-            //    SystemGlobals.Rights.GroupRights.Add(rights);
-            //}
+            SystemGlobals.Rights.GroupRights.Clear();
+            foreach (var staffPersonGroup in staffPerson.Groups)
+            {
+                var rights = new ChurchLogixRights();
+                rights.LoadRights(staffPersonGroup.Group.Rights.Decrypt());
+                SystemGlobals.Rights.GroupRights.Add(rights);
+            }
 
             DialogResult = true;
             View.CloseWindow();

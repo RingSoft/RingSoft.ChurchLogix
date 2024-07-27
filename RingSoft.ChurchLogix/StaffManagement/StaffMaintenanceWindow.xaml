@@ -41,9 +41,9 @@
 
             <lc:AutoFillControl Grid.Row="0" Grid.Column="3" x:Name="NameControl" Width="200" HorizontalAlignment="Left"/>
 
-            <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5">
+            <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="TabControl">
 
-                <TabItem Header="Details">
+                <TabItem Header="Details" x:Name="DetailsTab">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>

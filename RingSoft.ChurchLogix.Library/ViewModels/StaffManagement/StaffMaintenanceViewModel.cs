@@ -197,7 +197,20 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
         protected override void PopulatePrimaryKeyControls(StaffPerson newEntity, PrimaryKeyValue primaryKeyValue)
         {
             Id = newEntity.Id;
+            SetMasterMode(newEntity);
             View.RefreshView();
+        }
+
+        private void SetMasterMode(StaffPerson newEntity)
+        {
+            if (MasterUserId == newEntity.Id || MasterUserId == 0)
+            {
+                MasterMode = true;
+            }
+            else
+            {
+                MasterMode = false;
+            }
         }
 
         protected override void LoadFromEntity(StaffPerson entity)
@@ -287,6 +300,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
             Notes = null;
             _oldPassword = string.Empty;
             View.SetPassword(string.Empty);
+            MasterMode = MasterUserId == 0;
             View.ResetRights();
             View.RefreshView();
         }
@@ -338,5 +352,20 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
             }
             return false;
         }
+
+        protected override DbMaintenanceResults DoDelete()
+        {
+            var caption = "Delete Not Allowed";
+
+            if (MasterMode)
+            {
+                var message = "You are not allowed to delete the master staff person.";
+                ControlsGlobals.UserInterface.ShowMessageBox(message, caption, RsMessageBoxIcons.Exclamation);
+                return DbMaintenanceResults.ValidationError;
+            }
+
+            return base.DoDelete();
+        }
+
     }
 }

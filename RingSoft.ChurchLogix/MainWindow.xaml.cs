@@ -178,16 +178,28 @@ namespace RingSoft.ChurchLogix
 
         private void MakeMemberMenu()
         {
-            var menuItem = new MenuItem() { Header = "_Member Management" };
-            MainMenu.Items.Add(menuItem);
+            var memberCategory =
+                SystemGlobals.Rights.UserRights.Categories.FirstOrDefault(p =>
+                    p.MenuCategoryId == (int)MenuCategories.MemberManagement);
 
-            menuItem.Items.Add(new MenuItem()
+            var items = memberCategory.Items.Where(p => p.TableDefinition.HasRight(RightTypes.AllowView));
+            if (items.Any())
             {
-                Header = "Add/Edit _Members...",
-                Command = ViewModel.ShowMaintenanceWindowCommand,
-                CommandParameter = AppGlobals.LookupContext.Members,
-            });
+                var menuItem = new MenuItem() { Header = "_Member Management" };
+                MainMenu.Items.Add(menuItem);
+
+                if (AppGlobals.LookupContext.Members.HasRight(RightTypes.AllowView))
+                {
+                    menuItem.Items.Add(new MenuItem()
+                    {
+                        Header = "Add/Edit _Members...",
+                        Command = ViewModel.ShowMaintenanceWindowCommand,
+                        CommandParameter = AppGlobals.LookupContext.Members,
+                    });
+                }
+            }
         }
+
         private void SetupToolbar()
         {
         }
