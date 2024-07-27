@@ -8,6 +8,7 @@
         xmlns:ac="clr-namespace:RingSoft.App.Controls;assembly=RingSoft.App.Controls"
         xmlns:vm="clr-namespace:RingSoft.ChurchLogix.Library.ViewModels.StaffManagement;assembly=RingSoft.ChurchLogix.Library"
         xmlns:local="clr-namespace:RingSoft.ChurchLogix.StaffManagement"
+        xmlns:dataEntryGrid="clr-namespace:RingSoft.DataEntryControls.WPF.DataEntryGrid;assembly=RingSoft.DataEntryControls.WPF"
         mc:Ignorable="d"
         Style="{StaticResource BaseWindowStyle}"
         Title="Staff Maintenance" Width="650" Height="500">
@@ -88,6 +89,25 @@
                     </DockPanel>
 
                 </TabItem>
+
+                <TabItem Header="Groups" x:Name="GroupsTab" VerticalAlignment="Stretch">
+
+                    <DockPanel>
+
+                        <dataEntryGrid:DataEntryGrid x:Name="GroupsGrid" Manager="{Binding GroupsManager}">
+
+                            <dataEntryGrid:DataEntryGrid.Columns>
+
+                                <dataEntryGrid:DataEntryGridTextColumn ColumnId="0" Header="Group" Width="200"/>
+
+                            </dataEntryGrid:DataEntryGrid.Columns>
+
+                        </dataEntryGrid:DataEntryGrid>
+
+                    </DockPanel>
+
+                </TabItem>
+
 
                 <dec:DataEntryMemoTabItem Header="Notes" VerticalAlignment="Stretch">
                     <DockPanel>

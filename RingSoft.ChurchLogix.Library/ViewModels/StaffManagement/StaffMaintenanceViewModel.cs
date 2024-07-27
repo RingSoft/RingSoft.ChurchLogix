@@ -146,6 +146,23 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
             }
         }
 
+        private StaffGroupsManager _groupsManager;
+
+        public StaffGroupsManager GroupsManager
+        {
+            get { return _groupsManager; }
+            set
+            {
+                if (_groupsManager == value)
+                {
+                    return;
+                }
+                _groupsManager = value;
+                OnPropertyChanged(null, false);
+            }
+        }
+
+
 
         public IStaffView View { get; private set; }
 
@@ -161,6 +178,9 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
         {
             MemberAutoFillSetup = new AutoFillSetup(
                 TableDefinition.GetFieldDefinition(p => p.MemberId));
+
+            GroupsManager = new StaffGroupsManager(this);
+            RegisterGrid(GroupsManager);
 
             SetMasterUserId();
         }

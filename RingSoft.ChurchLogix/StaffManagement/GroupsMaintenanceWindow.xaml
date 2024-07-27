@@ -1,4 +1,4 @@
-﻿<lc:DbMaintenanceWindow  x:Class="RingSoft.ChurchLogix.StaffManagement.GroupsMaintenanceWindow"
+﻿<ac:DbMaintenanceWindow  x:Class="RingSoft.ChurchLogix.StaffManagement.GroupsMaintenanceWindow"
                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -75,4 +75,4 @@
         </Grid>
     </DockPanel>
 
-</lc:DbMaintenanceWindow>
+</ac:DbMaintenanceWindow>

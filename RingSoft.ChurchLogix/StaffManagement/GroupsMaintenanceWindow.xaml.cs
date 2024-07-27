@@ -15,6 +15,8 @@ namespace RingSoft.ChurchLogix.StaffManagement
         public override DbMaintenanceViewModelBase ViewModel => GroupMaintenanceViewModel;
         public override Control MaintenanceButtonsControl => TopHeaderControl;
         public override DbMaintenanceStatusBar DbStatusBar => StatusBar;
+        public override DbMaintenanceTopHeaderControl DbMaintenanceTopHeaderControl => TopHeaderControl;
+        public override string ItemText => "Group";
 
 
         public GroupsMaintenanceWindow()
