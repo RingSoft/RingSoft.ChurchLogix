@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using RingSoft.App.Controls;
 using RingSoft.ChurchLogix.Library.ViewModels.MemberManagement;
 using RingSoft.DbLookup.Controls.WPF;
 using RingSoft.DbMaintenance;
@@ -22,7 +23,8 @@ namespace RingSoft.ChurchLogix.MemberManagement
     /// </summary>
     public partial class MemberMaintenanceWindow : IMemberView
     {
-
+        public override DbMaintenanceTopHeaderControl DbMaintenanceTopHeaderControl => TopHeaderControl;
+        public override string ItemText => "Member";
         public override DbMaintenanceViewModelBase ViewModel => LocalViewModel;
         public override Control MaintenanceButtonsControl => TopHeaderControl;
         public override DbMaintenanceStatusBar DbStatusBar => StatusBar;

@@ -30,5 +30,11 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.StaffManagement
 
         public string? Notes { get; set; }
 
+        public ICollection<StaffGroup> Groups { get; set; }
+
+        public StaffPerson()
+        {
+            Groups = new HashSet<StaffGroup>();
+        }
     }
 }

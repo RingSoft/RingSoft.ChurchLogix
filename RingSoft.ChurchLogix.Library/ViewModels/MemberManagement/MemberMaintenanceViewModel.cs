@@ -11,6 +11,11 @@ using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 {
+    public enum MemberSpecialRights
+    {
+        AllowViewGiving = 1,
+    }
+
     public interface IMemberView : IDbMaintenanceView
     {
         public void RefreshView();

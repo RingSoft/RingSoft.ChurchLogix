@@ -14,6 +14,8 @@ namespace RingSoft.ChurchLogix.DataAccess
         {
             modelBuilder.ApplyConfiguration(new StaffPersonConfiguration());
             modelBuilder.ApplyConfiguration(new MemberConfiguration());
+            modelBuilder.ApplyConfiguration(new GroupConfiguration());
+            modelBuilder.ApplyConfiguration(new StaffGroupConfiguration());
         }
 
         public static void SetupSysPrefs()

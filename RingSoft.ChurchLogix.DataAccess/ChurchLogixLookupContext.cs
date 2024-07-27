@@ -21,9 +21,13 @@ namespace RingSoft.ChurchLogix.DataAccess
         public TableDefinition<SystemPreferences> SystemPreferences { get; set; }
         public TableDefinition<StaffPerson> Staff { get; set; }
         public TableDefinition<Member> Members { get; set; }
+        public TableDefinition<Group> Groups { get; set; }
+        public TableDefinition<StaffGroup> StaffGroups { get; set; }
 
         public LookupDefinition<StaffLookup, StaffPerson> StaffLookup { get; set; }
         public LookupDefinition<MemberLookup, Member> MemberLookup { get; set; }
+        public LookupDefinition<GroupsLookup, Group> GroupsLookup { get; set; }
+        public LookupDefinition<StaffGroupsLookup, StaffGroup> StaffGroupsLookup { get; set;}
 
         private DbContext _dbContext;
         private DbDataProcessor _dbDataProcessor;
@@ -85,11 +89,37 @@ namespace RingSoft.ChurchLogix.DataAccess
                 , p => p.Name, 99);
 
             Members.HasLookupDefinition(MemberLookup);
+
+            GroupsLookup = new LookupDefinition<GroupsLookup, Group>(Groups);
+
+            GroupsLookup.AddVisibleColumnDefinition(
+                p => p.Name
+                , "Group"
+                , p => p.Name, 99);
+
+            Groups.HasLookupDefinition(GroupsLookup);
+
+            StaffGroupsLookup = new LookupDefinition<StaffGroupsLookup, StaffGroup>(StaffGroups);
+
+            StaffGroupsLookup.Include(p => p.StaffPerson)
+                .AddVisibleColumnDefinition(p => p.StaffPerson
+                    , "Staff Person"
+                    , p => p.Name, 50);
+
+            StaffGroupsLookup.Include(p => p.Group)
+                .AddVisibleColumnDefinition(p => p.Group
+                    , "Group"
+                    , p => p.Name, 50);
+
+            StaffGroups.HasLookupDefinition(StaffGroupsLookup);
         }
 
         protected override void SetupModel()
         {
-            Staff.PriorityLevel = 100;
+            Members.PriorityLevel = 100;
+            Groups.PriorityLevel = 100;
+            Staff.PriorityLevel = 200;
+            StaffGroups.PriorityLevel = 300;
         }
     }
 }

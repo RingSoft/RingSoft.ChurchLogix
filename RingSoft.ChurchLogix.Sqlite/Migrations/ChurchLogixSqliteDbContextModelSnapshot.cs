@@ -49,6 +49,40 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.ToTable("Members");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.StaffManagement.Group", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<string>("Rights")
+                        .HasColumnType("ntext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.StaffManagement.StaffGroup", b =>
+                {
+                    b.Property<int>("StaffPersonId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("StaffPersonId", "GroupId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("StaffGroups");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.StaffManagement.StaffPerson", b =>
                 {
                     b.Property<int>("Id")
@@ -303,6 +337,25 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.Navigation("Household");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.StaffManagement.StaffGroup", b =>
+                {
+                    b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.StaffManagement.Group", "Group")
+                        .WithMany("StaffGroups")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.StaffManagement.StaffPerson", "StaffPerson")
+                        .WithMany("Groups")
+                        .HasForeignKey("StaffPersonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+
+                    b.Navigation("StaffPerson");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.StaffManagement.StaffPerson", b =>
                 {
                     b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", "Member")
@@ -347,6 +400,16 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.Navigation("HouseholdMembers");
 
                     b.Navigation("Staff");
+                });
+
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.StaffManagement.Group", b =>
+                {
+                    b.Navigation("StaffGroups");
+                });
+
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.StaffManagement.StaffPerson", b =>
+                {
+                    b.Navigation("Groups");
                 });
 
             modelBuilder.Entity("RingSoft.DbLookup.AdvancedFind.AdvancedFind", b =>

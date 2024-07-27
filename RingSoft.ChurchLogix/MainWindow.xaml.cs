@@ -11,6 +11,7 @@ using RingSoft.DbLookup.Controls.WPF.AdvancedFind;
 using System.Windows.Documents;
 using RingSoft.DataEntryControls.Engine;
 using Microsoft.VisualBasic.ApplicationServices;
+using RingSoft.DataEntryControls.WPF;
 
 namespace RingSoft.ChurchLogix
 {
@@ -142,15 +143,37 @@ namespace RingSoft.ChurchLogix
 
         private void MakeStaffMenu()
         {
-            var menuItem = new MenuItem() { Header = "_Staff Management" };
-            MainMenu.Items.Add(menuItem);
+            var staffCategory =
+                SystemGlobals.Rights.UserRights.Categories.FirstOrDefault(p =>
+                    p.MenuCategoryId == (int)MenuCategories.StaffManagement);
 
-            menuItem.Items.Add(new MenuItem()
+            var items = staffCategory.Items.Where(p => p.TableDefinition.HasRight(RightTypes.AllowView));
+            if (items.Any())
             {
-                Header = "Add/Edit _Staff...",
-                Command = ViewModel.ShowMaintenanceWindowCommand,
-                CommandParameter = AppGlobals.LookupContext.Staff,
-            });
+                var menuItem = new MenuItem() { Header = "_Staff Management" };
+                MainMenu.Items.Add(menuItem);
+
+                if (AppGlobals.LookupContext.Staff.HasRight(RightTypes.AllowView))
+                {
+                    menuItem.Items.Add(new MenuItem()
+                    {
+                        Header = "Add/Edit _Staff...",
+                        Command = ViewModel.ShowMaintenanceWindowCommand,
+                        CommandParameter = AppGlobals.LookupContext.Staff,
+                    });
+                }
+
+                if (AppGlobals.LookupContext.Groups.HasRight(RightTypes.AllowView))
+                {
+                    menuItem.Items.Add(new MenuItem()
+                    {
+                        Header = "Add/Edit Security _Groups...",
+                        Command = ViewModel.ShowMaintenanceWindowCommand,
+                        CommandParameter = AppGlobals.LookupContext.Groups,
+                    });
+                }
+
+            }
         }
 
         private void MakeMemberMenu()
@@ -177,6 +200,11 @@ namespace RingSoft.ChurchLogix
         public void ShowAbout()
         {
             throw new NotImplementedException();
+        }
+
+        public void ShowMaintenanceWindow(TableDefinitionBase tableDefinition)
+        {
+            LookupControlsGlobals.WindowRegistry.ShowDbMaintenanceWindow(tableDefinition, WPFControlsGlobals.ActiveWindow);
         }
 
         internal static void ProcessSendEmailLink(TextBlock sendEmailLink, string? emailAddress)

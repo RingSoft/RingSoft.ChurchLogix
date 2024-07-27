@@ -42,6 +42,8 @@ namespace RingSoft.ChurchLogix
 
             LookupControlsGlobals.WindowRegistry.RegisterWindow<StaffMaintenanceWindow, StaffPerson>();
             LookupControlsGlobals.WindowRegistry.RegisterWindow<MemberMaintenanceWindow, Member>();
+            LookupControlsGlobals.WindowRegistry.RegisterWindow<GroupsMaintenanceWindow, Group>();
+            LookupControlsGlobals.WindowRegistry.RegisterWindow<StaffMaintenanceWindow, StaffGroup>();
 
             return base.DoProcess();
         }

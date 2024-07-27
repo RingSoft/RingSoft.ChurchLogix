@@ -189,7 +189,7 @@ namespace RingSoft.ChurchLogix.Library
                     throw new ArgumentOutOfRangeException();
             }
 
-            //SystemGlobals.Rights = new AppRights(new DevLogixRights());
+            SystemGlobals.Rights = new AppRights(new ChurchLogixRights());
 
             AppSplashProgress?.Invoke(null, new AppProgressArgs($"Connecting to the {church.Name} Database."));
             DataAccessGlobals.SetupSysPrefs();

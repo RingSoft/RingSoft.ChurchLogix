@@ -9,4 +9,16 @@
     {
         public string Name { get; set; }
     }
+
+    public class GroupsLookup
+    {
+        public string Name { get; set; }
+    }
+
+    public class StaffGroupsLookup
+    {
+        public string StaffPerson { get; set; }
+
+        public string Group { get; set; }
+    }
 }

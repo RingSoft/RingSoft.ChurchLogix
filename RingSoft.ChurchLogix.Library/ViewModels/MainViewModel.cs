@@ -27,6 +27,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
         bool UpgradeVersion();
 
         void ShowAbout();
+
+        void ShowMaintenanceWindow(TableDefinitionBase tableDefinition);
     }
 
     public class MainViewModel : INotifyPropertyChanged
@@ -172,7 +174,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
 
         private void ShowMaintenanceWindow(TableDefinitionBase tableDefinition)
         {
-            SystemGlobals.TableRegistry.ShowWindow(tableDefinition);
+            MainView.ShowMaintenanceWindow(tableDefinition);
         }
 
 
