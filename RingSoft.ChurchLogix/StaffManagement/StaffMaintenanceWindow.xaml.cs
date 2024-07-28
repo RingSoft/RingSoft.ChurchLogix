@@ -5,6 +5,7 @@ using RingSoft.DbMaintenance;
 using System.Windows.Controls;
 using RingSoft.ChurchLogix.Library.ViewModels.StaffManagement;
 using System.Windows.Documents;
+using RingSoft.App.Controls;
 using RingSoft.DataEntryControls.Engine;
 using RingSoft.ChurchLogix.Library;
 using RingSoft.DbLookup;
@@ -25,6 +26,9 @@ namespace RingSoft.ChurchLogix.StaffManagement
         public override DbMaintenanceViewModelBase ViewModel => LocalViewModel;
         public override Control MaintenanceButtonsControl => TopHeaderControl;
         public override DbMaintenanceStatusBar DbStatusBar => StatusBar;
+        public override DbMaintenanceTopHeaderControl DbMaintenanceTopHeaderControl => TopHeaderControl;
+        public override string ItemText => "Staff Person";
+
         public string GetRights()
         {
             return RightsTree.GetRights();

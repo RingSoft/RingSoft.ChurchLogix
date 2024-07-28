@@ -1,8 +1,6 @@
 ﻿using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
-using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
-using RingSoft.ChurchLogix.Library.ViewModels.StaffManagement;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
 using RingSoft.DbLookup.Lookup;
