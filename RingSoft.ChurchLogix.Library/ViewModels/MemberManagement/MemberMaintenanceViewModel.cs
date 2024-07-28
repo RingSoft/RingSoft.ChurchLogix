@@ -1,6 +1,7 @@
 ﻿using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
+using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
 using RingSoft.DbLookup.Lookup;
@@ -9,6 +10,10 @@ using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 {
+    public class HouseholdToken
+    {
+
+    }
     public enum MemberSpecialRights
     {
         AllowViewGiving = 1,
@@ -104,6 +109,20 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             }
         }
 
+        private LookupDefinition<MemberLookup, Member> _householdMembersLookupDefinition;
+
+        public LookupDefinition<MemberLookup, Member> HouseholdMembersLookupDefinition
+        {
+            get => _householdMembersLookupDefinition;
+            set
+            {
+                if (_householdMembersLookupDefinition == value)
+                    return;
+
+                _householdMembersLookupDefinition = value;
+                OnPropertyChanged();
+            }
+        }
 
         private string? _notes;
 
@@ -123,6 +142,10 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 
         public IMemberView View { get; private set; }
 
+        public RelayCommand AddModifyHouseholdLookupCommand { get; }
+
+        public AutoFillValue DefaultHouseHoldAutoFillValue { get; private set; }
+
         private LookupDefinition<MemberLookup, Member> _householdLookupDefinition;
 
         public MemberMaintenanceViewModel()
@@ -130,6 +153,10 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             _householdLookupDefinition = AppGlobals.LookupContext.MemberLookup.Clone();
                 
             HouseholdAutoFillSetup = new AutoFillSetup(_householdLookupDefinition);
+
+            HouseholdMembersLookupDefinition = AppGlobals.LookupContext.MemberLookup.Clone();
+
+            AddModifyHouseholdLookupCommand = new RelayCommand(AddModifyHousehold);
         }
 
         protected override void Initialize()
@@ -137,6 +164,23 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             View = base.View as IMemberView;
             if (View == null)
                 throw new Exception($"Member View interface must be of type '{nameof(IMemberView)}'.");
+
+            if (LookupAddViewArgs != null && LookupAddViewArgs.ParentWindowPrimaryKeyValue != null &&  LookupAddViewArgs.ParentWindowPrimaryKeyValue.TableDefinition ==
+                AppGlobals.LookupContext.Members)
+            {
+                var member =
+                    AppGlobals.LookupContext.Members.GetEntityFromPrimaryKeyValue(LookupAddViewArgs
+                        .ParentWindowPrimaryKeyValue);
+
+                var context = AppGlobals.DataRepository.GetDataContext();
+                var table = context.GetTable<Member>();
+                member = table.FirstOrDefault(p => p.Id == member.Id);
+                if (LookupAddViewArgs.InputParameter is HouseholdToken)
+                {
+                    DefaultHouseHoldAutoFillValue = member.GetAutoFillValue();
+                }
+            }
+
 
             base.Initialize();
         }
@@ -149,6 +193,13 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             _householdLookupDefinition.FilterDefinition.AddFixedFilter(
                 p => p.Id
                 , Conditions.NotEquals, Id);
+
+            HouseholdMembersLookupDefinition.FilterDefinition.ClearFixedFilters();
+            HouseholdMembersLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.HouseholdId
+                , Conditions.Equals, Id);
+            var command = GetLookupCommand(LookupCommands.Refresh, primaryKeyValue);
+            HouseholdMembersLookupDefinition.SetCommand(command);
         }
 
         protected override void LoadFromEntity(Member entity)
@@ -182,12 +233,19 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
         protected override void ClearData()
         {
             Id = 0;
-            HouseholdAutoFillValue = null;
+            HouseholdAutoFillValue = DefaultHouseHoldAutoFillValue;
             Phone = null;
             Email = null;
             Notes = null;
             View.RefreshView();
+            HouseholdMembersLookupDefinition.SetCommand(GetLookupCommand(LookupCommands.Clear));
+        }
 
+        private void AddModifyHousehold()
+        {
+            if (ExecuteAddModifyCommand() == DbMaintenanceResults.Success)
+                HouseholdMembersLookupDefinition.SetCommand(GetLookupCommand(LookupCommands.AddModify
+                , null, new HouseholdToken()));
         }
     }
 }
