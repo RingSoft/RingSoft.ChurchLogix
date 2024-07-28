@@ -63,11 +63,29 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
             }
         }
 
+        private GroupsStaffManager _staffManager;
+
+        public GroupsStaffManager StaffManager
+        {
+            get { return _staffManager; }
+            set
+            {
+                if (_staffManager == value)
+                {
+                    return;
+                }
+                _staffManager = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public new IGroupView View { get; private set; }
 
         public GroupMaintenanceViewModel()
         {
-            //UsersManager = new GroupsUsersManager(this);
+            StaffManager = new GroupsStaffManager(this);
+            RegisterGrid(StaffManager);
         }
         protected override void Initialize()
         {
@@ -86,7 +104,6 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
         protected override void LoadFromEntity(Group entity)
         {
             View.LoadRights(entity.Rights.Decrypt());
-            //UsersManager.LoadGrid(entity.UserGroups);
         }
 
         protected override Group GetEntityData()
@@ -105,61 +122,6 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
         {
             Id = 0;
             View.ResetRights();
-            //UsersManager.SetupForNewRecord();
         }
-
-        protected override bool ValidateEntity(Group entity)
-        {
-            //if (!UsersManager.ValidateGrid())
-            //{
-            //    return false;
-            //}
-            return base.ValidateEntity(entity);
-        }
-
-        protected override bool SaveEntity(Group entity)
-        {
-            var context = AppGlobals.DataRepository.GetDataContext();
-            if (context.SaveEntity(entity, $"Saving Group '{entity.Name}.'"))
-            {
-                var sgQuery = AppGlobals.DataRepository.GetDataContext().GetTable<StaffGroup>();
-                var staffGroups = sgQuery.Where(p => p.GroupId == Id).ToList();
-                context.RemoveRange(staffGroups);
-                //staffGroups = UsersManager.GetList();
-                if (staffGroups != null)
-                {
-                    foreach (var userGroup in staffGroups)
-                    {
-                        userGroup.GroupId = entity.Id;
-                    }
-
-                    context.AddRange(staffGroups);
-                }
-
-                return context.Commit("Saving UsersGroups");
-            }
-
-            return false;
-
-        }
-
-        protected override bool DeleteEntity()
-        {
-            var context = AppGlobals.DataRepository.GetDataContext();
-            var query = context.GetTable<Group>();
-            var group = query.FirstOrDefault(f => f.Id == Id);
-            if (group != null)
-            {
-                var sgQuery = context.GetTable<StaffGroup>();
-                var staffGroups = sgQuery.Where(p => p.GroupId == Id).ToList();
-                context.RemoveRange(staffGroups);
-                if (context.DeleteNoCommitEntity(group, $"Deleting Group '{group.Name}'"))
-                {
-                    return context.Commit($"Deleting Group '{group.Name}'");
-                }
-            }
-            return false;
-        }
-
     }
 }

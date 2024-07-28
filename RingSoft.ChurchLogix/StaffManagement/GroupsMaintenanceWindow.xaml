@@ -53,15 +53,15 @@
 
                 </TabItem>
 
-                <!--<TabItem x:Name="UsersTab" Header="Users">
+                <TabItem Header="Staff" x:Name="StaffTab" VerticalAlignment="Stretch">
 
                     <DockPanel>
 
-                        <deg:DataEntryGrid Manager="{Binding UsersManager}">
+                        <deg:DataEntryGrid x:Name="StaffGrid" Manager="{Binding StaffManager}">
 
                             <deg:DataEntryGrid.Columns>
 
-                                <deg:DataEntryGridTextColumn ColumnId="0" Header="User" Width="200"/>
+                                <deg:DataEntryGridTextColumn ColumnId="0" Header="Staff" Width="200"/>
 
                             </deg:DataEntryGrid.Columns>
 
@@ -69,7 +69,7 @@
 
                     </DockPanel>
 
-                </TabItem>-->
+                </TabItem>
 
             </TabControl>
         </Grid>
