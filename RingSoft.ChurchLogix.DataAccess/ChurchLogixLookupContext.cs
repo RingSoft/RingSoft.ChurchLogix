@@ -3,6 +3,8 @@ using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess.Model;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
+using RingSoft.DbLookup;
+using RingSoft.DbLookup.AutoFill;
 using RingSoft.DbLookup.DataProcessor;
 using RingSoft.DbLookup.EfCore;
 using RingSoft.DbLookup.Lookup;
@@ -77,7 +79,17 @@ namespace RingSoft.ChurchLogix.DataAccess
             StaffLookup.AddVisibleColumnDefinition(
                 p => p.Name
                 , "Staff Person"
-                , p => p.Name, 99);
+                , p => p.Name, 34);
+
+            StaffLookup.AddVisibleColumnDefinition(
+                p => p.Phone
+                , "Phone Number"
+                , p => p.PhoneNumber, 33);
+
+            StaffLookup.AddVisibleColumnDefinition(
+                p => p.Email
+                , "Email Address"
+                , p => p.Email, 33);
 
             Staff.HasLookupDefinition(StaffLookup);
 
@@ -120,6 +132,23 @@ namespace RingSoft.ChurchLogix.DataAccess
             Groups.PriorityLevel = 100;
             Staff.PriorityLevel = 200;
             StaffGroups.PriorityLevel = 300;
+        }
+
+        public override UserAutoFill GetUserAutoFill(string userName)
+        {
+            var context = SystemGlobals.DataRepository.GetDataContext();
+            var table = context.GetTable<StaffPerson>();
+            var staffPerson = table.FirstOrDefault(p => p.Name == userName);
+            if (staffPerson != null)
+            {
+                var userAutoFill = new UserAutoFill
+                {
+                    AutoFillSetup = new AutoFillSetup(StaffLookup.Clone()),
+                    AutoFillValue = staffPerson.GetAutoFillValue()
+                };
+                return userAutoFill;
+            }
+            return base.GetUserAutoFill(userName);
         }
     }
 }
