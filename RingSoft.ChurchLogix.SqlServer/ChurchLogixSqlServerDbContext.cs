@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RingSoft.ChurchLogix.DataAccess;
 using RingSoft.ChurchLogix.DataAccess.Model;
+using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
 using RingSoft.DbLookup.DataProcessor;
@@ -17,6 +18,7 @@ namespace RingSoft.ChurchLogix.SqlServer
         public DbSet<Member> Members { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<StaffGroup> StaffGroups { get; set; }
+        public DbSet<Fund> Funds { get; set; }
 
         public bool IsDesignTime { get; set; }
 

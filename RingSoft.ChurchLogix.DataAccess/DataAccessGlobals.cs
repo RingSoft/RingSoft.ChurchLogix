@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RingSoft.ChurchLogix.DataAccess.Configurations.FinancialManagement;
 using RingSoft.ChurchLogix.DataAccess.Configurations.MemberManagement;
 using RingSoft.ChurchLogix.DataAccess.Configurations.StaffManagement;
 using RingSoft.ChurchLogix.DataAccess.Model;
@@ -16,6 +17,7 @@ namespace RingSoft.ChurchLogix.DataAccess
             modelBuilder.ApplyConfiguration(new MemberConfiguration());
             modelBuilder.ApplyConfiguration(new GroupConfiguration());
             modelBuilder.ApplyConfiguration(new StaffGroupConfiguration());
+            modelBuilder.ApplyConfiguration(new FundConfiguration());
         }
 
         public static void SetupSysPrefs()

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess.Model;
+using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
 using RingSoft.DbLookup;
@@ -9,6 +10,7 @@ using RingSoft.DbLookup.DataProcessor;
 using RingSoft.DbLookup.EfCore;
 using RingSoft.DbLookup.Lookup;
 using RingSoft.DbLookup.ModelDefinition;
+using RingSoft.DbLookup.ModelDefinition.FieldDefinitions;
 
 namespace RingSoft.ChurchLogix.DataAccess
 {
@@ -26,10 +28,14 @@ namespace RingSoft.ChurchLogix.DataAccess
         public TableDefinition<Group> Groups { get; set; }
         public TableDefinition<StaffGroup> StaffGroups { get; set; }
 
+        public TableDefinition<Fund> Funds { get; set; }
+
         public LookupDefinition<StaffLookup, StaffPerson> StaffLookup { get; set; }
         public LookupDefinition<MemberLookup, Member> MemberLookup { get; set; }
         public LookupDefinition<GroupsLookup, Group> GroupsLookup { get; set; }
         public LookupDefinition<StaffGroupsLookup, StaffGroup> StaffGroupsLookup { get; set;}
+
+        public LookupDefinition<FundLookup, Fund> FundsLookup { get; set; }
 
         private DbContext _dbContext;
         private DbDataProcessor _dbDataProcessor;
@@ -124,6 +130,31 @@ namespace RingSoft.ChurchLogix.DataAccess
                     , p => p.Name, 50);
 
             StaffGroups.HasLookupDefinition(StaffGroupsLookup);
+
+            FundsLookup = new LookupDefinition<FundLookup, Fund>(Funds);
+
+            FundsLookup.AddVisibleColumnDefinition(
+                p => p.Description
+                , "Fund"
+                , p => p.Description, 40);
+
+            FundsLookup.AddVisibleColumnDefinition(
+                p => p.TotalCollected
+                , "Total Collected"
+                , p => p.TotalCollected, 20);
+
+            FundsLookup.AddVisibleColumnDefinition(
+                p => p.TotalSpent
+                , "Total Spent"
+                , p => p.TotalSpent, 20);
+
+            FundsLookup.AddVisibleColumnDefinition(
+                    p => p.Difference, "Difference", new FundsDifferenceFormula(), 15, "")
+                .HasDecimalFieldType(DecimalFieldTypes.Currency)
+                .DoShowNegativeValuesInRed()
+                .DoShowPositiveValuesInGreen();
+
+            Funds.HasLookupDefinition(FundsLookup);
         }
 
         protected override void SetupModel()
