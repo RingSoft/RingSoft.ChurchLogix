@@ -28,13 +28,13 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar");
 
-                    b.Property<double?>("Goal")
+                    b.Property<double>("Goal")
                         .HasColumnType("numeric");
 
-                    b.Property<double?>("TotalCollected")
+                    b.Property<double>("TotalCollected")
                         .HasColumnType("numeric");
 
-                    b.Property<double?>("TotalSpent")
+                    b.Property<double>("TotalSpent")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");

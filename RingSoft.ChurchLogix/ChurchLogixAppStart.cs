@@ -1,8 +1,10 @@
 ﻿using System.Windows;
 using RingSoft.App.Controls;
 using RingSoft.App.Library;
+using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
+using RingSoft.ChurchLogix.FinancialManagement;
 using RingSoft.ChurchLogix.Library;
 using RingSoft.ChurchLogix.MemberManagement;
 using RingSoft.ChurchLogix.StaffManagement;
@@ -41,9 +43,12 @@ namespace RingSoft.ChurchLogix
             AppGlobals.AppSplashProgress -= AppGlobals_AppSplashProgress;
 
             LookupControlsGlobals.WindowRegistry.RegisterWindow<StaffMaintenanceWindow, StaffPerson>();
-            LookupControlsGlobals.WindowRegistry.RegisterWindow<MemberMaintenanceWindow, Member>();
             LookupControlsGlobals.WindowRegistry.RegisterWindow<GroupsMaintenanceWindow, Group>();
             LookupControlsGlobals.WindowRegistry.RegisterWindow<StaffMaintenanceWindow, StaffGroup>();
+
+            LookupControlsGlobals.WindowRegistry.RegisterWindow<MemberMaintenanceWindow, Member>();
+
+            LookupControlsGlobals.WindowRegistry.RegisterWindow<FundMaintenanceWindow, Fund>();
 
             return base.DoProcess();
         }

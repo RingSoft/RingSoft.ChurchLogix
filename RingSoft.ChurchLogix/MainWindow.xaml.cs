@@ -128,6 +128,7 @@ namespace RingSoft.ChurchLogix
 
             MakeStaffMenu();
             MakeMemberMenu();
+            MakeFinancesMenu();
 
             MainMenu.Items.Add(new MenuItem()
             {
@@ -195,6 +196,30 @@ namespace RingSoft.ChurchLogix
                         Header = "Add/Edit _Members...",
                         Command = ViewModel.ShowMaintenanceWindowCommand,
                         CommandParameter = AppGlobals.LookupContext.Members,
+                    });
+                }
+            }
+        }
+
+        private void MakeFinancesMenu()
+        {
+            var financialCategory =
+                SystemGlobals.Rights.UserRights.Categories.FirstOrDefault(p =>
+                    p.MenuCategoryId == (int)MenuCategories.FinancialManagement);
+
+            var items = financialCategory.Items.Where(p => p.TableDefinition.HasRight(RightTypes.AllowView));
+            if (items.Any())
+            {
+                var menuItem = new MenuItem() { Header = "F_inancial Management" };
+                MainMenu.Items.Add(menuItem);
+
+                if (AppGlobals.LookupContext.Funds.HasRight(RightTypes.AllowView))
+                {
+                    menuItem.Items.Add(new MenuItem()
+                    {
+                        Header = "Add/Edit _Funds...",
+                        Command = ViewModel.ShowMaintenanceWindowCommand,
+                        CommandParameter = AppGlobals.LookupContext.Funds,
                     });
                 }
             }

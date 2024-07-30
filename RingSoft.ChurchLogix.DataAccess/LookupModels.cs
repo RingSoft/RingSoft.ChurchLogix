@@ -48,19 +48,7 @@ namespace RingSoft.ChurchLogix.DataAccess
         {
             if (entity is Fund fund)
             {
-                var collected = 0.0;
-                var spent = 0.0;
-                if (fund.TotalCollected != null)
-                {
-                    collected = fund.TotalCollected.Value;
-                }
-
-                if (fund.TotalSpent != null)
-                {
-                    spent = fund.TotalSpent.Value;
-                }
-
-                return (collected - spent).ToString();
+                return (fund.TotalCollected - fund.TotalSpent).ToString();
             }
 
             return string.Empty;

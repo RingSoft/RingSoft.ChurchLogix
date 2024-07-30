@@ -8,6 +8,7 @@ namespace RingSoft.ChurchLogix.Library
         StaffManagement = 0,
         Tools = 1,
         MemberManagement = 2,
+        FinancialManagement = 3,
     }
 
     public class ChurchLogixRights : ItemRights
@@ -23,14 +24,19 @@ namespace RingSoft.ChurchLogix.Library
             Categories.Add(category);
 
             category = new RightCategory("Member Management", (int)MenuCategories.MemberManagement);
-            var memberItem = new RightCategoryItem(item: "Add/Edit Members", AppGlobals.LookupContext.Members);
+            var rightItem = new RightCategoryItem(item: "Add/Edit Members", AppGlobals.LookupContext.Members);
             AddSpecialRight((int)MemberSpecialRights.AllowViewGiving, "Allow View Member Giving"
                 , AppGlobals.LookupContext.Members);
 
-            category.Items.Add(memberItem);
+            category.Items.Add(rightItem);
 
             Categories.Add(category);
 
+            category = new RightCategory("Financial Management", (int)MenuCategories.FinancialManagement);
+            rightItem = new RightCategoryItem(item: "Add/Edit Funds", AppGlobals.LookupContext.Funds);
+            category.Items.Add(rightItem);
+
+            Categories.Add(category);
         }
     }
 

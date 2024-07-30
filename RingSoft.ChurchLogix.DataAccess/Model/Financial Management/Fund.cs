@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace RingSoft.ChurchLogix.DataAccess.Model.Financial_Management
 {
@@ -12,10 +13,13 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.Financial_Management
         [StringLength(50)]
         public string Description { get; set; }
 
-        public double? Goal { get; set; }
+        [DefaultValue(0)]
+        public double Goal { get; set; }
 
-        public double? TotalCollected { get; set; }
+        [DefaultValue(0)]
+        public double TotalCollected { get; set; }
 
-        public double? TotalSpent { get; set; }
+        [DefaultValue(0)]
+        public double TotalSpent { get; set; }
     }
 }
