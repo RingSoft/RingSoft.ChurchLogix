@@ -161,8 +161,15 @@ namespace RingSoft.ChurchLogix.DataAccess
         {
             Members.PriorityLevel = 100;
             Groups.PriorityLevel = 100;
+            Funds.PriorityLevel = 100;
             Staff.PriorityLevel = 200;
             StaffGroups.PriorityLevel = 300;
+
+            Staff.GetFieldDefinition(p => p.Notes).IsMemo();
+
+            Members.GetFieldDefinition(p => p.Notes).IsMemo();
+
+            Funds.GetFieldDefinition(p => p.Notes).IsMemo();
         }
 
         public override UserAutoFill GetUserAutoFill(string userName)

@@ -31,6 +31,9 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.Property<double>("Goal")
                         .HasColumnType("numeric");
 
+                    b.Property<string>("Notes")
+                        .HasColumnType("ntext");
+
                     b.Property<double>("TotalCollected")
                         .HasColumnType("numeric");
 

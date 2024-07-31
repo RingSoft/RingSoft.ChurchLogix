@@ -21,5 +21,7 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.Financial_Management
 
         [DefaultValue(0)]
         public double TotalSpent { get; set; }
+
+        public string? Notes { get; set; }
     }
 }

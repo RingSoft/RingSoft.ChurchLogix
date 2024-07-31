@@ -55,7 +55,8 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <Label Grid.Row="0" Grid.Column="0" Content="Fund Goal"/>
@@ -65,6 +66,18 @@
                 <Label Grid.Row="0" Grid.Column="2" Content="Total Collected"/>
 
                 <dec:DecimalReadOnlyBox Grid.Row="0" Grid.Column="3" Value="{Binding TotalCollected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FormatType="Currency" Width="100"/>
+
+                <Label Grid.Row="0" Grid.Column="4" Content="Goal Status"/>
+
+                <dec:DecimalReadOnlyBox Grid.Row="0" Grid.Column="5" x:Name="GoalDifReadOnlyBox" Value="{Binding GoalDif, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FormatType="Currency" Width="100"/>
+
+                <Label Grid.Row="1" Grid.Column="2" Content="Total Spent"/>
+
+                <dec:DecimalReadOnlyBox Grid.Row="1" Grid.Column="3" Value="{Binding TotalSpent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FormatType="Currency" Width="100"/>
+
+                <Label Grid.Row="2" Grid.Column="2" Content="Fund Status"/>
+
+                <dec:DecimalReadOnlyBox Grid.Row="2" Grid.Column="3" x:Name="FundDifReadOnlyBox" Value="{Binding FundDiff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FormatType="Currency" Width="100"/>
 
             </Grid>
 

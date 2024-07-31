@@ -14,6 +14,7 @@ namespace RingSoft.ChurchLogix.DataAccess.Configurations.FinancialManagement
             builder.Property(p => p.Goal).HasColumnType(DbConstants.DecimalColumnType);
             builder.Property(p => p.TotalCollected).HasColumnType(DbConstants.DecimalColumnType);
             builder.Property(p => p.TotalSpent).HasColumnType(DbConstants.DecimalColumnType);
+            builder.Property(p => p.Notes).HasColumnType(DbConstants.MemoColumnType);
         }
     }
 }

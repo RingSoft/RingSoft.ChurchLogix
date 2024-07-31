@@ -4,6 +4,10 @@ using RingSoft.DbLookup;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 {
+    public interface IFundView
+    {
+        void RefreshView();
+    }
     public class FundsMaintenanceViewModel : AppDbMaintenanceViewModel<Fund>
     {
         private int _id;
@@ -35,6 +39,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
                 }
                 _goal = value;
                 OnPropertyChanged();
+                UpdateDiffValues();
             }
         }
 
@@ -50,7 +55,87 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
                     return;
                 _totalCollected = value;
                 OnPropertyChanged();
+                UpdateDiffValues();
             }
+        }
+
+        private double _goalDif;
+
+        public double GoalDif
+        {
+            get { return _goalDif; }
+            set
+            {
+                if (_goalDif == value)
+                    return;
+
+                _goalDif = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _totalSpent;
+
+        public double TotalSpent
+        {
+            get { return _totalSpent; }
+            set
+            {
+                if (_totalSpent == value)
+                    return;
+
+                _totalSpent = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _fundDiff;
+
+        public double FundDiff
+        {
+            get
+            {
+                return _fundDiff;
+            }
+            set
+            {
+                if (_fundDiff == value)
+                    return;
+
+                _fundDiff = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string? _notes;
+
+        public string? Notes
+        {
+            get { return _notes; }
+            set
+            {
+                if (_notes == value)
+                    return;
+
+                _notes = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        public IFundView View { get; private set; }
+
+        protected override void Initialize()
+        {
+            if (base.View is IFundView fundView)
+            {
+                View = fundView;
+            }
+            else
+            {
+                throw new Exception($"Maintenance window must implement {nameof(IFundView)} interface.");
+            }
+            base.Initialize();
         }
 
 
@@ -63,6 +148,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
         {
             Goal = entity.Goal;
             TotalCollected = entity.TotalCollected;
+            TotalSpent = entity.TotalSpent;
+            Notes = entity.Notes;
         }
 
         protected override Fund GetEntityData()
@@ -76,11 +163,13 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
                 Id = Id,
                 Description = KeyAutoFillValue.Text,
                 Goal = Goal,
+                Notes = Notes,
             };
 
             if (existFund != null)
             {
                 result.TotalCollected = existFund.TotalCollected;
+                result.TotalSpent = existFund.TotalSpent;
             }
 
             return result;
@@ -89,8 +178,19 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
         protected override void ClearData()
         {
             Id = 0;
+            GoalDif = 0;
+            FundDiff = 0;
             TotalCollected = 0;
             Goal = 0;
+            TotalSpent = 0;
+            Notes = null;
+        }
+
+        private void UpdateDiffValues()
+        {
+            GoalDif = TotalCollected - Goal;
+            FundDiff = TotalCollected - TotalSpent;
+            View.RefreshView();
         }
     }
 }
