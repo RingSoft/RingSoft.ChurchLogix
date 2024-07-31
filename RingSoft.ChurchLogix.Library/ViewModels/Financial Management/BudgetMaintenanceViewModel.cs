@@ -3,9 +3,13 @@ using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
+using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 {
+    public interface IBudgetView : IDbMaintenanceView
+    {
+    }
     public class BudgetMaintenanceViewModel : AppDbMaintenanceViewModel<BudgetItem>
     {
         private int _id;
@@ -85,12 +89,26 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             }
         }
 
+        public IBudgetView View { get; private set; }
         public RelayCommand PostCostsCommand { get; }
 
         public BudgetMaintenanceViewModel()
         {
             FundAutoFillSetup = new AutoFillSetup(TableDefinition.GetFieldDefinition(p => p.FundId));
             PostCostsCommand = new RelayCommand(PostCosts);
+        }
+
+        protected override void Initialize()
+        {
+            if (base.View is IBudgetView budgetView)
+            {
+                View = budgetView;
+            }
+            else
+            {
+                throw new Exception("Maintenance window must implement IBudgetView");
+            }
+            base.Initialize();
         }
 
         protected override void PopulatePrimaryKeyControls(BudgetItem newEntity, PrimaryKeyValue primaryKeyValue)
@@ -129,7 +147,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 
         private void PostCosts()
         {
-            ControlsGlobals.UserInterface.ShowMessageBox("Nub", "Nub", RsMessageBoxIcons.Exclamation);
+            //View.ShowPostCosts();
         }
     }
 }
