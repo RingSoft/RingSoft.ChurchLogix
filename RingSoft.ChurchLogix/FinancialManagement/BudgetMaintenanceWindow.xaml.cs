@@ -12,11 +12,34 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using RingSoft.App.Controls;
+using RingSoft.DbLookup;
 using RingSoft.DbLookup.Controls.WPF;
 using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.FinancialManagement
 {
+    public class BudgetHeaderControl : DbMaintenanceCustomPanel
+    {
+        public DbMaintenanceButton PostCostButton { get; set; }
+
+        static BudgetHeaderControl()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(BudgetHeaderControl), new FrameworkPropertyMetadata(typeof(BudgetHeaderControl)));
+        }
+
+        public BudgetHeaderControl()
+        {
+
+        }
+
+        public override void OnApplyTemplate()
+        {
+            PostCostButton = GetTemplateChild(nameof(PostCostButton)) as DbMaintenanceButton;
+
+            base.OnApplyTemplate();
+        }
+    }
+
     /// <summary>
     /// Interaction logic for BudgetMaintenanceWindow.xaml
     /// </summary>
@@ -31,6 +54,25 @@ namespace RingSoft.ChurchLogix.FinancialManagement
         public BudgetMaintenanceWindow()
         {
             InitializeComponent();
+            TopHeaderControl.Loaded += (sender, args) =>
+            {
+                if (TopHeaderControl.CustomPanel is BudgetHeaderControl budgetHeaderControl)
+                {
+                    budgetHeaderControl.PostCostButton.Command =
+                        LocalViewModel.PostCostsCommand;
+
+                    budgetHeaderControl.PostCostButton.ToolTip.HeaderText = "Post Costs (Alt + O)";
+                    budgetHeaderControl.PostCostButton.ToolTip.DescriptionText = "Post Costs (Alt + U)";
+
+                    if (!LocalViewModel.TableDefinition.HasRight(RightTypes.AllowEdit))
+                    {
+                        budgetHeaderControl.PostCostButton.Visibility = Visibility.Collapsed;
+                    }
+
+                    budgetHeaderControl.PostCostButton.Command = LocalViewModel.PostCostsCommand;
+                }
+            };
+
             RegisterFormKeyControl(NameControl);
         }
     }

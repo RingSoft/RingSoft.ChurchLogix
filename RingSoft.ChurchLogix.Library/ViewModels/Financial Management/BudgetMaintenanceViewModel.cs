@@ -1,5 +1,6 @@
 ﻿using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
+using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
 
@@ -84,9 +85,12 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             }
         }
 
+        public RelayCommand PostCostsCommand { get; }
+
         public BudgetMaintenanceViewModel()
         {
             FundAutoFillSetup = new AutoFillSetup(TableDefinition.GetFieldDefinition(p => p.FundId));
+            PostCostsCommand = new RelayCommand(PostCosts);
         }
 
         protected override void PopulatePrimaryKeyControls(BudgetItem newEntity, PrimaryKeyValue primaryKeyValue)
@@ -121,6 +125,11 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             FundAutoFillValue = null;
             Amount = 0;
             Notes = null;
+        }
+
+        private void PostCosts()
+        {
+            ControlsGlobals.UserInterface.ShowMessageBox("Nub", "Nub", RsMessageBoxIcons.Exclamation);
         }
     }
 }
