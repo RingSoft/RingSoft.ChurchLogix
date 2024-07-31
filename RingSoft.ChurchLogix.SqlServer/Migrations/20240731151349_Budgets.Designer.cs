@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RingSoft.ChurchLogix.SqlServer;
 
@@ -11,9 +12,11 @@ using RingSoft.ChurchLogix.SqlServer;
 namespace RingSoft.ChurchLogix.SqlServer.Migrations
 {
     [DbContext(typeof(ChurchLogixSqlServerDbContext))]
-    partial class ChurchLogixSqlServerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240731151349_Budgets")]
+    partial class Budgets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

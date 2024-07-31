@@ -23,5 +23,12 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.Financial_Management
         public double TotalSpent { get; set; }
 
         public string? Notes { get; set; }
+
+        public virtual ICollection<BudgetItem> Budgets { get; set; }
+
+        public Fund()
+        {
+            Budgets  = new HashSet<BudgetItem>();
+        }
     }
 }

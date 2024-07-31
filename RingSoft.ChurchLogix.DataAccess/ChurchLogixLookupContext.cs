@@ -29,6 +29,7 @@ namespace RingSoft.ChurchLogix.DataAccess
         public TableDefinition<StaffGroup> StaffGroups { get; set; }
 
         public TableDefinition<Fund> Funds { get; set; }
+        public TableDefinition<BudgetItem> Budgets { get; set; }
 
         public LookupDefinition<StaffLookup, StaffPerson> StaffLookup { get; set; }
         public LookupDefinition<MemberLookup, Member> MemberLookup { get; set; }
@@ -36,6 +37,7 @@ namespace RingSoft.ChurchLogix.DataAccess
         public LookupDefinition<StaffGroupsLookup, StaffGroup> StaffGroupsLookup { get; set;}
 
         public LookupDefinition<FundLookup, Fund> FundsLookup { get; set; }
+        public LookupDefinition<BudgetLookup, BudgetItem> BudgetsLookup { get; set; }
 
         private DbContext _dbContext;
         private DbDataProcessor _dbDataProcessor;
@@ -155,6 +157,20 @@ namespace RingSoft.ChurchLogix.DataAccess
                 .DoShowPositiveValuesInGreen();
 
             Funds.HasLookupDefinition(FundsLookup);
+
+            BudgetsLookup = new LookupDefinition<BudgetLookup, BudgetItem>(Budgets);
+
+            BudgetsLookup.AddVisibleColumnDefinition(
+                P => P.Name
+                , "Name"
+                , p => p.Name, 50);
+
+            BudgetsLookup.AddVisibleColumnDefinition(
+                p => p.Amount
+                , "Amount"
+                , p => p.Amount, 50);
+
+            Budgets.HasLookupDefinition(BudgetsLookup);
         }
 
         protected override void SetupModel()
@@ -162,6 +178,7 @@ namespace RingSoft.ChurchLogix.DataAccess
             Members.PriorityLevel = 100;
             Groups.PriorityLevel = 100;
             Funds.PriorityLevel = 100;
+            Budgets.PriorityLevel = 200;
             Staff.PriorityLevel = 200;
             StaffGroups.PriorityLevel = 300;
 
@@ -170,6 +187,7 @@ namespace RingSoft.ChurchLogix.DataAccess
             Members.GetFieldDefinition(p => p.Notes).IsMemo();
 
             Funds.GetFieldDefinition(p => p.Notes).IsMemo();
+            Budgets.GetFieldDefinition(p => p.Notes).IsMemo();
         }
 
         public override UserAutoFill GetUserAutoFill(string userName)

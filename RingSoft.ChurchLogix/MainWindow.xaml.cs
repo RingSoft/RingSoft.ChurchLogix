@@ -222,6 +222,16 @@ namespace RingSoft.ChurchLogix
                         CommandParameter = AppGlobals.LookupContext.Funds,
                     });
                 }
+
+                if (AppGlobals.LookupContext.Funds.HasRight(RightTypes.AllowView))
+                {
+                    menuItem.Items.Add(new MenuItem()
+                    {
+                        Header = "Add/Edit _Budget Items...",
+                        Command = ViewModel.ShowMaintenanceWindowCommand,
+                        CommandParameter = AppGlobals.LookupContext.Budgets,
+                    });
+                }
             }
         }
 

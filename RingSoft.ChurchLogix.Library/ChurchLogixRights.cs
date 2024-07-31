@@ -33,7 +33,11 @@ namespace RingSoft.ChurchLogix.Library
             Categories.Add(category);
 
             category = new RightCategory("Financial Management", (int)MenuCategories.FinancialManagement);
+
             rightItem = new RightCategoryItem(item: "Add/Edit Funds", AppGlobals.LookupContext.Funds);
+            category.Items.Add(rightItem);
+
+            rightItem = new RightCategoryItem(item: "Add/Edit Budget Items", AppGlobals.LookupContext.Budgets);
             category.Items.Add(rightItem);
 
             Categories.Add(category);

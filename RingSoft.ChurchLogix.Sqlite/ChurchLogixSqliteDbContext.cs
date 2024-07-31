@@ -19,6 +19,7 @@ namespace RingSoft.ChurchLogix.Sqlite
         public DbSet<Group> Groups { get; set; }
         public DbSet<StaffGroup> StaffGroups { get; set; }
         public DbSet<Fund> Funds { get; set; }
+        public DbSet<BudgetItem> Budgets { get; set; }
 
         public bool IsDesignTime { get; set; }
 

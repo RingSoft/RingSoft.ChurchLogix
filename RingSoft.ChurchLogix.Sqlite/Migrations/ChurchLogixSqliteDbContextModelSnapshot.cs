@@ -17,6 +17,33 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.6");
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("FundId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("ntext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FundId");
+
+                    b.ToTable("Budgets");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.Fund", b =>
                 {
                     b.Property<int>("Id")
@@ -355,6 +382,17 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.ToTable("RecordLocks");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetItem", b =>
+                {
+                    b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.Fund", "Fund")
+                        .WithMany("Budgets")
+                        .HasForeignKey("FundId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Fund");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", b =>
                 {
                     b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", "Household")
@@ -421,6 +459,11 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.Navigation("AdvancedFind");
 
                     b.Navigation("SearchForAdvancedFind");
+                });
+
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.Fund", b =>
+                {
+                    b.Navigation("Budgets");
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", b =>

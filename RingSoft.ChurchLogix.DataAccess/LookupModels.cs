@@ -54,4 +54,11 @@ namespace RingSoft.ChurchLogix.DataAccess
             return string.Empty;
         }
     }
+
+    public class BudgetLookup
+    {
+        public string Name { get; set; }
+
+        public double Amount { get; set; }
+    }
 }
