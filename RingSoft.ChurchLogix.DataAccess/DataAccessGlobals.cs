@@ -20,6 +20,7 @@ namespace RingSoft.ChurchLogix.DataAccess
 
             modelBuilder.ApplyConfiguration(new FundConfiguration());
             modelBuilder.ApplyConfiguration(new BudgetConfiguration());
+            modelBuilder.ApplyConfiguration(new FundHistoryConfiguration());
         }
 
         public static void SetupSysPrefs()

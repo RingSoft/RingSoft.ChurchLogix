@@ -1,4 +1,5 @@
-﻿using RingSoft.ChurchLogix.Library.ViewModels.MemberManagement;
+﻿using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
+using RingSoft.ChurchLogix.Library.ViewModels.MemberManagement;
 using RingSoft.DbLookup;
 
 namespace RingSoft.ChurchLogix.Library

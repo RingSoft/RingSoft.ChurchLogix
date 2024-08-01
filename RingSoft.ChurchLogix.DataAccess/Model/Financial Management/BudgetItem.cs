@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Contracts;
 
 namespace RingSoft.ChurchLogix.DataAccess.Model.Financial_Management
 {
@@ -21,5 +22,12 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.Financial_Management
         public double Amount { get; set; }
 
         public string? Notes { get; set; }
+
+        public virtual ICollection<FundHistory> History { get; set; }
+
+        public BudgetItem()
+        {
+            History = new HashSet<FundHistory>();
+        }
     }
 }

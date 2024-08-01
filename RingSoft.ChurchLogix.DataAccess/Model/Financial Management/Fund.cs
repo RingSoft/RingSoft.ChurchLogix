@@ -25,10 +25,12 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.Financial_Management
         public string? Notes { get; set; }
 
         public virtual ICollection<BudgetItem> Budgets { get; set; }
+        public virtual ICollection<FundHistory> History { get; set; }
 
         public Fund()
         {
             Budgets  = new HashSet<BudgetItem>();
+            History = new HashSet<FundHistory>();
         }
     }
 }

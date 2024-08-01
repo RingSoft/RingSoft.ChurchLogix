@@ -20,6 +20,7 @@ namespace RingSoft.ChurchLogix.SqlServer
         public DbSet<StaffGroup> StaffGroups { get; set; }
         public DbSet<Fund> Funds { get; set; }
         public DbSet<BudgetItem> Budgets { get; set; }
+        public DbSet<FundHistory> FundHistory { get; set; }
 
         public bool IsDesignTime { get; set; }
 

@@ -1,8 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
 
 namespace RingSoft.ChurchLogix.DataAccess.Model.MemberManagement
 {
+    public enum MemberSpecialRights
+    {
+        AllowViewGiving = 1,
+    }
+
     public class Member
     {
         [Required]

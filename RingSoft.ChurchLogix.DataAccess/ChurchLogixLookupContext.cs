@@ -4,6 +4,7 @@ using RingSoft.ChurchLogix.DataAccess.Model;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
+using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
 using RingSoft.DbLookup.DataProcessor;
@@ -11,6 +12,7 @@ using RingSoft.DbLookup.EfCore;
 using RingSoft.DbLookup.Lookup;
 using RingSoft.DbLookup.ModelDefinition;
 using RingSoft.DbLookup.ModelDefinition.FieldDefinitions;
+using RingSoft.DbLookup.QueryBuilder;
 
 namespace RingSoft.ChurchLogix.DataAccess
 {
@@ -30,6 +32,7 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         public TableDefinition<Fund> Funds { get; set; }
         public TableDefinition<BudgetItem> Budgets { get; set; }
+        public TableDefinition<FundHistory> FundHistory { get; set; }
 
         public LookupDefinition<StaffLookup, StaffPerson> StaffLookup { get; set; }
         public LookupDefinition<MemberLookup, Member> MemberLookup { get; set; }
@@ -38,6 +41,7 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         public LookupDefinition<FundLookup, Fund> FundsLookup { get; set; }
         public LookupDefinition<BudgetLookup, BudgetItem> BudgetsLookup { get; set; }
+        public LookupDefinition<FundHistoryLookup, FundHistory> FundHistoryLookup { get; set; }
 
         private DbContext _dbContext;
         private DbDataProcessor _dbDataProcessor;
@@ -48,6 +52,69 @@ namespace RingSoft.ChurchLogix.DataAccess
         {
             SqliteDataProcessor = new SqliteDataProcessor();
             SqlServerDataProcessor = new SqlServerDataProcessor();
+            CanProcessTableEvent += ChurchLogixLookupContext_CanProcessTableEvent;
+        }
+
+        private void ChurchLogixLookupContext_CanProcessTableEvent(object? sender, CanProcessTableArgs e)
+        {
+            if (!e.TableDefinition.HasRight(RightTypes.AllowView))
+            {
+                e.AllowView = false;
+            }
+
+            if (e.AllowView && e.TableDefinition == Members)
+            {
+                if (!Members.HasSpecialRight((int)MemberSpecialRights.AllowViewGiving))
+                {
+                    
+                }
+            }
+
+            if (!e.TableDefinition.HasRight(RightTypes.AllowEdit))
+            {
+                e.AllowEdit = false;
+            }
+
+            if (e.DeleteMode)
+            {
+                if (!e.TableDefinition.HasRight(RightTypes.AllowDelete))
+                {
+                    e.AllowDelete = false;
+                }
+
+                if (e.LookupDefinition != null && e.LookupDefinition.TableDefinition == Staff)
+                {
+                    var lookupToCheck = e.LookupDefinition.Clone();
+                    var context = SystemGlobals.DataRepository.GetDataContext();
+                    var table = context.GetTable<StaffPerson>();
+                    var masterUser = table.FirstOrDefault();
+                    if (masterUser != null)
+                    {
+                        var field = Staff
+                            .GetFieldDefinition(p => p.Id);
+                        lookupToCheck.FilterDefinition.AddFixedFilter(field, Conditions.Equals, masterUser.Id);
+                        //var lookupUi = new LookupUserInterface()
+                        //{
+                        //    PageSize = 10,
+                        //};
+                        var lookupData =
+                            lookupToCheck.TableDefinition.LookupDefinition.GetLookupDataMaui(lookupToCheck, false);
+                        var count = lookupData.GetRecordCount();
+                        if (count > 0)
+                        {
+                            e.AllowDelete = false;
+                            var message = $"Deleting the master user '{masterUser.Name}' is not allowed.";
+                            var caption = "Delete Denied!";
+                            ControlsGlobals.UserInterface.ShowMessageBox(message, caption, RsMessageBoxIcons.Exclamation);
+                        }
+                    }
+                }
+            }
+
+            if (!e.TableDefinition.HasRight(RightTypes.AllowAdd))
+            {
+                e.AllowAdd = false;
+            }
         }
 
         public void SetProcessor(DbPlatforms platform)
@@ -171,6 +238,25 @@ namespace RingSoft.ChurchLogix.DataAccess
                 , p => p.Amount, 50);
 
             Budgets.HasLookupDefinition(BudgetsLookup);
+
+            FundHistoryLookup = new LookupDefinition<FundHistoryLookup, FundHistory>(FundHistory);
+
+            FundHistoryLookup.AddVisibleColumnDefinition(
+                p => p.Fund
+                , "Fund"
+                , p => p.Amount, 40);
+
+            FundHistoryLookup.AddVisibleColumnDefinition(
+                p => p.AmountType
+                , "Type"
+                , p => p.AmountType, 30);
+
+            FundHistoryLookup.AddVisibleColumnDefinition(
+                p => p.Amount
+                , "Amount"
+                , p => p.Amount, 30);
+
+            FundHistory.HasLookupDefinition(FundHistoryLookup);
         }
 
         protected override void SetupModel()
@@ -181,6 +267,7 @@ namespace RingSoft.ChurchLogix.DataAccess
             Budgets.PriorityLevel = 200;
             Staff.PriorityLevel = 200;
             StaffGroups.PriorityLevel = 300;
+            FundHistory.PriorityLevel = 300;
 
             Staff.GetFieldDefinition(p => p.Notes).IsMemo();
 
@@ -188,6 +275,9 @@ namespace RingSoft.ChurchLogix.DataAccess
 
             Funds.GetFieldDefinition(p => p.Notes).IsMemo();
             Budgets.GetFieldDefinition(p => p.Notes).IsMemo();
+
+            FundHistory.GetFieldDefinition(p => p.AmountType)
+                .IsEnum<HistoryAmountTypes>();
         }
 
         public override UserAutoFill GetUserAutoFill(string userName)

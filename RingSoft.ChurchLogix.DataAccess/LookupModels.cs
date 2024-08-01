@@ -61,4 +61,13 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         public double Amount { get; set; }
     }
+
+    public class FundHistoryLookup
+    {
+        public string Fund { get; set; }
+
+        public int AmountType { get; set; }
+
+        public double Amount { get; set; }
+    }
 }

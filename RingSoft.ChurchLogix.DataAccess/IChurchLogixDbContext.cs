@@ -27,6 +27,8 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         DbSet<BudgetItem> Budgets { get; set; }
 
+        DbSet<FundHistory> FundHistory { get; set; }
+
         void SetLookupContext(ChurchLogixLookupContext lookupContext);
     }
 }
