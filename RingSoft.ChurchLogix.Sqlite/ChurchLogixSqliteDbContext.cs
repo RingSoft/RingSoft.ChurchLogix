@@ -21,6 +21,7 @@ namespace RingSoft.ChurchLogix.Sqlite
         public DbSet<Fund> Funds { get; set; }
         public DbSet<BudgetItem> Budgets { get; set; }
         public DbSet<FundHistory> FundHistory { get; set; }
+        public DbSet<FundPeriodTotals> FundPeriodTotals { get; set; }
 
         public bool IsDesignTime { get; set; }
 

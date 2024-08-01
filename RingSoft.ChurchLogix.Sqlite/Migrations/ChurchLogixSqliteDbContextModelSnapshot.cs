@@ -102,6 +102,28 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.ToTable("FundHistory");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.FundPeriodTotals", b =>
+                {
+                    b.Property<int>("FundId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PeriodType")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime");
+
+                    b.Property<double>("TotalExpenses")
+                        .HasColumnType("numeric");
+
+                    b.Property<double>("TotalIncome")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("FundId", "PeriodType", "Date");
+
+                    b.ToTable("FundPeriodTotals");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", b =>
                 {
                     b.Property<int>("Id")
@@ -440,6 +462,17 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.Navigation("Fund");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.FundPeriodTotals", b =>
+                {
+                    b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.Fund", "Fund")
+                        .WithMany("PeriodTotals")
+                        .HasForeignKey("FundId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Fund");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", b =>
                 {
                     b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", "Household")
@@ -518,6 +551,8 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.Navigation("Budgets");
 
                     b.Navigation("History");
+
+                    b.Navigation("PeriodTotals");
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", b =>

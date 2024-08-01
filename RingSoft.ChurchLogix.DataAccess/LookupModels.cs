@@ -70,4 +70,32 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         public double Amount { get; set; }
     }
+
+    public class FundPeriodLookup
+    {
+        public string Fund { get; set; }
+
+        public DateTime Date { get; set; }
+
+        public double TotalIncome { get; set; }
+
+        public double TotalExpenses { get; set; }
+
+        public double Difference { get; set; }
+    }
+
+    public class FundPeriodDifferenceFormula : ILookupFormula
+    {
+        public int Id => 2;
+
+        public string GetDatabaseValue(object entity)
+        {
+            if (entity is FundPeriodTotals fund)
+            {
+                return (fund.TotalIncome - fund.TotalExpenses).ToString();
+            }
+
+            return string.Empty;
+        }
+    }
 }

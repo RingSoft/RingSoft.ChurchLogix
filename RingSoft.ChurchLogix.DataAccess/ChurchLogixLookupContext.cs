@@ -33,6 +33,7 @@ namespace RingSoft.ChurchLogix.DataAccess
         public TableDefinition<Fund> Funds { get; set; }
         public TableDefinition<BudgetItem> Budgets { get; set; }
         public TableDefinition<FundHistory> FundHistory { get; set; }
+        public TableDefinition<FundPeriodTotals> FundPeriodTotals { get; set; }
 
         public LookupDefinition<StaffLookup, StaffPerson> StaffLookup { get; set; }
         public LookupDefinition<MemberLookup, Member> MemberLookup { get; set; }
@@ -42,6 +43,7 @@ namespace RingSoft.ChurchLogix.DataAccess
         public LookupDefinition<FundLookup, Fund> FundsLookup { get; set; }
         public LookupDefinition<BudgetLookup, BudgetItem> BudgetsLookup { get; set; }
         public LookupDefinition<FundHistoryLookup, FundHistory> FundHistoryLookup { get; set; }
+        public LookupDefinition<FundPeriodLookup, FundPeriodTotals> FundPeriodLookup { get; set; }
 
         private DbContext _dbContext;
         private DbDataProcessor _dbDataProcessor;
@@ -257,6 +259,37 @@ namespace RingSoft.ChurchLogix.DataAccess
                 , p => p.Amount, 30);
 
             FundHistory.HasLookupDefinition(FundHistoryLookup);
+
+            FundPeriodLookup = new LookupDefinition<FundPeriodLookup, FundPeriodTotals>(FundPeriodTotals);
+
+            FundPeriodLookup.Include(p => p.Fund)
+                .AddVisibleColumnDefinition(p => p.Fund
+                    , "Fund"
+                    , p => p.Description, 40);
+
+            FundPeriodLookup.AddVisibleColumnDefinition(
+                p => p.Date
+                , "Date Ending"
+                , p => p.Date, 15);
+
+            FundPeriodLookup.AddVisibleColumnDefinition(
+                p => p.TotalIncome
+                , "Total Income"
+                , p => p.TotalIncome, 15);
+
+            FundPeriodLookup.AddVisibleColumnDefinition(
+                p => p.TotalExpenses
+                , "Total Expenses"
+                , p => p.TotalExpenses, 15);
+
+            FundPeriodLookup.AddVisibleColumnDefinition(
+                    p => p.Difference, "Difference"
+                    , new FundPeriodDifferenceFormula(), 15, "")
+                .HasDecimalFieldType(DecimalFieldTypes.Currency)
+                .DoShowNegativeValuesInRed()
+                .DoShowPositiveValuesInGreen();
+
+            FundPeriodTotals.HasLookupDefinition(FundPeriodLookup);
         }
 
         protected override void SetupModel()
@@ -268,6 +301,7 @@ namespace RingSoft.ChurchLogix.DataAccess
             Staff.PriorityLevel = 200;
             StaffGroups.PriorityLevel = 300;
             FundHistory.PriorityLevel = 300;
+            FundPeriodTotals.PriorityLevel = 300;
 
             Staff.GetFieldDefinition(p => p.Notes).IsMemo();
 
@@ -278,6 +312,9 @@ namespace RingSoft.ChurchLogix.DataAccess
 
             FundHistory.GetFieldDefinition(p => p.AmountType)
                 .IsEnum<HistoryAmountTypes>();
+
+            FundPeriodTotals.GetFieldDefinition(p => p.PeriodType)
+                .IsEnum<PeriodTypes>();
         }
 
         public override UserAutoFill GetUserAutoFill(string userName)
