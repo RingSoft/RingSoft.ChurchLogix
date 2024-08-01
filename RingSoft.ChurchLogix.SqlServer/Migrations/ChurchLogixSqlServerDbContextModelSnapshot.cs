@@ -51,6 +51,25 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.ToTable("Budgets");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetPeriodTotals", b =>
+                {
+                    b.Property<int>("BudgetId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PeriodType")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("BudgetId", "PeriodType", "Date");
+
+                    b.ToTable("BudgetsPeriodTotals");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.Fund", b =>
                 {
                     b.Property<int>("Id")
@@ -466,6 +485,17 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.Navigation("Fund");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetPeriodTotals", b =>
+                {
+                    b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetItem", "BudgetItem")
+                        .WithMany("PeriodTotals")
+                        .HasForeignKey("BudgetId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("BudgetItem");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.FundHistory", b =>
                 {
                     b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetItem", "BudgetItem")
@@ -565,6 +595,8 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetItem", b =>
                 {
                     b.Navigation("History");
+
+                    b.Navigation("PeriodTotals");
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.Fund", b =>

@@ -98,4 +98,13 @@ namespace RingSoft.ChurchLogix.DataAccess
             return string.Empty;
         }
     }
+
+    public class BudgetPeriodTotalsLookup
+    {
+        public string BudgetItem { get; set; }
+
+        public DateTime Date { get; set; }
+
+        public double Total { get; set; }
+    }
 }
