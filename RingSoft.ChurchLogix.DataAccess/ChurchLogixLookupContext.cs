@@ -35,6 +35,7 @@ namespace RingSoft.ChurchLogix.DataAccess
         public TableDefinition<FundHistory> FundHistory { get; set; }
         public TableDefinition<FundPeriodTotals> FundPeriodTotals { get; set; }
         public TableDefinition< BudgetPeriodTotals> BudgetPeriodTotals { get; set; }
+        public TableDefinition<BudgetActual> BudgetActuals { get; set; }
 
         public LookupDefinition<StaffLookup, StaffPerson> StaffLookup { get; set; }
         public LookupDefinition<MemberLookup, Member> MemberLookup { get; set; }
@@ -46,6 +47,7 @@ namespace RingSoft.ChurchLogix.DataAccess
         public LookupDefinition<FundHistoryLookup, FundHistory> FundHistoryLookup { get; set; }
         public LookupDefinition<FundPeriodLookup, FundPeriodTotals> FundPeriodLookup { get; set; }
         public LookupDefinition<BudgetPeriodTotalsLookup, BudgetPeriodTotals> BudgetPeriodLookup { get; set; }
+        public LookupDefinition<BudgetActualsLookup, BudgetActual> BudgetActualsLookupDefinition { get; set; }
 
         private DbContext _dbContext;
         private DbDataProcessor _dbDataProcessor;
@@ -311,6 +313,26 @@ namespace RingSoft.ChurchLogix.DataAccess
                 , p => p.Total, 25);
 
             BudgetPeriodTotals.HasLookupDefinition(BudgetPeriodLookup);
+
+            BudgetActualsLookupDefinition = new LookupDefinition<BudgetActualsLookup, BudgetActual>(BudgetActuals);
+
+            BudgetActualsLookupDefinition.Include(p => p.Budget)
+                .AddVisibleColumnDefinition(
+                    p => p.Budget
+                    , "Budget"
+                    , p => p.Name, 50);
+
+            BudgetActualsLookupDefinition.AddVisibleColumnDefinition(
+                p => p.Date
+                , "Date"
+                , p => p.Date, 25);
+
+            BudgetActualsLookupDefinition.AddVisibleColumnDefinition(
+                p => p.Amount
+                , "Amount"
+                , p => p.Amount, 25);
+
+            BudgetActuals.HasLookupDefinition(BudgetActualsLookupDefinition);
         }
 
         protected override void SetupModel()
@@ -324,6 +346,7 @@ namespace RingSoft.ChurchLogix.DataAccess
             FundHistory.PriorityLevel = 300;
             FundPeriodTotals.PriorityLevel = 300;
             BudgetPeriodTotals.PriorityLevel = 300;
+            BudgetActuals.PriorityLevel = 300;
 
             Staff.GetFieldDefinition(p => p.Notes).IsMemo();
 

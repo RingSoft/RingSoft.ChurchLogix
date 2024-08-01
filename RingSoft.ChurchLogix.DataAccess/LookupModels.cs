@@ -107,4 +107,13 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         public double Total { get; set; }
     }
+
+    public class BudgetActualsLookup
+    {
+        public string Budget { get; set; }
+
+        public DateTime Date { get; set; }
+
+        public double Amount { get; set; }
+    }
 }

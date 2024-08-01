@@ -33,6 +33,8 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         DbSet<BudgetPeriodTotals> BudgetsPeriodTotals { get; set; }
 
+        DbSet<BudgetActual> BudgetActuals { get; set; }
+
         void SetLookupContext(ChurchLogixLookupContext lookupContext);
     }
 }
