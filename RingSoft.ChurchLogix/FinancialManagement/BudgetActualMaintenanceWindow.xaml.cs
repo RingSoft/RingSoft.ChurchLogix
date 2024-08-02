@@ -104,9 +104,9 @@ namespace RingSoft.ChurchLogix.FinancialManagement
             };
         }
 
-        public void ShowPostProcedure()
+        public void ShowPostProcedure(BudgetActualMaintenanceViewModel viewModel)
         {
-            _procedure = new PostProcedure(LocalViewModel);
+            _procedure = new PostProcedure(viewModel);
             _procedure.Start();
         }
 

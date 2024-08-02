@@ -8,7 +8,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 {
     public interface IBudgetActualView
     {
-        void ShowPostProcedure();
+        void ShowPostProcedure(BudgetActualMaintenanceViewModel viewModel);
 
         void UpdateProcedure(string text);
     }
@@ -105,7 +105,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             BudgetAutoFillCommand = new UiCommand();
             PostCostsCommand = new RelayCommand((() =>
             {
-                View.ShowPostProcedure();
+                View.ShowPostProcedure(this);
             }));
         }
 
@@ -157,11 +157,197 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 
         public bool PostCosts()
         {
-            for (int i = 0; i < 100; i++)
+            var context = SystemGlobals.DataRepository.GetDataContext();
+            if (context != null)
             {
-                Thread.Sleep(100);
-                View.UpdateProcedure(i.ToString());
+                var fundPeriodTotalsTable = context.GetTable<FundPeriodTotals>();
+                var budgetPeriodTotalsTable = context.GetTable<BudgetPeriodTotals>();
+                var actualTable = context.GetTable<BudgetActual>();
+                var totalRecords = actualTable.Count();
+                var index = 0;
+                var budgetsToDelete = new List<BudgetActual>();
+                foreach (var budgetActual in actualTable)
+                {
+                    index++;
+                    budgetActual.FillOutEntity();
+                    View.UpdateProcedure($"Processing Budget Cost {index} / {totalRecords}");
+
+                    var fundHistoryRec = new FundHistory()
+                    {
+                        Amount = budgetActual.Amount,
+                        AmountType = (int)HistoryAmountTypes.Expense,
+                        BudgetId = budgetActual.BudgetId,
+                        Date = budgetActual.Date,
+                        FundId = budgetActual.Budget.FundId,
+                    };
+
+                    if (!context.SaveNoCommitEntity(fundHistoryRec, "Saving Fund History"))
+                    {
+                        return false;
+                    }
+
+                    var endDayMonth = new DateTime(budgetActual.Date.Year, budgetActual.Date.Month, 1);
+                    endDayMonth = endDayMonth.AddMonths(1);
+                    endDayMonth = endDayMonth.AddDays(-1);
+
+                    var endYear = new DateTime(budgetActual.Date.Year, 12, 31);
+
+                    if (!SaveFundPeriodMonth(fundPeriodTotalsTable, endDayMonth, budgetActual, context)) 
+                        return false;
+
+                    if (!SaveFundPeriodYear(fundPeriodTotalsTable, endYear, budgetActual, context)) return false;
+
+                    if (!SaveBudgetPeriodMonth(budgetPeriodTotalsTable, endDayMonth, budgetActual, context))
+                        return false;
+
+                    if (!SaveBudgetPeriodYear(budgetPeriodTotalsTable, endYear, budgetActual, context)) return false;
+
+                    budgetActual.Budget = null;
+                    budgetsToDelete.Add(budgetActual);
+                }
+
+                context.RemoveRange(budgetsToDelete);
+                var result = context.Commit("Committing Data");
+
+                if (result)
+                {
+                    NewCommand.Execute(null);
+                    return true;
+                }
             }
+
+            return false;
+        }
+
+        private static bool SaveFundPeriodYear(IQueryable<FundPeriodTotals> fundPeriodTotalsTable, DateTime endYear, BudgetActual budgetActual,
+            IDbContext context)
+        {
+            var fundYearRec = fundPeriodTotalsTable
+                .FirstOrDefault(p => p.Date == endYear
+                                     && p.PeriodType == (int)PeriodTypes.YearEnding);
+
+            if (fundYearRec == null)
+            {
+                fundYearRec = new FundPeriodTotals()
+                {
+                    FundId = budgetActual.Budget.FundId,
+                    PeriodType = (int)PeriodTypes.YearEnding,
+                    Date = endYear,
+                    TotalExpenses = budgetActual.Amount,
+                };
+                if (!context.AddSaveEntity(fundYearRec, "Saving Fund Year Ending"))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                fundYearRec.TotalExpenses += budgetActual.Amount;
+                if (!context.SaveNoCommitEntity(fundYearRec, "Saving Fund Year Ending"))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool SaveFundPeriodMonth(IQueryable<FundPeriodTotals> fundPeriodTotalsTable, DateTime endDayMonth,
+            BudgetActual budgetActual, IDbContext context)
+        {
+            var fundMonthRec = fundPeriodTotalsTable
+                .FirstOrDefault(p => p.Date == endDayMonth
+                                     && p.PeriodType == (int)PeriodTypes.MonthEnding);
+
+            if (fundMonthRec == null)
+            {
+                fundMonthRec = new FundPeriodTotals()
+                {
+                    FundId = budgetActual.Budget.FundId,
+                    PeriodType = (int)PeriodTypes.MonthEnding,
+                    Date = endDayMonth,
+                    TotalExpenses = budgetActual.Amount,
+                };
+                if (!context.AddSaveEntity(fundMonthRec, "Saving Fund Month Ending"))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                fundMonthRec.TotalExpenses += budgetActual.Amount;
+                if (!context.SaveNoCommitEntity(fundMonthRec, "Saving Fund Month Ending"))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool SaveBudgetPeriodMonth(IQueryable<BudgetPeriodTotals> budgetPeriodTotalsTable, DateTime endDayMonth,
+            BudgetActual budgetActual, IDbContext context)
+        {
+            var budgetMonthRec = budgetPeriodTotalsTable
+                .FirstOrDefault(p => p.Date == endDayMonth
+                                     && p.PeriodType == (int)PeriodTypes.MonthEnding);
+
+            if (budgetMonthRec == null)
+            {
+                budgetMonthRec = new BudgetPeriodTotals()
+                {
+                    BudgetId = budgetActual.BudgetId,
+                    PeriodType = (int)PeriodTypes.MonthEnding,
+                    Date = endDayMonth,
+                    Total = budgetActual.Amount,
+                };
+                if (!context.AddSaveEntity(budgetMonthRec, "Saving Budget Month Ending"))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                budgetMonthRec.Total += budgetActual.Amount;
+                if (!context.SaveNoCommitEntity(budgetMonthRec, "Saving Budget Month Ending"))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool SaveBudgetPeriodYear(IQueryable<BudgetPeriodTotals> budgetPeriodTotalsTable, DateTime endYear,
+            BudgetActual budgetActual, IDbContext context)
+        {
+            var budgetYearRec = budgetPeriodTotalsTable
+                .FirstOrDefault(p => p.Date == endYear
+                                     && p.PeriodType == (int)PeriodTypes.YearEnding);
+
+            if (budgetYearRec == null)
+            {
+                budgetYearRec = new BudgetPeriodTotals()
+                {
+                    BudgetId = budgetActual.BudgetId,
+                    PeriodType = (int)PeriodTypes.YearEnding,
+                    Date = endYear,
+                    Total = budgetActual.Amount,
+                };
+                if (!context.AddSaveEntity(budgetYearRec, "Saving Budget Year Ending"))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                budgetYearRec.Total += budgetActual.Amount;
+                if (!context.SaveNoCommitEntity(budgetYearRec, "Saving Budget Year Ending"))
+                {
+                    return false;
+                }
+            }
+
             return true;
         }
     }
