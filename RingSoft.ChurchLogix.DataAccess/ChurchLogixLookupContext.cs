@@ -353,16 +353,30 @@ namespace RingSoft.ChurchLogix.DataAccess
             Members.GetFieldDefinition(p => p.Notes).IsMemo();
 
             Funds.GetFieldDefinition(p => p.Notes).IsMemo();
+            Funds.GetFieldDefinition(p => p.Goal).HasDecimalFieldType(DecimalFieldTypes.Currency);
+
             Budgets.GetFieldDefinition(p => p.Notes).IsMemo();
+            Budgets.GetFieldDefinition(p => p.Amount).HasDecimalFieldType(DecimalFieldTypes.Currency);
 
             FundHistory.GetFieldDefinition(p => p.AmountType)
                 .IsEnum<HistoryAmountTypes>();
+            FundHistory.GetFieldDefinition(p => p.Amount)
+                .HasDecimalFieldType(DecimalFieldTypes.Currency);
 
             FundPeriodTotals.GetFieldDefinition(p => p.PeriodType)
                 .IsEnum<PeriodTypes>();
+            FundPeriodTotals.GetFieldDefinition(p => p.TotalIncome)
+                .HasDecimalFieldType(DecimalFieldTypes.Currency);
+            FundPeriodTotals.GetFieldDefinition(p => p.TotalExpenses)
+                .HasDecimalFieldType(DecimalFieldTypes.Currency);
 
             BudgetPeriodTotals.GetFieldDefinition(p => p.PeriodType)
                 .IsEnum<PeriodTypes>();
+            BudgetPeriodTotals.GetFieldDefinition(p => p.Total)
+                .HasDecimalFieldType(DecimalFieldTypes.Currency);
+
+            BudgetActuals.GetFieldDefinition(p => p.Amount)
+                .HasDecimalFieldType(DecimalFieldTypes.Currency);
         }
 
         public override UserAutoFill GetUserAutoFill(string userName)

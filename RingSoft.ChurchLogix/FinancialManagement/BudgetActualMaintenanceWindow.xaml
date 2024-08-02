@@ -12,6 +12,47 @@
         Style="{StaticResource BaseWindowStyle}"
         Title="Enter Budget Costs" SizeToContent="WidthAndHeight">
 
+    <Window.Resources>
+        <Style TargetType="{x:Type local:BudgetActualHeaderControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type local:BudgetActualHeaderControl}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+
+                            <Grid VerticalAlignment="Stretch">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ac:DbMaintenanceButton Grid.Row="0" Grid.Column="0" x:Name="PostCostButton" Content="P_ost Costs" ImageSource="{StaticResource DecimalEditImage}" Style="{StaticResource SubButton}" HorizontalContentAlignment="Left"/>
+
+                            </Grid>
+
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type ac:DbMaintenanceTopHeaderControl}" BasedOn="{StaticResource {x:Type ac:DbMaintenanceTopHeaderControl}}">
+
+            <Setter Property="CustomPanel">
+                <Setter.Value>
+                    <local:BudgetActualHeaderControl/>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+    </Window.Resources>
+
     <Window.DataContext>
         <vm:BudgetActualMaintenanceViewModel x:Name="LocalViewModel"/>
     </Window.DataContext>
@@ -31,7 +72,22 @@
                 <ColumnDefinition Width="Auto"/>
            </Grid.ColumnDefinitions>
 
-            <Label/>
+            <Label Grid.Row="0" Grid.Column="0" Content="Cost ID"/>
+
+            <dec:StringReadOnlyBox Grid.Row="0" Grid.Column="1" Text="{Binding Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Width="75"/>
+
+            <Label Grid.Row="1" Grid.Column="0" Content="Budget Item"/>
+
+            <lc:AutoFillControl Grid.Row="1" Grid.Column="1" Setup="{Binding BudgetAutoFillSetup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="{Binding BudgetAutoFillValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UiCommand="{Binding BudgetAutoFillCommand}" Width="200"/>
+
+            <Label Grid.Row="2" Grid.Column="0" Content="Date"/>
+
+            <dec:DateEditControl Grid.Row="2" Grid.Column="1" Value="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" HorizontalAlignment="Left"/>
+
+            <Label Grid.Row="3" Grid.Column="0" Content="Amount"/>
+
+            <dec:DecimalEditControl Grid.Row="3" Grid.Column="1" Value="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" HorizontalAlignment="Left" TextAlignment="Left" FormatType="Currency"/>
+
         </Grid>
     </DockPanel>
 </ac:DbMaintenanceWindow>

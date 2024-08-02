@@ -90,12 +90,12 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
         }
 
         public IBudgetView View { get; private set; }
-        public RelayCommand PostCostsCommand { get; }
+        public RelayCommand EnterCostsCommand { get; }
 
         public BudgetMaintenanceViewModel()
         {
             FundAutoFillSetup = new AutoFillSetup(TableDefinition.GetFieldDefinition(p => p.FundId));
-            PostCostsCommand = new RelayCommand(PostCosts);
+            EnterCostsCommand = new RelayCommand(EnterCosts);
         }
 
         protected override void Initialize()
@@ -145,7 +145,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             Notes = null;
         }
 
-        private void PostCosts()
+        private void EnterCosts()
         {
             SystemGlobals.TableRegistry.ShowWindow(AppGlobals.LookupContext.BudgetActuals);
         }

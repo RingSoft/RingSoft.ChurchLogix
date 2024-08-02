@@ -32,7 +32,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <ac:DbMaintenanceButton Grid.Row="0" Grid.Column="0" x:Name="PostCostButton" Content="P_ost Costs" ImageSource="{StaticResource DecimalEditImage}" Style="{StaticResource SubButton}" HorizontalContentAlignment="Left"/>
+                                <ac:DbMaintenanceButton Grid.Row="0" Grid.Column="0" x:Name="EditCostButton" Content="_Enter Costs" ImageSource="{StaticResource DecimalEditImage}" Style="{StaticResource SubButton}" HorizontalContentAlignment="Left"/>
 
                             </Grid>
 
@@ -91,7 +91,7 @@
 
             <dec:DecimalEditControl Grid.Row="1" Grid.Column="3" Value="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" HorizontalAlignment="Left"/>
 
-            <TabControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4">
+            <TabControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5">
 
                 <dec:DataEntryMemoTabItem Header="Notes" VerticalAlignment="Stretch">
                     <DockPanel>

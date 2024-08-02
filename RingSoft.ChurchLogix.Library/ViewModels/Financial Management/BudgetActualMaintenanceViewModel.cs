@@ -1,10 +1,17 @@
 ﻿using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
+using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 {
+    public interface IBudgetActualView
+    {
+        void ShowPostProcedure();
+
+        void UpdateProcedure(string text);
+    }
     public class BudgetActualMaintenanceViewModel : AppDbMaintenanceViewModel<BudgetActual>
     {
         private int _id;
@@ -84,10 +91,35 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             }
         }
 
+        public UiCommand BudgetAutoFillCommand { get; }
+
+        public RelayCommand PostCostsCommand { get; }
+
+        public IBudgetActualView View { get; private set; }
+
         public BudgetActualMaintenanceViewModel()
         {
             BudgetAutoFillSetup = new AutoFillSetup
                 (TableDefinition.GetFieldDefinition(p => p.BudgetId));
+
+            BudgetAutoFillCommand = new UiCommand();
+            PostCostsCommand = new RelayCommand((() =>
+            {
+                View.ShowPostProcedure();
+            }));
+        }
+
+        protected override void Initialize()
+        {
+            if (base.View is IBudgetActualView view)
+            {
+                View = view;
+            }
+            else
+            {
+                throw new Exception($"Must implement {nameof(IBudgetActualView)}");
+            }
+            base.Initialize();
         }
 
         protected override void PopulatePrimaryKeyControls(BudgetActual newEntity, PrimaryKeyValue primaryKeyValue)
@@ -119,6 +151,18 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             BudgetAutoFillValue = null;
             Date = DateTime.Today;
             Amount = 0;
+
+            BudgetAutoFillCommand.SetFocus();
+        }
+
+        public bool PostCosts()
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                Thread.Sleep(100);
+                View.UpdateProcedure(i.ToString());
+            }
+            return true;
         }
     }
 }

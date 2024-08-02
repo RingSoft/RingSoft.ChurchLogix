@@ -10,7 +10,7 @@ namespace RingSoft.ChurchLogix.FinancialManagement
 {
     public class BudgetHeaderControl : DbMaintenanceCustomPanel
     {
-        public DbMaintenanceButton PostCostButton { get; set; }
+        public DbMaintenanceButton EditCostButton { get; set; }
 
         static BudgetHeaderControl()
         {
@@ -24,7 +24,7 @@ namespace RingSoft.ChurchLogix.FinancialManagement
 
         public override void OnApplyTemplate()
         {
-            PostCostButton = GetTemplateChild(nameof(PostCostButton)) as DbMaintenanceButton;
+            EditCostButton = GetTemplateChild(nameof(EditCostButton)) as DbMaintenanceButton;
 
             base.OnApplyTemplate();
         }
@@ -48,27 +48,22 @@ namespace RingSoft.ChurchLogix.FinancialManagement
             {
                 if (TopHeaderControl.CustomPanel is BudgetHeaderControl budgetHeaderControl)
                 {
-                    budgetHeaderControl.PostCostButton.Command =
-                        LocalViewModel.PostCostsCommand;
+                    budgetHeaderControl.EditCostButton.Command =
+                        LocalViewModel.EnterCostsCommand;
 
-                    budgetHeaderControl.PostCostButton.ToolTip.HeaderText = "Post Costs (Alt + O)";
-                    budgetHeaderControl.PostCostButton.ToolTip.DescriptionText = "Post Costs (Alt + U)";
+                    budgetHeaderControl.EditCostButton.ToolTip.HeaderText = "Enter Costs (Alt + E)";
+                    budgetHeaderControl.EditCostButton.ToolTip.DescriptionText = "Enter Costs (Alt + E)";
 
                     if (!LocalViewModel.TableDefinition.HasRight(RightTypes.AllowEdit))
                     {
-                        budgetHeaderControl.PostCostButton.Visibility = Visibility.Collapsed;
+                        budgetHeaderControl.EditCostButton.Visibility = Visibility.Collapsed;
                     }
 
-                    budgetHeaderControl.PostCostButton.Command = LocalViewModel.PostCostsCommand;
+                    budgetHeaderControl.EditCostButton.Command = LocalViewModel.EnterCostsCommand;
                 }
             };
 
             RegisterFormKeyControl(NameControl);
-        }
-
-        public void ShowPostCosts()
-        {
-            
         }
     }
 }
