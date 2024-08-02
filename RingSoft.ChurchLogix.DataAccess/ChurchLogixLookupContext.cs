@@ -247,20 +247,33 @@ namespace RingSoft.ChurchLogix.DataAccess
 
             FundHistoryLookup = new LookupDefinition<FundHistoryLookup, FundHistory>(FundHistory);
 
-            FundHistoryLookup.AddVisibleColumnDefinition(
+            FundHistoryLookup.Include(p => p.Fund)
+                .AddVisibleColumnDefinition(
                 p => p.Fund
                 , "Fund"
-                , p => p.Amount, 40);
+                , p => p.Description, 30);
+
+            FundHistoryLookup.Include(p => p.BudgetItem)
+                .AddVisibleColumnDefinition(
+                    p => p.Budget
+                    , "Budget"
+                    , p => p.Name, 30);
+
+            FundHistoryLookup.AddVisibleColumnDefinition(
+                p => p.Date
+                , "Date"
+                , p => p.Date, 15);
+
 
             FundHistoryLookup.AddVisibleColumnDefinition(
                 p => p.AmountType
                 , "Type"
-                , p => p.AmountType, 30);
+                , p => p.AmountType, 10);
 
             FundHistoryLookup.AddVisibleColumnDefinition(
                 p => p.Amount
                 , "Amount"
-                , p => p.Amount, 30);
+                , p => p.Amount, 15);
 
             FundHistory.HasLookupDefinition(FundHistoryLookup);
 

@@ -57,7 +57,6 @@ namespace RingSoft.ChurchLogix.Library
         {
             DataRepository ??= new DataRepository();
             var test = SystemGlobals.DataRepository;
-            SystemGlobals.ConvertAllDatesToUniversalTime = true;
 
             AppSplashProgress?.Invoke(null, new AppProgressArgs("Initializing Database Structure."));
 

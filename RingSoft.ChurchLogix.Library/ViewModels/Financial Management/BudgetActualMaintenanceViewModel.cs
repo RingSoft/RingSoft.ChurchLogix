@@ -97,6 +97,9 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 
         public IBudgetActualView View { get; private set; }
 
+
+        private bool? _valSave;
+
         public BudgetActualMaintenanceViewModel()
         {
             BudgetAutoFillSetup = new AutoFillSetup
@@ -148,6 +151,76 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             };
         }
 
+        protected override bool ValidateEntity(BudgetActual entity)
+        {
+            if (entity.Id == 0)
+            {
+                CheckSave(entity);
+                if (_valSave != null)
+                {
+                    var result = _valSave.Value;
+                    _valSave = null;
+                    return result;
+                }
+            }
+
+            return base.ValidateEntity(entity);
+        }
+
+        private async void CheckSave(BudgetActual entity)
+        {
+            if (_valSave == null)
+            {
+                var context = SystemGlobals.DataRepository.GetDataContext();
+                var actualTable = context.GetTable<BudgetActual>();
+                var actualRecord = actualTable.FirstOrDefault(
+                    p => p.BudgetId == entity.BudgetId
+                    && p.Date == entity.Date
+                    && p.Amount.Equals(entity.Amount));
+
+                if (actualRecord != null)
+                {
+                    var message =
+                        "There is a record in this table that matches this data.  Are you sure you wish to save?";
+                    var caption = "Confirm Save";
+                    if (await ControlsGlobals.UserInterface.ShowYesNoMessageBox(message, caption) ==
+                        MessageBoxButtonsResult.Yes)
+                    {
+                        _valSave = true;
+                    }
+                    else
+                    {
+                        _valSave = false;
+                    }
+                }
+
+                if (_valSave == null)
+                {
+                    var fundHistoryTable = context.GetTable<FundHistory>();
+                    var fundHistoryRecord = fundHistoryTable.FirstOrDefault(
+                        p => p.BudgetId == entity.BudgetId
+                             && p.Date == entity.Date
+                             && p.Amount.Equals(entity.Amount));
+
+                    if (fundHistoryRecord != null)
+                    {
+                        var message =
+                            "There is a record in the Fund History table that matches this data.  Are you sure you wish to save?";
+                        var caption = "Confirm Save";
+                        if (await ControlsGlobals.UserInterface.ShowYesNoMessageBox(message, caption) ==
+                            MessageBoxButtonsResult.Yes)
+                        {
+                            _valSave = true;
+                        }
+                        else
+                        {
+                            _valSave = false;
+                        }
+                    }
+
+                }
+            }
+        }
         protected override void ClearData()
         {
             Id = 0;

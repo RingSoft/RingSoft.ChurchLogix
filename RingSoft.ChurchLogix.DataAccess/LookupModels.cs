@@ -66,6 +66,10 @@ namespace RingSoft.ChurchLogix.DataAccess
     {
         public string Fund { get; set; }
 
+        public string Budget { get; set; }
+
+        public DateTime Date { get; set; }
+
         public int AmountType { get; set; }
 
         public double Amount { get; set; }
