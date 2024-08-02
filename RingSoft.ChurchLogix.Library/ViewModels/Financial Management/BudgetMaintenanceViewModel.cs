@@ -147,7 +147,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 
         private void PostCosts()
         {
-            //View.ShowPostCosts();
+            SystemGlobals.TableRegistry.ShowWindow(AppGlobals.LookupContext.BudgetActuals);
         }
     }
 }

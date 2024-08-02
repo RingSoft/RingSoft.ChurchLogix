@@ -41,6 +41,9 @@ namespace RingSoft.ChurchLogix.Library
             rightItem = new RightCategoryItem(item: "Add/Edit Budget Items", AppGlobals.LookupContext.Budgets);
             category.Items.Add(rightItem);
 
+            rightItem = new RightCategoryItem(item: "Add/Edit Budget Costs", AppGlobals.LookupContext.BudgetActuals);
+            category.Items.Add(rightItem);
+
             Categories.Add(category);
         }
     }

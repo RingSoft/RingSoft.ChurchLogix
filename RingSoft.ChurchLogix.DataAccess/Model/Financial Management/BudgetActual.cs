@@ -9,7 +9,7 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.Financial_Management
         public int Id { get; set; }
 
         [Required]
-        public int BudgetId { get;}
+        public int BudgetId { get; set; }
 
         public virtual BudgetItem Budget { get; set; }
 
