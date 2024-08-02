@@ -105,7 +105,10 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             BudgetAutoFillCommand = new UiCommand();
             PostCostsCommand = new RelayCommand((() =>
             {
-                View.ShowPostProcedure(this);
+                if (CheckDirty())
+                {
+                    View.ShowPostProcedure(this);
+                }
             }));
         }
 
