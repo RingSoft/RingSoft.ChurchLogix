@@ -23,9 +23,12 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
                     
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
@@ -38,6 +41,30 @@
 
             <lc:AutoFillReadOnlyControl Grid.Row="1" Grid.Column="1" x:Name="BudgetAutoFill" Setup="{Binding BudgetAutoFillSetup}" Value="{Binding BudgetAutoFillValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" HorizontalAlignment="Left"/>
 
+            <Label Grid.Row="2" Grid.Column="0" Content="Date"/>
+
+            <dec:DateReadOnlyBox Grid.Row="2"  Grid.Column="1" Value="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" HorizontalAlignment="Left" DateFormatType="DateOnly"/>
+
+            <Label Grid.Row="3" Grid.Column="0" Content="Amount Type"/>
+
+            <Grid Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <dec:StringReadOnlyBox Grid.Row="0" Grid.Column="0" Text="{Binding AmountType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" HorizontalAlignment="Left"/>
+
+                <Label Grid.Row="0" Grid.Column="1" Content="Amount"/>
+
+                <dec:DecimalReadOnlyBox Grid.Row="0" Grid.Column="2" Value="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" HorizontalAlignment="Left"/>
+
+            </Grid>
         </Grid>
     </DockPanel>
 </ac:DbMaintenanceWindow>

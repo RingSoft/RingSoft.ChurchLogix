@@ -84,6 +84,52 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             }
         }
 
+        private DateTime _date;
+
+        public DateTime Date
+        {
+            get { return _date; }
+            set
+            {
+                if (_date == value)
+                    return;
+
+                _date = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _amountType;
+
+        public string AmountType
+        {
+            get { return _amountType; }
+            set
+            {
+                if (_amountType == value)
+                    return;
+
+                _amountType = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _amount;
+
+        public double Amount
+        {
+            get { return _amount; }
+            set
+            {
+                if (_amount == value)
+                    return;
+
+                _amount = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public UiCommand BudgetUiCommand { get; }
 
         public FundHistoryViewModel()
@@ -123,6 +169,19 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             {
                 BudgetUiCommand.Visibility = UiVisibilityTypes.Visible;
             }
+            Date = entity.Date;
+            var enumTranslation = TableDefinition.GetFieldDefinition(
+                    p => p.AmountType)
+                .EnumTranslation;
+
+            if (enumTranslation != null)
+            {
+                AmountType = enumTranslation
+                    .TypeTranslations
+                    .FirstOrDefault(p => p.NumericValue == entity.AmountType)
+                    .TextValue;
+            }
+            Amount = entity.Amount;
         }
 
         protected override FundHistory GetEntityData()
@@ -136,6 +195,9 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             FundAutoFillValue = null;
             BudgetAutoFillValue = null;
             BudgetUiCommand.Visibility = UiVisibilityTypes.Collapsed;
+            Date = DateTime.Today;
+            Amount = 0;
+            AmountType = string.Empty;
         }
     }
 }
