@@ -282,7 +282,12 @@ namespace RingSoft.ChurchLogix.DataAccess
             FundPeriodLookup.Include(p => p.Fund)
                 .AddVisibleColumnDefinition(p => p.Fund
                     , "Fund"
-                    , p => p.Description, 40);
+                    , p => p.Description, 30);
+
+            FundPeriodLookup.AddVisibleColumnDefinition(
+                p => p.PeriodType
+                , "Period Type"
+                , p => p.PeriodType, 10);
 
             FundPeriodLookup.AddVisibleColumnDefinition(
                 p => p.Date
@@ -313,7 +318,11 @@ namespace RingSoft.ChurchLogix.DataAccess
             BudgetPeriodLookup.Include(p => p.BudgetItem)
                 .AddVisibleColumnDefinition(p => p.BudgetItem
                     , "Fund"
-                    , p => p.Name, 50);
+                    , p => p.Name, 40);
+            BudgetPeriodLookup.AddVisibleColumnDefinition(
+                p => p.PeriodType
+                , "Period Type"
+                , p => p.PeriodType, 10);
 
             BudgetPeriodLookup.AddVisibleColumnDefinition(
                 p => p.Date

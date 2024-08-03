@@ -86,6 +86,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 
                 _totalSpent = value;
                 OnPropertyChanged();
+                UpdateDiffValues();
             }
         }
 

@@ -81,6 +81,8 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         public DateTime Date { get; set; }
 
+        public int PeriodType { get; set; }
+
         public double TotalIncome { get; set; }
 
         public double TotalExpenses { get; set; }
@@ -108,6 +110,8 @@ namespace RingSoft.ChurchLogix.DataAccess
         public string BudgetItem { get; set; }
 
         public DateTime Date { get; set; }
+
+        public int PeriodType { get; set; }
 
         public double Total { get; set; }
     }

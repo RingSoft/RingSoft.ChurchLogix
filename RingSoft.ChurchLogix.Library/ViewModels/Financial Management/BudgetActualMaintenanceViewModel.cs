@@ -3,9 +3,16 @@ using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
+using System;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 {
+    public class FundTotal
+    {
+        public int FundId { get; set; }
+
+        public double Total { get; set; }
+    }
     public interface IBudgetActualView
     {
         void ShowPostProcedure(BudgetActualMaintenanceViewModel viewModel);
@@ -239,9 +246,11 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
                 var fundPeriodTotalsTable = context.GetTable<FundPeriodTotals>();
                 var budgetPeriodTotalsTable = context.GetTable<BudgetPeriodTotals>();
                 var actualTable = context.GetTable<BudgetActual>();
+                var fundTable = context.GetTable<Fund>();
                 var totalRecords = actualTable.Count();
                 var index = 0;
                 var budgetsToDelete = new List<BudgetActual>();
+                var fundTotals = new List<FundTotal>();
                 foreach (var budgetActual in actualTable)
                 {
                     index++;
@@ -278,10 +287,27 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 
                     if (!SaveBudgetPeriodYear(budgetPeriodTotalsTable, endYear, budgetActual, context)) return false;
 
+                    if (!SaveFund(fundTable, budgetActual, context, fundTotals))
+                    {
+                        return false;
+                    }
+
                     budgetActual.Budget = null;
                     budgetsToDelete.Add(budgetActual);
                 }
 
+                foreach (var fundTotal in fundTotals)
+                {
+                    var fund = fundTable.FirstOrDefault(p => p.Id == fundTotal.FundId);
+                    if (fund != null)
+                    {
+                        fund.TotalSpent += fundTotal.Total;
+                        if (!context.SaveNoCommitEntity(fund, "Saving Fund"))
+                        {
+                            return false;
+                        }
+                    }
+                }
                 context.RemoveRange(budgetsToDelete);
                 var result = context.Commit("Committing Data");
 
@@ -358,6 +384,26 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
                 }
             }
 
+            return true;
+        }
+
+        private static bool SaveFund(IQueryable<Fund> fundTable, 
+            BudgetActual budgetActual, IDbContext context, List<FundTotal> fundTotals)
+        {
+            var fund = fundTable
+                .FirstOrDefault(p => p.Id == budgetActual.Budget.FundId);
+
+            var fundTotal = fundTotals.FirstOrDefault(p => p.FundId == fund.Id);
+            if (fundTotal == null)
+            {
+                fundTotal = new FundTotal()
+                {
+                    FundId = fund.Id,
+                };
+                fundTotals.Add(fundTotal);
+            }
+
+            fundTotal.Total += budgetActual.Amount;
             return true;
         }
 
