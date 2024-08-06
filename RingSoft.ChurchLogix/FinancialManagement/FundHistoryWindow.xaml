@@ -62,7 +62,7 @@
 
                 <Label Grid.Row="0" Grid.Column="1" Content="Amount"/>
 
-                <dec:DecimalReadOnlyBox Grid.Row="0" Grid.Column="2" Value="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" HorizontalAlignment="Left"/>
+                <dec:DecimalReadOnlyBox Grid.Row="0" Grid.Column="2" Value="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" HorizontalAlignment="Left" FormatType="Currency"/>
 
             </Grid>
         </Grid>

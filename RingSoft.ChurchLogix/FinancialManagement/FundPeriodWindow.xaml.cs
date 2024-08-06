@@ -44,7 +44,18 @@ namespace RingSoft.ChurchLogix.FinancialManagement
 
         public void RefreshView()
         {
-            
+            if (LocalViewModel.Difference > 0)
+            {
+                DifferenceBox.Foreground = Brushes.LightGreen;
+            }
+            else if (LocalViewModel.Difference < 0)
+            {
+                DifferenceBox.Foreground = Brushes.LightPink;
+            }
+            else
+            {
+                DifferenceBox.Foreground = Brushes.Black;
+            }
         }
     }
 }

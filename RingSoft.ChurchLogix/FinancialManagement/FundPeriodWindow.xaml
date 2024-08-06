@@ -11,7 +11,7 @@
         xmlns:local="clr-namespace:RingSoft.ChurchLogix.FinancialManagement"
         mc:Ignorable="d"
         Style="{StaticResource BaseWindowStyle}"
-        Title="Fund Period Totals" SizeToContent="WidthAndHeight">
+        Title="Fund Period Totals" Width="500" Height="500">
     <Window.DataContext>
         <vm:FundPeriodTotalsViewModel x:Name="LocalViewModel"/>
     </Window.DataContext>
@@ -48,9 +48,21 @@
 
             <dec:DateReadOnlyBox Grid.Row="1" Grid.Column="1" Value="{Binding DateEnding, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" HorizontalAlignment="Left"/>
 
+            <Label Grid.Row="1" Grid.Column="2" Content="Total Income"/>
+
+            <dec:DecimalReadOnlyBox Grid.Row="1" Grid.Column="3" Value="{Binding TotalIncome, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FormatType="Currency" Width="100" HorizontalAlignment="Left"/>
+
+            <Label Grid.Row="2" Grid.Column="2" Content="Total Expenses"/>
+
+            <dec:DecimalReadOnlyBox Grid.Row="2" Grid.Column="3" Value="{Binding TotalExpenses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FormatType="Currency" Width="100" HorizontalAlignment="Left"/>
+
+            <Label Grid.Row="3" Grid.Column="2" Content="Difference"/>
+
+            <dec:DecimalReadOnlyBox Grid.Row="3" Grid.Column="3" x:Name="DifferenceBox" Value="{Binding Difference, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FormatType="Currency" Width="100" HorizontalAlignment="Left"/>
+
             <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5" HorizontalAlignment="Left" Content="History"/>
 
-            <lc:LookupControl Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LookupControl" MinWidth="600" MinHeight="500" LookupDefinition="{Binding FundHistoryLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <lc:LookupControl Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LookupControl" LookupDefinition="{Binding FundHistoryLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                 <lc:LookupControl.LookupColumns>
 
