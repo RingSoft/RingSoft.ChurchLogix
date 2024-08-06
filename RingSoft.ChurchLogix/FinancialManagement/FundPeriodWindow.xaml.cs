@@ -38,6 +38,7 @@ namespace RingSoft.ChurchLogix.FinancialManagement
             Loaded += (sender, args) =>
             {
                 StatusBar.Visibility = Visibility.Collapsed;
+                LookupControl.Focus();
             };
         }
 

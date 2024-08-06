@@ -50,7 +50,7 @@
 
             <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5" HorizontalAlignment="Left" Content="History"/>
 
-            <lc:LookupControl Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5" MinWidth="600" MinHeight="500" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LookupDefinition="{Binding FundHistoryLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <lc:LookupControl Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5" x:Name="LookupControl" MinWidth="600" MinHeight="500" LookupDefinition="{Binding FundHistoryLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                 <lc:LookupControl.LookupColumns>
 
