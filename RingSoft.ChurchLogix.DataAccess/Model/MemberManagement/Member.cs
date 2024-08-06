@@ -33,11 +33,13 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.MemberManagement
 
         public virtual ICollection<StaffPerson> Staff { get; set; }
         public virtual ICollection<Member> HouseholdMembers { get; set; }
+        public virtual ICollection<MemberGivingHistory> GivingHistory { get; set; }
 
         public Member()
         {
             Staff = new HashSet<StaffPerson>();
             HouseholdMembers = new HashSet<Member>();
+            GivingHistory = new HashSet<MemberGivingHistory>();
         }
     }
 }

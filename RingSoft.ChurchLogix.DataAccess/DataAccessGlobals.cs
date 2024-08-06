@@ -14,9 +14,11 @@ namespace RingSoft.ChurchLogix.DataAccess
         public static void ConfigureModel(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new StaffPersonConfiguration());
-            modelBuilder.ApplyConfiguration(new MemberConfiguration());
             modelBuilder.ApplyConfiguration(new GroupConfiguration());
             modelBuilder.ApplyConfiguration(new StaffGroupConfiguration());
+
+            modelBuilder.ApplyConfiguration(new MemberConfiguration());
+            modelBuilder.ApplyConfiguration(new MemberGivingHistoryConfiguration());
 
             modelBuilder.ApplyConfiguration(new FundConfiguration());
             modelBuilder.ApplyConfiguration(new BudgetConfiguration());

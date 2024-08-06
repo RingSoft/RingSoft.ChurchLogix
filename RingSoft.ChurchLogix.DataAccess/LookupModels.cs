@@ -17,6 +17,17 @@ namespace RingSoft.ChurchLogix.DataAccess
         public string Name { get; set; }
     }
 
+    public class MemberGivingHistoryLookup
+    {
+        public string Member { get; set; }
+
+        public string Fund { get; set; }
+
+        public DateTime Date { get; set; }
+
+        public double Amount { get; set; }
+    }
+
     public class GroupsLookup
     {
         public string Name { get; set; }

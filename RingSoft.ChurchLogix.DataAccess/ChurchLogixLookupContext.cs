@@ -26,9 +26,11 @@ namespace RingSoft.ChurchLogix.DataAccess
         public TableDefinition<SystemMaster> SystemMaster { get; set; }
         public TableDefinition<SystemPreferences> SystemPreferences { get; set; }
         public TableDefinition<StaffPerson> Staff { get; set; }
-        public TableDefinition<Member> Members { get; set; }
         public TableDefinition<Group> Groups { get; set; }
         public TableDefinition<StaffGroup> StaffGroups { get; set; }
+
+        public TableDefinition<Member> Members { get; set; }
+        public TableDefinition<MemberGivingHistory> MembersGivingHistory { get; set; }
 
         public TableDefinition<Fund> Funds { get; set; }
         public TableDefinition<BudgetItem> Budgets { get; set; }
@@ -38,9 +40,11 @@ namespace RingSoft.ChurchLogix.DataAccess
         public TableDefinition<BudgetActual> BudgetActuals { get; set; }
 
         public LookupDefinition<StaffLookup, StaffPerson> StaffLookup { get; set; }
-        public LookupDefinition<MemberLookup, Member> MemberLookup { get; set; }
         public LookupDefinition<GroupsLookup, Group> GroupsLookup { get; set; }
         public LookupDefinition<StaffGroupsLookup, StaffGroup> StaffGroupsLookup { get; set;}
+
+        public LookupDefinition<MemberLookup, Member> MemberLookup { get; set; }
+        public LookupDefinition<MemberGivingHistoryLookup, MemberGivingHistory> MemberGivingHistoryLookup { get; set; }
 
         public LookupDefinition<FundLookup, Fund> FundsLookup { get; set; }
         public LookupDefinition<BudgetLookup, BudgetItem> BudgetsLookup { get; set; }
@@ -174,14 +178,6 @@ namespace RingSoft.ChurchLogix.DataAccess
 
             Staff.HasLookupDefinition(StaffLookup);
 
-            MemberLookup = new LookupDefinition<MemberLookup, Member>(Members);
-
-            MemberLookup.AddVisibleColumnDefinition(
-                p => p.Name
-                , "Member"
-                , p => p.Name, 99);
-
-            Members.HasLookupDefinition(MemberLookup);
 
             GroupsLookup = new LookupDefinition<GroupsLookup, Group>(Groups);
 
@@ -205,6 +201,40 @@ namespace RingSoft.ChurchLogix.DataAccess
                     , p => p.Name, 50);
 
             StaffGroups.HasLookupDefinition(StaffGroupsLookup);
+
+            MemberLookup = new LookupDefinition<MemberLookup, Member>(Members);
+
+            MemberLookup.AddVisibleColumnDefinition(
+                p => p.Name
+                , "Member"
+                , p => p.Name, 99);
+
+            Members.HasLookupDefinition(MemberLookup);
+
+            MemberGivingHistoryLookup =
+                new LookupDefinition<MemberGivingHistoryLookup, MemberGivingHistory>(MembersGivingHistory);
+
+            MemberGivingHistoryLookup.Include(p => p.Member)
+                .AddVisibleColumnDefinition(p => p.Member
+                    , "Member"
+                    , p => p.Name, 35);
+
+            MemberGivingHistoryLookup.Include(p => p.Fund)
+                .AddVisibleColumnDefinition(p => p.Fund
+                    , "Fund"
+                    , p => p.Description, 35);
+
+            MemberGivingHistoryLookup.AddVisibleColumnDefinition(
+                p => p.Date
+                , "Date"
+                , p => p.Date, 15);
+
+            MemberGivingHistoryLookup.AddVisibleColumnDefinition(
+                p => p.Amount
+                , "Amount"
+                , p => p.Amount, 15);
+
+            MembersGivingHistory.HasLookupDefinition(MemberGivingHistoryLookup);
 
             FundsLookup = new LookupDefinition<FundLookup, Fund>(Funds);
 
@@ -362,6 +392,7 @@ namespace RingSoft.ChurchLogix.DataAccess
             Members.PriorityLevel = 100;
             Groups.PriorityLevel = 100;
             Funds.PriorityLevel = 100;
+            MembersGivingHistory.PriorityLevel = 200;
             Budgets.PriorityLevel = 200;
             Staff.PriorityLevel = 200;
             StaffGroups.PriorityLevel = 300;
@@ -373,6 +404,9 @@ namespace RingSoft.ChurchLogix.DataAccess
             Staff.GetFieldDefinition(p => p.Notes).IsMemo();
 
             Members.GetFieldDefinition(p => p.Notes).IsMemo();
+
+            MembersGivingHistory.GetFieldDefinition(p => p.Amount)
+                .HasDecimalFieldType(DecimalFieldTypes.Currency);
 
             Funds.GetFieldDefinition(p => p.Notes).IsMemo();
             Funds.GetFieldDefinition(p => p.Goal).HasDecimalFieldType(DecimalFieldTypes.Currency);

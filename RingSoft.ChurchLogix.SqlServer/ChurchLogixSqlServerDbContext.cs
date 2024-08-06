@@ -16,6 +16,7 @@ namespace RingSoft.ChurchLogix.SqlServer
         public DbSet<SystemPreferences> SystemPreferences { get; set; }
         public DbSet<StaffPerson> Staff { get; set; }
         public DbSet<Member> Members { get; set; }
+        public DbSet<MemberGivingHistory> MembersGivingHistory { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<StaffGroup> StaffGroups { get; set; }
         public DbSet<Fund> Funds { get; set; }

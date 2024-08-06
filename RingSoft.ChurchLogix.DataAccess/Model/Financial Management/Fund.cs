@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 
 namespace RingSoft.ChurchLogix.DataAccess.Model.Financial_Management
 {
@@ -27,12 +28,14 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.Financial_Management
         public virtual ICollection<BudgetItem> Budgets { get; set; }
         public virtual ICollection<FundHistory> History { get; set; }
         public virtual ICollection<FundPeriodTotals> PeriodTotals { get; set; }
+        public virtual ICollection<MemberGivingHistory> MemberGivingHistory { get; set; }
 
         public Fund()
         {
             Budgets  = new HashSet<BudgetItem>();
             History = new HashSet<FundHistory>();
             PeriodTotals = new HashSet<FundPeriodTotals>();
+            MemberGivingHistory = new HashSet<MemberGivingHistory>();
         }
     }
 }

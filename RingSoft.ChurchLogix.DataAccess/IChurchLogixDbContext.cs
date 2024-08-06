@@ -19,6 +19,8 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         DbSet<Member> Members { get; set; }
 
+        DbSet<MemberGivingHistory> MembersGivingHistory { get; set; }
+
         DbSet<Group> Groups { get; set; }
 
         DbSet<StaffGroup> StaffGroups { get; set; }
