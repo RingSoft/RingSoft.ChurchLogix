@@ -29,6 +29,7 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.Financial_Management
         public virtual ICollection<FundHistory> History { get; set; }
         public virtual ICollection<FundPeriodTotals> PeriodTotals { get; set; }
         public virtual ICollection<MemberGivingHistory> MemberGivingHistory { get; set; }
+        public virtual ICollection<MemberGivingDetails> GivingDetails { get; set; }
 
         public Fund()
         {
@@ -36,6 +37,7 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.Financial_Management
             History = new HashSet<FundHistory>();
             PeriodTotals = new HashSet<FundPeriodTotals>();
             MemberGivingHistory = new HashSet<MemberGivingHistory>();
+            GivingDetails = new HashSet<MemberGivingDetails>();
         }
     }
 }

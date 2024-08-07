@@ -12,9 +12,37 @@ namespace RingSoft.ChurchLogix.DataAccess
         public string Email { get; set; }
     }
 
+    public class GroupsLookup
+    {
+        public string Name { get; set; }
+    }
+
+    public class StaffGroupsLookup
+    {
+        public string StaffPerson { get; set; }
+
+        public string Group { get; set; }
+    }
+
     public class MemberLookup
     {
         public string Name { get; set; }
+    }
+
+    public class MemberGivingLookup
+    {
+        public string Member { get; set; }
+
+        public DateTime Date { get; set; }
+    }
+
+    public class MemberGivingDetailsLookup
+    {
+        public string Member { get; set; }
+
+        public string Fund { get; set; }
+
+        public double Amount { get; set; }
     }
 
     public class MemberGivingHistoryLookup
@@ -39,17 +67,6 @@ namespace RingSoft.ChurchLogix.DataAccess
         public double Total { get; set; }
     }
 
-    public class GroupsLookup
-    {
-        public string Name { get; set; }
-    }
-
-    public class StaffGroupsLookup
-    {
-        public string StaffPerson { get; set; }
-
-        public string Group { get; set; }
-    }
 
     public class FundLookup
     {

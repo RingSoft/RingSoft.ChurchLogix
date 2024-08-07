@@ -32,6 +32,8 @@ namespace RingSoft.ChurchLogix.DataAccess
         public TableDefinition<Member> Members { get; set; }
         public TableDefinition<MemberGivingHistory> MembersGivingHistory { get; set; }
         public TableDefinition<MemberPeriodGiving> MembersPeriodGiving { get; set; }
+        public TableDefinition<MemberGiving> MemberGiving { get; set; }
+        public TableDefinition<MemberGivingDetails> MemberGivingDetails { get; set; }
 
         public TableDefinition<Fund> Funds { get; set; }
         public TableDefinition<BudgetItem> Budgets { get; set; }
@@ -47,6 +49,8 @@ namespace RingSoft.ChurchLogix.DataAccess
         public LookupDefinition<MemberLookup, Member> MemberLookup { get; set; }
         public LookupDefinition<MemberGivingHistoryLookup, MemberGivingHistory> MemberGivingHistoryLookup { get; set; }
         public LookupDefinition<MemberPeriodGivingLookup, MemberPeriodGiving> MemberPeriodGivingLookup { get; set; }
+        public LookupDefinition<MemberGivingLookup, MemberGiving> MemberGivingLookup { get; set; }
+        public LookupDefinition<MemberGivingDetailsLookup, MemberGivingDetails> MemberGivingDetailsLookup { get; set; }
 
         public LookupDefinition<FundLookup, Fund> FundsLookup { get; set; }
         public LookupDefinition<BudgetLookup, BudgetItem> BudgetsLookup { get; set; }
@@ -264,6 +268,40 @@ namespace RingSoft.ChurchLogix.DataAccess
 
             MembersPeriodGiving.HasLookupDefinition(MemberPeriodGivingLookup);
 
+            MemberGivingLookup = new LookupDefinition<MemberGivingLookup, MemberGiving>(MemberGiving);
+
+            MemberGivingLookup.Include(p => p.Member)
+                .AddVisibleColumnDefinition(p => p.Member
+                    , "Member"
+                    , p => p.Name, 70);
+
+            MemberGivingLookup.AddVisibleColumnDefinition(p => p.Date
+                , "Date"
+                , p => p.Date, 30);
+
+            MemberGiving.HasLookupDefinition(MemberGivingLookup);
+
+            MemberGivingDetailsLookup =
+                new LookupDefinition<MemberGivingDetailsLookup, MemberGivingDetails>(MemberGivingDetails);
+
+            MemberGivingDetailsLookup.Include(p => p.MemberGiving)
+                .Include(p => p.Member)
+                .AddVisibleColumnDefinition(p => p.Member
+                    , "Member"
+                    , p => p.Name, 40);
+
+            MemberGivingDetailsLookup.Include(p => p.Fund)
+                .AddVisibleColumnDefinition(p => p.Fund
+                    , "Fund"
+                    , p => p.Description, 40);
+
+            MemberGivingDetailsLookup.AddVisibleColumnDefinition(
+                p => p.Amount
+                , "Amount"
+                , p => p.Amount, 20);
+
+            MemberGivingDetails.HasLookupDefinition(MemberGivingDetailsLookup);
+
             FundsLookup = new LookupDefinition<FundLookup, Fund>(Funds);
 
             FundsLookup.AddVisibleColumnDefinition(
@@ -422,6 +460,7 @@ namespace RingSoft.ChurchLogix.DataAccess
             Funds.PriorityLevel = 100;
             MembersGivingHistory.PriorityLevel = 200;
             MembersPeriodGiving.PriorityLevel = 200;
+            MemberGiving.PriorityLevel = 200;
             Budgets.PriorityLevel = 200;
             Staff.PriorityLevel = 200;
             StaffGroups.PriorityLevel = 300;
@@ -429,6 +468,7 @@ namespace RingSoft.ChurchLogix.DataAccess
             FundPeriodTotals.PriorityLevel = 300;
             BudgetPeriodTotals.PriorityLevel = 300;
             BudgetActuals.PriorityLevel = 300;
+            MemberGivingDetails.PriorityLevel = 300;
 
             Staff.GetFieldDefinition(p => p.Notes).IsMemo();
 
@@ -441,6 +481,9 @@ namespace RingSoft.ChurchLogix.DataAccess
                 .IsEnum<PeriodTypes>();
 
             MembersPeriodGiving.GetFieldDefinition(p => p.TotalGiving)
+                .HasDecimalFieldType(DecimalFieldTypes.Currency);
+
+            MemberGivingDetails.GetFieldDefinition(p => p.Amount)
                 .HasDecimalFieldType(DecimalFieldTypes.Currency);
 
             Funds.GetFieldDefinition(p => p.Notes).IsMemo();

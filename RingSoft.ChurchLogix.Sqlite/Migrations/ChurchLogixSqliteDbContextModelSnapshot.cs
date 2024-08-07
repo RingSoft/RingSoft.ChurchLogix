@@ -197,6 +197,46 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.ToTable("Members");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.MemberGiving", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.ToTable("MemberGiving");
+                });
+
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.MemberGivingDetails", b =>
+                {
+                    b.Property<int>("MemberGivingId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RowId")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("FundId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("MemberGivingId", "RowId");
+
+                    b.HasIndex("FundId");
+
+                    b.ToTable("MemberGivingDetails");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.MemberGivingHistory", b =>
                 {
                     b.Property<int>("Id")
@@ -592,6 +632,36 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.Navigation("Household");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.MemberGiving", b =>
+                {
+                    b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", "Member")
+                        .WithMany("Giving")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+                });
+
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.MemberGivingDetails", b =>
+                {
+                    b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.Fund", "Fund")
+                        .WithMany("GivingDetails")
+                        .HasForeignKey("FundId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.MemberGiving", "MemberGiving")
+                        .WithMany("Details")
+                        .HasForeignKey("MemberGivingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Fund");
+
+                    b.Navigation("MemberGiving");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.MemberGivingHistory", b =>
                 {
                     b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.Fund", "Fund")
@@ -693,6 +763,8 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                 {
                     b.Navigation("Budgets");
 
+                    b.Navigation("GivingDetails");
+
                     b.Navigation("History");
 
                     b.Navigation("MemberGivingHistory");
@@ -702,6 +774,8 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", b =>
                 {
+                    b.Navigation("Giving");
+
                     b.Navigation("GivingHistory");
 
                     b.Navigation("HouseholdMembers");
@@ -709,6 +783,11 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.Navigation("PeriodGiving");
 
                     b.Navigation("Staff");
+                });
+
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.MemberGiving", b =>
+                {
+                    b.Navigation("Details");
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.StaffManagement.Group", b =>

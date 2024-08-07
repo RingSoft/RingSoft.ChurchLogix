@@ -35,6 +35,7 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.MemberManagement
         public virtual ICollection<Member> HouseholdMembers { get; set; }
         public virtual ICollection<MemberGivingHistory> GivingHistory { get; set; }
         public virtual ICollection<MemberPeriodGiving> PeriodGiving { get; set; }
+        public virtual ICollection<MemberGiving> Giving { get; set; }
 
         public Member()
         {
@@ -42,6 +43,7 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.MemberManagement
             HouseholdMembers = new HashSet<Member>();
             GivingHistory = new HashSet<MemberGivingHistory>();
             PeriodGiving = new HashSet<MemberPeriodGiving>();
+            Giving = new HashSet<MemberGiving>();
         }
     }
 }
