@@ -11,6 +11,7 @@ using RingSoft.DbLookup.Controls.WPF.AdvancedFind;
 using System.Windows.Documents;
 using RingSoft.DataEntryControls.Engine;
 using Microsoft.VisualBasic.ApplicationServices;
+using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.DataEntryControls.WPF;
 
 namespace RingSoft.ChurchLogix
@@ -198,6 +199,17 @@ namespace RingSoft.ChurchLogix
                         CommandParameter = AppGlobals.LookupContext.Members,
                     });
                 }
+
+                if (AppGlobals.LookupContext.Members.HasSpecialRight((int)MemberSpecialRights.AllowViewGiving))
+                {
+                    menuItem.Items.Add(new MenuItem()
+                    {
+                        Header = "Add/Edit Member _Giving...",
+                        Command = ViewModel.ShowMaintenanceWindowCommand,
+                        CommandParameter = AppGlobals.LookupContext.MemberGiving,
+                    });
+                }
+
             }
         }
 
