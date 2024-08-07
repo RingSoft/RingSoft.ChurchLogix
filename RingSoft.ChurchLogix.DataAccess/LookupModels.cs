@@ -28,6 +28,17 @@ namespace RingSoft.ChurchLogix.DataAccess
         public double Amount { get; set; }
     }
 
+    public class MemberPeriodGivingLookup
+    {
+        public string Member { get; set; }
+
+        public DateTime Date { get; set; }
+
+        public int PeriodType { get; set; }
+
+        public double Total { get; set; }
+    }
+
     public class GroupsLookup
     {
         public string Name { get; set; }

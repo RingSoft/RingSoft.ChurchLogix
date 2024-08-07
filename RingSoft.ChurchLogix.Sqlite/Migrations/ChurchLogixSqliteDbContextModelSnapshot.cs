@@ -224,6 +224,25 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.ToTable("MembersGivingHistory");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.MemberPeriodGiving", b =>
+                {
+                    b.Property<int>("MemberId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PeriodType")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime");
+
+                    b.Property<double>("TotalGiving")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("MemberId", "PeriodType", "Date");
+
+                    b.ToTable("MembersPeriodGiving");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.StaffManagement.Group", b =>
                 {
                     b.Property<int>("Id")
@@ -592,6 +611,17 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.Navigation("Member");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.MemberPeriodGiving", b =>
+                {
+                    b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", "Member")
+                        .WithMany("PeriodGiving")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.StaffManagement.StaffGroup", b =>
                 {
                     b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.StaffManagement.Group", "Group")
@@ -675,6 +705,8 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.Navigation("GivingHistory");
 
                     b.Navigation("HouseholdMembers");
+
+                    b.Navigation("PeriodGiving");
 
                     b.Navigation("Staff");
                 });

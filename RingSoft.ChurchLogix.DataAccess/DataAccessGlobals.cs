@@ -19,6 +19,7 @@ namespace RingSoft.ChurchLogix.DataAccess
 
             modelBuilder.ApplyConfiguration(new MemberConfiguration());
             modelBuilder.ApplyConfiguration(new MemberGivingHistoryConfiguration());
+            modelBuilder.ApplyConfiguration(new MemberPeriodGivingConfiguration());
 
             modelBuilder.ApplyConfiguration(new FundConfiguration());
             modelBuilder.ApplyConfiguration(new BudgetConfiguration());
