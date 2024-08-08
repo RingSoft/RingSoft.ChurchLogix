@@ -1,11 +1,19 @@
 ﻿using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
+using RingSoft.ChurchLogix.Library.ViewModels.Financial_Management;
 using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
+using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 {
+    public interface IMemberGivingView : IDbMaintenanceView
+    {
+        void ShowPostProcedure(MemberGivingMaintenanceViewModel viewModel);
+
+        void UpdateProcedure(string text);
+    }
     public class MemberGivingMaintenanceViewModel : AppDbMaintenanceViewModel<MemberGiving>
     {
         private int _id;
@@ -69,6 +77,22 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             }
         }
 
+        private double _total;
+
+        public double Total
+        {
+            get { return _total; }
+            set
+            {
+                if (_total == value)
+                    return;
+
+                _total = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         private MemberGivingDetailsManager _detailsManager;
 
         public MemberGivingDetailsManager DetailsManager
@@ -85,7 +109,11 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
         }
 
 
-        public UiCommand MemberUiCommand { get; set; }
+        public UiCommand MemberUiCommand { get; }
+
+        public IMemberGivingView View { get; private set; }
+
+        public RelayCommand PostCommand { get; }
 
         public MemberGivingMaintenanceViewModel()
         {
@@ -96,6 +124,28 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 
             DetailsManager = new MemberGivingDetailsManager(this);
             RegisterGrid(DetailsManager);
+
+            PostCommand = new RelayCommand((() =>
+            {
+                if (CheckDirty())
+                {
+                    View.ShowPostProcedure(this);
+                }
+            }));
+
+        }
+
+        protected override void Initialize()
+        {
+            if (base.View is IMemberGivingView memberGivingView)
+            {
+                View = memberGivingView;
+            }
+            else
+            {
+                throw new Exception("Invalid view interface");
+            }
+            base.Initialize();
         }
 
         protected override void PopulatePrimaryKeyControls(MemberGiving newEntity, PrimaryKeyValue primaryKeyValue)
@@ -127,6 +177,17 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             MemberAutoFillValue = null;
             Date = DateTime.Today;
             MemberUiCommand.SetFocus();
+            Total = 0;
+        }
+
+        public bool PostGiving()
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                Thread.Sleep(100);
+                View.UpdateProcedure(i.ToString());
+            }
+            return true;
         }
     }
 }
