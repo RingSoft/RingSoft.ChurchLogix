@@ -69,6 +69,22 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             }
         }
 
+        private MemberGivingDetailsManager _detailsManager;
+
+        public MemberGivingDetailsManager DetailsManager
+        {
+            get { return _detailsManager; }
+            set
+            {
+                if (_detailsManager == value)
+                    return;
+
+                _detailsManager = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public UiCommand MemberUiCommand { get; set; }
 
         public MemberGivingMaintenanceViewModel()
@@ -77,6 +93,9 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
                 TableDefinition.GetFieldDefinition(p => p.MemberId));
 
             MemberUiCommand = new UiCommand();
+
+            DetailsManager = new MemberGivingDetailsManager(this);
+            RegisterGrid(DetailsManager);
         }
 
         protected override void PopulatePrimaryKeyControls(MemberGiving newEntity, PrimaryKeyValue primaryKeyValue)

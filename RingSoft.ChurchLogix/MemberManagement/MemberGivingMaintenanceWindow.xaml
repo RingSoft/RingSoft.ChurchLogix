@@ -47,6 +47,19 @@
 
             <dec:DateEditControl Grid.Row="2" Grid.Column="1" Value="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DateFormatType="DateOnly" Width="100" HorizontalAlignment="Left"/>
 
+            <Label Grid.Row="3" Grid.Column="0" Content="Details" HorizontalAlignment="Left"/>
+
+            <deg:DataEntryGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Manager="{Binding DetailsManager}">
+
+                <deg:DataEntryGrid.Columns>
+
+                    <deg:DataEntryGridTextColumn ColumnId="{x:Static vm:MemberGivingDetailsManager.FundColumnId}" Width="200"/>
+
+                    <deg:DataEntryGridTextColumn ColumnId="{x:Static vm:MemberGivingDetailsManager.AmountColumnId}" Width="100"/>
+
+                </deg:DataEntryGrid.Columns>
+            </deg:DataEntryGrid>
+
         </Grid>
     </DockPanel>
 </ac:DbMaintenanceWindow>
