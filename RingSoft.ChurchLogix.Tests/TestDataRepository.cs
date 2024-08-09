@@ -22,6 +22,7 @@ namespace RingSoft.ChurchLogix.Tests
             DataContext.AddEntity(new DataRepositoryRegistryItem<StaffPerson>());
             DataContext.AddEntity(new DataRepositoryRegistryItem<Member>());
             DataContext.AddEntity(new DataRepositoryRegistryItem<MemberGiving>());
+            DataContext.AddEntity(new DataRepositoryRegistryItem<MemberGivingDetails>());
             DataContext.AddEntity(new DataRepositoryRegistryItem<MemberGivingHistory>());
             DataContext.AddEntity(new DataRepositoryRegistryItem<MemberPeriodGiving>());
             DataContext.AddEntity(new DataRepositoryRegistryItem<Fund>());

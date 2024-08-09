@@ -18,8 +18,8 @@ namespace RingSoft.ChurchLogix.Sqlite
         public DbSet<Member> Members { get; set; }
         public DbSet<MemberGivingHistory> MembersGivingHistory { get; set; }
         public DbSet<MemberPeriodGiving> MembersPeriodGiving { get; set; }
-        public DbSet<MemberGiving> MemberGiving { get; set; }
-        public DbSet<MemberGivingDetails> MemberGivingDetails { get; set; }
+        public DbSet<MemberGiving> MembersGiving { get; set; }
+        public DbSet<MemberGivingDetails> MembersGivingDetails { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<StaffGroup> StaffGroups { get; set; }
         public DbSet<Fund> Funds { get; set; }

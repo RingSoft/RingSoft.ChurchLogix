@@ -81,7 +81,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 
         public override void SaveToEntity(MemberGivingDetails entity, int rowIndex)
         {
-            entity.RowId = rowIndex;
+            entity.RowId = rowIndex + 1;
             entity.FundId = FundAutoFillValue.GetEntity<Fund>().Id;
             entity.Amount = Amount;
         }

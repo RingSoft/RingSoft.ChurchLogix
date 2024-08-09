@@ -206,7 +206,7 @@ namespace RingSoft.ChurchLogix
                     {
                         Header = "Add/Edit Member _Giving...",
                         Command = ViewModel.ShowMaintenanceWindowCommand,
-                        CommandParameter = AppGlobals.LookupContext.MemberGiving,
+                        CommandParameter = AppGlobals.LookupContext.MembersGiving,
                     });
                 }
 

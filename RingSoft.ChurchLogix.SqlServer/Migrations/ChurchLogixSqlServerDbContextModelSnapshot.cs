@@ -230,7 +230,7 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.ToTable("MemberGiving");
+                    b.ToTable("MembersGiving");
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.MemberGivingDetails", b =>
@@ -251,7 +251,7 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
 
                     b.HasIndex("FundId");
 
-                    b.ToTable("MemberGivingDetails");
+                    b.ToTable("MembersGivingDetails");
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.MemberGivingHistory", b =>
