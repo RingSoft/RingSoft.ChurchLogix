@@ -1,5 +1,6 @@
 ﻿using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
+using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
 using RingSoft.ChurchLogix.Library.ViewModels;
 using RingSoft.ChurchLogix.Library;
@@ -14,11 +15,6 @@ namespace RingSoft.ChurchLogix.Tests
     public enum TestStaff
     {
         Master = 1,
-    }
-
-    public enum TestMembers
-    {
-        Peter = 1,
     }
 
     public enum TestFunds
@@ -37,6 +33,12 @@ namespace RingSoft.ChurchLogix.Tests
     {
         First = 1,
         Second = 2,
+    }
+
+    public enum TestMembers
+    {
+        MemberA = 1,
+        MemberB = 2,
     }
     public class TestGlobals<TViewModel, TView> : DbMaintenanceTestGlobals<TViewModel, TView>
         where TViewModel : DbMaintenanceViewModelBase
@@ -105,6 +107,24 @@ namespace RingSoft.ChurchLogix.Tests
                 FundId = fundA.Id,
                 Amount = 930,
             };
+
+            context.SaveEntity(budgetB, "Saving Budget");
+
+            var memberA = new Member()
+            {
+                Id = (int)TestMembers.MemberA,
+                Name = "MemberA",
+            };
+
+            context.SaveEntity(memberA, "Saving Member");
+
+            var memberB = new Member()
+            {
+                Id = (int)TestMembers.MemberB,
+                Name = "MemberB",
+            };
+
+            context.SaveEntity(memberB, "Saving Member");
         }
 
     }
