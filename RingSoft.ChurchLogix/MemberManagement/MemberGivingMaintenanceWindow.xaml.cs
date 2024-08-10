@@ -92,8 +92,8 @@ namespace RingSoft.ChurchLogix.MemberManagement
                     memberGivingHeaderControl.PostGivingButton.Command =
                         LocalViewModel.PostCommand;
 
-                    memberGivingHeaderControl.PostGivingButton.ToolTip.HeaderText = "Post Giving (Alt + G)";
-                    memberGivingHeaderControl.PostGivingButton.ToolTip.DescriptionText = "Post Giving (Alt + G)";
+                    memberGivingHeaderControl.PostGivingButton.ToolTip.HeaderText = "Post Giving (Alt + O)";
+                    memberGivingHeaderControl.PostGivingButton.ToolTip.DescriptionText = "Post Giving (Alt + O)";
                 }
             };
         }

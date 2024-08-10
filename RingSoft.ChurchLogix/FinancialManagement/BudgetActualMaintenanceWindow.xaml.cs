@@ -92,7 +92,7 @@ namespace RingSoft.ChurchLogix.FinancialManagement
                         LocalViewModel.PostCostsCommand;
 
                     budgetHeaderControl.PostCostButton.ToolTip.HeaderText = "Post Costs (Alt + O)";
-                    budgetHeaderControl.PostCostButton.ToolTip.DescriptionText = "Post Costs (Alt + U)";
+                    budgetHeaderControl.PostCostButton.ToolTip.DescriptionText = "Post Costs (Alt + O)";
 
                     if (!LocalViewModel.TableDefinition.HasRight(RightTypes.AllowEdit))
                     {
