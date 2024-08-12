@@ -1,8 +1,11 @@
 ﻿using RingSoft.App.Library;
+using RingSoft.ChurchLogix.DataAccess;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
+using RingSoft.DbLookup.Lookup;
+using RingSoft.DbLookup.QueryBuilder;
 using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
@@ -89,6 +92,38 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             }
         }
 
+        private LookupDefinition<FundHistoryLookup, FundHistory> _fundHistoryLookupDefinition;
+
+        public LookupDefinition<FundHistoryLookup, FundHistory> FundHistoryLookupDefinition
+        {
+            get { return _fundHistoryLookupDefinition; }
+            set
+            {
+                if (_fundHistoryLookupDefinition == value)
+                    return;
+
+                _fundHistoryLookupDefinition = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private LookupDefinition<BudgetPeriodTotalsLookup, BudgetPeriodTotals> _budgetMonthlyTotalsLookupDefinition;
+
+        public LookupDefinition<BudgetPeriodTotalsLookup, BudgetPeriodTotals> BudgetMonthlyTotalsLookupDefinition
+        {
+            get { return _budgetMonthlyTotalsLookupDefinition; }
+            set
+            {
+                if (_budgetMonthlyTotalsLookupDefinition == value)
+                {
+                    return;
+                }
+                _budgetMonthlyTotalsLookupDefinition = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public IBudgetView View { get; private set; }
         public RelayCommand EnterCostsCommand { get; }
 
@@ -96,6 +131,16 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
         {
             FundAutoFillSetup = new AutoFillSetup(TableDefinition.GetFieldDefinition(p => p.FundId));
             EnterCostsCommand = new RelayCommand(EnterCosts);
+
+            FundHistoryLookupDefinition = AppGlobals.LookupContext.FundHistoryLookup.Clone();
+            FundHistoryLookupDefinition.InitialOrderByColumn = FundHistoryLookupDefinition
+                .GetColumnDefinition(p => p.Date);
+            FundHistoryLookupDefinition.InitialOrderByType = OrderByTypes.Descending;
+
+            BudgetMonthlyTotalsLookupDefinition = AppGlobals.LookupContext.BudgetPeriodLookup.Clone();
+            BudgetMonthlyTotalsLookupDefinition.InitialOrderByColumn = BudgetMonthlyTotalsLookupDefinition
+                .GetColumnDefinition(p => p.Date);
+            BudgetMonthlyTotalsLookupDefinition.InitialOrderByType = OrderByTypes.Descending;
         }
 
         protected override void Initialize()
@@ -114,6 +159,23 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
         protected override void PopulatePrimaryKeyControls(BudgetItem newEntity, PrimaryKeyValue primaryKeyValue)
         {
             Id = newEntity.Id;
+
+            FundHistoryLookupDefinition.FilterDefinition.ClearFixedFilters();
+            FundHistoryLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.BudgetId, Conditions.Equals, newEntity.Id);
+
+            var command = GetLookupCommand(LookupCommands.Refresh, primaryKeyValue);
+            FundHistoryLookupDefinition.SetCommand(command);
+
+            BudgetMonthlyTotalsLookupDefinition.FilterDefinition.ClearFixedFilters();
+            BudgetMonthlyTotalsLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.BudgetId, Conditions.Equals, newEntity.Id);
+            BudgetMonthlyTotalsLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.PeriodType
+                , Conditions.Equals
+                , (int)PeriodTypes.MonthEnding);
+
+            BudgetMonthlyTotalsLookupDefinition.SetCommand(command);
         }
 
         protected override void LoadFromEntity(BudgetItem entity)
@@ -143,6 +205,10 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             FundAutoFillValue = null;
             Amount = 0;
             Notes = null;
+
+            var command = GetLookupCommand(LookupCommands.Clear);
+            FundHistoryLookupDefinition.SetCommand(command);
+            BudgetMonthlyTotalsLookupDefinition.SetCommand(command);
         }
 
         private void EnterCosts()

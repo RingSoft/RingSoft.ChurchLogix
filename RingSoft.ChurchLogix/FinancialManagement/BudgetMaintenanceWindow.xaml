@@ -93,6 +93,37 @@
 
             <TabControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5">
 
+                <TabItem Header="History">
+                    <DockPanel>
+                        <lc:LookupControl LookupDefinition="{Binding FundHistoryLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                            <lc:LookupControl.LookupColumns>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Date, Type={x:Type lm:FundHistoryLookup}}" Header="Date" Width="100"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Amount, Type={x:Type lm:FundHistoryLookup}}" Header="Amount" Width="100"/>
+
+                            </lc:LookupControl.LookupColumns>
+                        </lc:LookupControl>
+                    </DockPanel>
+
+                </TabItem>
+                <TabItem Header="Monthly Totals">
+                    <DockPanel>
+                        <lc:LookupControl LookupDefinition="{Binding BudgetMonthlyTotalsLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                            <lc:LookupControl.LookupColumns>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Date, Type={x:Type lm:BudgetPeriodTotalsLookup}}" Header="Month Ending" Width="150"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Total, Type={x:Type lm:BudgetPeriodTotalsLookup}}" Header="Total" Width="150"/>
+
+                            </lc:LookupControl.LookupColumns>
+                        </lc:LookupControl>
+                    </DockPanel>
+
+                </TabItem>
+
                 <dec:DataEntryMemoTabItem Header="Notes" VerticalAlignment="Stretch">
                     <DockPanel>
 
