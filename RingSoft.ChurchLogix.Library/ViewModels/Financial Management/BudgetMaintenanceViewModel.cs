@@ -123,6 +123,21 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             }
         }
 
+        private LookupDefinition<BudgetPeriodTotalsLookup, BudgetPeriodTotals> _budgetYearlyTotalsLookupDefinition;
+
+        public LookupDefinition<BudgetPeriodTotalsLookup, BudgetPeriodTotals> BudgetYearlyTotalsLookupDefinition
+        {
+            get { return _budgetYearlyTotalsLookupDefinition; }
+            set
+            {
+                if (_budgetYearlyTotalsLookupDefinition == value)
+                {
+                    return;
+                }
+                _budgetYearlyTotalsLookupDefinition = value;
+                OnPropertyChanged();
+            }
+        }
 
         public IBudgetView View { get; private set; }
         public RelayCommand EnterCostsCommand { get; }
@@ -141,6 +156,11 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             BudgetMonthlyTotalsLookupDefinition.InitialOrderByColumn = BudgetMonthlyTotalsLookupDefinition
                 .GetColumnDefinition(p => p.Date);
             BudgetMonthlyTotalsLookupDefinition.InitialOrderByType = OrderByTypes.Descending;
+
+            BudgetYearlyTotalsLookupDefinition = AppGlobals.LookupContext.BudgetPeriodLookup.Clone();
+            BudgetYearlyTotalsLookupDefinition.InitialOrderByColumn = BudgetMonthlyTotalsLookupDefinition
+                .GetColumnDefinition(p => p.Date);
+            BudgetYearlyTotalsLookupDefinition.InitialOrderByType = OrderByTypes.Descending;
         }
 
         protected override void Initialize()
@@ -176,6 +196,16 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
                 , (int)PeriodTypes.MonthEnding);
 
             BudgetMonthlyTotalsLookupDefinition.SetCommand(command);
+
+            BudgetYearlyTotalsLookupDefinition.FilterDefinition.ClearFixedFilters();
+            BudgetYearlyTotalsLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.BudgetId, Conditions.Equals, newEntity.Id);
+            BudgetYearlyTotalsLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.PeriodType
+                , Conditions.Equals
+                , (int)PeriodTypes.YearEnding);
+
+            BudgetYearlyTotalsLookupDefinition.SetCommand(command);
         }
 
         protected override void LoadFromEntity(BudgetItem entity)
@@ -209,6 +239,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             var command = GetLookupCommand(LookupCommands.Clear);
             FundHistoryLookupDefinition.SetCommand(command);
             BudgetMonthlyTotalsLookupDefinition.SetCommand(command);
+            BudgetYearlyTotalsLookupDefinition.SetCommand(command);
         }
 
         private void EnterCosts()

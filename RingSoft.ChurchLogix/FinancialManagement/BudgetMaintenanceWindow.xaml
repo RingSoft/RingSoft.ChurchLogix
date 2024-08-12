@@ -106,7 +106,6 @@
                             </lc:LookupControl.LookupColumns>
                         </lc:LookupControl>
                     </DockPanel>
-
                 </TabItem>
                 <TabItem Header="Monthly Totals">
                     <DockPanel>
@@ -121,9 +120,21 @@
                             </lc:LookupControl.LookupColumns>
                         </lc:LookupControl>
                     </DockPanel>
-
                 </TabItem>
+                <TabItem Header="Yearly Totals">
+                    <DockPanel>
+                        <lc:LookupControl LookupDefinition="{Binding BudgetYearlyTotalsLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
+                            <lc:LookupControl.LookupColumns>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Date, Type={x:Type lm:BudgetPeriodTotalsLookup}}" Header="Year Ending" Width="150"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Total, Type={x:Type lm:BudgetPeriodTotalsLookup}}" Header="Total" Width="150"/>
+
+                            </lc:LookupControl.LookupColumns>
+                        </lc:LookupControl>
+                    </DockPanel>
+                </TabItem>
                 <dec:DataEntryMemoTabItem Header="Notes" VerticalAlignment="Stretch">
                     <DockPanel>
 
