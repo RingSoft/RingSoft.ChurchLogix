@@ -1,6 +1,9 @@
 ﻿using RingSoft.App.Library;
+using RingSoft.ChurchLogix.DataAccess;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.DbLookup;
+using RingSoft.DbLookup.Lookup;
+using RingSoft.DbLookup.QueryBuilder;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 {
@@ -108,6 +111,21 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             }
         }
 
+        private LookupDefinition<FundHistoryLookup, FundHistory> _fundHistoryLookupDefinition;
+
+        public LookupDefinition<FundHistoryLookup, FundHistory> FundHistoryLookupDefinition
+        {
+            get { return _fundHistoryLookupDefinition; }
+            set
+            {
+                if (_fundHistoryLookupDefinition == value)
+                    return;
+
+                _fundHistoryLookupDefinition = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string? _notes;
 
         public string? Notes
@@ -126,6 +144,14 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 
         public IFundView View { get; private set; }
 
+        public FundsMaintenanceViewModel()
+        {
+            FundHistoryLookupDefinition = AppGlobals.LookupContext.FundHistoryLookup.Clone();
+            FundHistoryLookupDefinition.InitialOrderByColumn = FundHistoryLookupDefinition
+                .GetColumnDefinition(p => p.Date);
+            FundHistoryLookupDefinition.InitialOrderByType = OrderByTypes.Descending;
+        }
+
         protected override void Initialize()
         {
             if (base.View is IFundView fundView)
@@ -143,6 +169,14 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
         protected override void PopulatePrimaryKeyControls(Fund newEntity, PrimaryKeyValue primaryKeyValue)
         {
             Id = newEntity.Id;
+
+            FundHistoryLookupDefinition.FilterDefinition.ClearFixedFilters();
+            FundHistoryLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.FundId, Conditions.Equals, newEntity.Id);
+
+            var command = GetLookupCommand(LookupCommands.Refresh, primaryKeyValue);
+            FundHistoryLookupDefinition.SetCommand(command);
+
         }
 
         protected override void LoadFromEntity(Fund entity)
@@ -185,6 +219,9 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             Goal = 0;
             TotalSpent = 0;
             Notes = null;
+
+            var command = GetLookupCommand(LookupCommands.Clear);
+            FundHistoryLookupDefinition.SetCommand(command);
         }
 
         private void UpdateDiffValues()
