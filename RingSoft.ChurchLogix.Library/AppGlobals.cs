@@ -7,6 +7,7 @@ using RingSoft.ChurchLogix.MasterData;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.EfCore;
 using System.Runtime.InteropServices;
+using Microsoft.VisualBasic;
 using RingSoft.App.Interop;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
 using RingSoft.ChurchLogix.Sqlite;
@@ -41,6 +42,8 @@ namespace RingSoft.ChurchLogix.Library
 
         public static DbPlatforms DbPlatform { get; set; }
 
+        public static SystemPreferences SystemPreferences { get; set; }
+
         public static event EventHandler<AppProgressArgs> AppSplashProgress;
 
         public static void InitSettings()
@@ -55,7 +58,11 @@ namespace RingSoft.ChurchLogix.Library
 
         public static void Initialize()
         {
-            DataRepository ??= new DataRepository();
+            if (!UnitTesting)
+            {
+                DataRepository ??= new DataRepository();
+            }
+
             var test = SystemGlobals.DataRepository;
 
             AppSplashProgress?.Invoke(null, new AppProgressArgs("Initializing Database Structure."));
@@ -188,12 +195,63 @@ namespace RingSoft.ChurchLogix.Library
                     throw new ArgumentOutOfRangeException();
             }
 
+            SetupSystem(church);
+
+            return string.Empty;
+        }
+
+        public static void SetupSystem(Church church)
+        {
             SystemGlobals.Rights = new AppRights(new ChurchLogixRights());
 
             AppSplashProgress?.Invoke(null, new AppProgressArgs($"Connecting to the {church.Name} Database."));
-            DataAccessGlobals.SetupSysPrefs();
+            var sysContext = SystemGlobals.DataRepository.GetDataContext();
+            var sysPrefsTable = sysContext.GetTable<SystemPreferences>();
+            
+            var sysPrefsRecord = sysPrefsTable.FirstOrDefault();
+            if (sysPrefsRecord == null)
+            {
+                sysPrefsRecord = new SystemPreferences();
+                sysContext.SaveEntity(sysPrefsRecord, "Creating New System Preferences Record");
+            }
 
-            return string.Empty;
+            SystemPreferences = sysContext.GetTable<SystemPreferences>().FirstOrDefault();
+            if (SystemPreferences != null)
+            {
+                if (!SystemPreferences.FiscalYearEnd.HasValue)
+                {
+                    SystemPreferences.FiscalYearEnd = new DateTime(DateTime.Today.Year, 12, 31);
+                    sysContext.SaveEntity(SystemPreferences, "");
+                }
+            }
+        }
+
+        public static DateTime GetYearEndDate(DateTime currentDate)
+        {
+            DateTime? result = null;
+            if (SystemPreferences.FiscalYearEnd.HasValue)
+            {
+                var yearEndDate = SystemPreferences.FiscalYearEnd.Value;
+                if (currentDate > yearEndDate)
+                {
+                    while (currentDate > yearEndDate)
+                    {
+                        yearEndDate = yearEndDate.AddYears(1);
+                    }
+
+                    result = yearEndDate;
+                }
+                else
+                {
+                    result = SystemPreferences.FiscalYearEnd.Value;
+                }
+            }
+            else
+            {
+                result = new DateTime(DateTime.Today.Year, 12, 31);
+            }
+
+            return result.Value;
         }
 
         public static bool AllowMigrate(DbDataProcessor processor = null)

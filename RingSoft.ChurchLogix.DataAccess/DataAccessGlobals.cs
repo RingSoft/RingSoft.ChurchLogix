@@ -33,13 +33,7 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         public static void SetupSysPrefs()
         {
-            var sysPrefsSet = DbContext.Set<SystemPreferences>();
-            var sysPrefsRecord = sysPrefsSet.FirstOrDefault();
-            if (sysPrefsRecord == null)
-            {
-                sysPrefsRecord = new SystemPreferences();
-                SaveEntity(sysPrefsRecord, "Creating New System Preferences Record");
-            }
+            
         }
 
         public static bool SaveNoCommitEntity<TEntity>(TEntity entity, string message) where TEntity : class

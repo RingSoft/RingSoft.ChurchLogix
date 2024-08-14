@@ -7,5 +7,9 @@ namespace RingSoft.ChurchLogix.DataAccess.Model
         [Required]
         [Key]
         public int Id { get; set; }
+
+        public DateTime? FiscalYearStart { get; set; }
+
+        public DateTime? FiscalYearEnd { get; set; }
     }
 }

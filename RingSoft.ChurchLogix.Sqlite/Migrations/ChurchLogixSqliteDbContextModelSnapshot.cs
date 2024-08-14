@@ -373,6 +373,12 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime?>("FiscalYearEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("FiscalYearStart")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("SystemPreferences");

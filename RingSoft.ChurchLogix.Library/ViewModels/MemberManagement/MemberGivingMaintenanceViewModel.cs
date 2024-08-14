@@ -236,7 +236,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
                         endDayMonth = endDayMonth.AddMonths(1);
                         endDayMonth = endDayMonth.AddDays(-1);
 
-                        var endYear = new DateTime(memberGiving.Date.Year, 12, 31);
+                        var endYear = AppGlobals.GetYearEndDate(memberGiving.Date);
 
                         if (!SaveFundPeriodMonth(fundPeriodTotalsTable, endDayMonth, memberGivingDetail, context))
                             return false;

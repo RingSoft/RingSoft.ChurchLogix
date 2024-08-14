@@ -275,7 +275,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
                     endDayMonth = endDayMonth.AddMonths(1);
                     endDayMonth = endDayMonth.AddDays(-1);
 
-                    var endYear = new DateTime(budgetActual.Date.Year, 12, 31);
+                    var endYear = AppGlobals.GetYearEndDate(budgetActual.Date);
 
                     if (!SaveFundPeriodMonth(fundPeriodTotalsTable, endDayMonth, budgetActual, context)) 
                         return false;

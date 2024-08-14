@@ -4,6 +4,7 @@ using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
 using RingSoft.ChurchLogix.Library.ViewModels;
 using RingSoft.ChurchLogix.Library;
+using RingSoft.ChurchLogix.MasterData;
 using RingSoft.ChurchLogix.Sqlite;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.Testing;
@@ -61,6 +62,8 @@ namespace RingSoft.ChurchLogix.Tests
             AppGlobals.LoggedInStaffPerson = new StaffPerson();
             AppGlobals.MainViewModel = new MainViewModel();
             SystemGlobals.Rights = new AppRights(new ChurchLogixRights());
+            
+            AppGlobals.SetupSystem(new Church());
 
             base.Initialize();
         }

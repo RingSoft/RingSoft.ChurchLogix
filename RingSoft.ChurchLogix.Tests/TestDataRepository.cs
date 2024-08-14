@@ -1,4 +1,5 @@
-﻿using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
+﻿using RingSoft.ChurchLogix.DataAccess.Model;
+using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
 using RingSoft.ChurchLogix.Library;
@@ -19,6 +20,7 @@ namespace RingSoft.ChurchLogix.Tests
         {
             DataContext = context;
 
+            DataContext.AddEntity(new DataRepositoryRegistryItem<SystemPreferences>());
             DataContext.AddEntity(new DataRepositoryRegistryItem<StaffPerson>());
             DataContext.AddEntity(new DataRepositoryRegistryItem<Member>());
             DataContext.AddEntity(new DataRepositoryRegistryItem<MemberGiving>());
