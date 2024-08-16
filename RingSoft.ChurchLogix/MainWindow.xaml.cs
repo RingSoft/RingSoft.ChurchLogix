@@ -130,6 +130,7 @@ namespace RingSoft.ChurchLogix
             MakeStaffMenu();
             MakeMemberMenu();
             MakeFinancesMenu();
+            MakeSystemMenu();
 
             MainMenu.Items.Add(new MenuItem()
             {
@@ -252,6 +253,30 @@ namespace RingSoft.ChurchLogix
                         Header = "_Enter Budget Costs...",
                         Command = ViewModel.ShowMaintenanceWindowCommand,
                         CommandParameter = AppGlobals.LookupContext.BudgetActuals,
+                    });
+                }
+            }
+        }
+
+        private void MakeSystemMenu()
+        {
+            var systemCategory =
+                SystemGlobals.Rights.UserRights.Categories.FirstOrDefault(p =>
+                    p.MenuCategoryId == (int)MenuCategories.System);
+
+            var items = systemCategory.Items.Where(p => p.TableDefinition.HasRight(RightTypes.AllowView));
+            if (items.Any())
+            {
+                var menuItem = new MenuItem() { Header = "S_ystem" };
+                MainMenu.Items.Add(menuItem);
+
+                if (AppGlobals.LookupContext.Funds.HasRight(RightTypes.AllowView))
+                {
+                    menuItem.Items.Add(new MenuItem()
+                    {
+                        Header = "Add/Edit _System Preferences...",
+                        Command = ViewModel.ShowMaintenanceWindowCommand,
+                        CommandParameter = AppGlobals.LookupContext.SystemPreferences,
                     });
                 }
             }

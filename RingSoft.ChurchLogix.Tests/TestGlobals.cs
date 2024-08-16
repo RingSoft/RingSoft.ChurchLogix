@@ -56,13 +56,14 @@ namespace RingSoft.ChurchLogix.Tests
 
         public override void Initialize()
         {
+            var test = SystemGlobals.DataRepository;
             AppGlobals.UnitTesting = true;
             AppGlobals.Initialize();
             AppGlobals.LookupContext.Initialize(new ChurchLogixSqliteDbContext(), DbPlatforms.Sqlite);
             AppGlobals.LoggedInStaffPerson = new StaffPerson();
             AppGlobals.MainViewModel = new MainViewModel();
             SystemGlobals.Rights = new AppRights(new ChurchLogixRights());
-            
+
             AppGlobals.SetupSystem(new Church());
 
             base.Initialize();

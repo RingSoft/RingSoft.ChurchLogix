@@ -3,6 +3,10 @@ using RingSoft.DbLookup.Lookup;
 
 namespace RingSoft.ChurchLogix.DataAccess
 {
+    public class SystemPreferencesLookup
+    {
+        public int Id { get; set; }
+    }
     public class StaffLookup
     {
         public string Name { get; set; }

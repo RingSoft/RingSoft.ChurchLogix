@@ -42,6 +42,7 @@ namespace RingSoft.ChurchLogix.DataAccess
         public TableDefinition< BudgetPeriodTotals> BudgetPeriodTotals { get; set; }
         public TableDefinition<BudgetActual> BudgetActuals { get; set; }
 
+        public LookupDefinition<SystemPreferencesLookup, SystemPreferences> SystemPreferencesLookup { get; set; }
         public LookupDefinition<StaffLookup, StaffPerson> StaffLookup { get; set; }
         public LookupDefinition<GroupsLookup, Group> GroupsLookup { get; set; }
         public LookupDefinition<StaffGroupsLookup, StaffGroup> StaffGroupsLookup { get; set;}
@@ -165,6 +166,16 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         protected override void InitializeLookupDefinitions()
         {
+            SystemPreferencesLookup =
+                new LookupDefinition<SystemPreferencesLookup, SystemPreferences>(SystemPreferences);
+
+            SystemPreferencesLookup.AddVisibleColumnDefinition(
+                p => p.Id
+                , "Id"
+                , p => p.Id, 99);
+
+            SystemPreferences.HasLookupDefinition(SystemPreferencesLookup);
+
             StaffLookup = new LookupDefinition<StaffLookup, StaffPerson>(Staff);
 
             StaffLookup.AddVisibleColumnDefinition(

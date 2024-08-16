@@ -7,7 +7,7 @@ namespace RingSoft.ChurchLogix.Library
     public enum MenuCategories
     {
         StaffManagement = 0,
-        Tools = 1,
+        System = 1,
         MemberManagement = 2,
         FinancialManagement = 3,
     }
@@ -42,6 +42,14 @@ namespace RingSoft.ChurchLogix.Library
             category.Items.Add(rightItem);
 
             rightItem = new RightCategoryItem(item: "Add/Edit Budget Costs", AppGlobals.LookupContext.BudgetActuals);
+            category.Items.Add(rightItem);
+
+            Categories.Add(category);
+
+            category = new RightCategory("System", (int)MenuCategories.System);
+
+            rightItem = new RightCategoryItem(item: "Add/Edit System Preferences"
+                , AppGlobals.LookupContext.SystemPreferences);
             category.Items.Add(rightItem);
 
             Categories.Add(category);

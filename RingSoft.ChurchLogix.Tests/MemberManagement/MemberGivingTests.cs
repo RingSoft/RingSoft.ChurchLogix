@@ -1,5 +1,6 @@
 ﻿using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
+using RingSoft.ChurchLogix.Library;
 using RingSoft.ChurchLogix.Library.ViewModels.Financial_Management;
 using RingSoft.ChurchLogix.Library.ViewModels.MemberManagement;
 using RingSoft.DbLookup;
@@ -76,6 +77,8 @@ namespace RingSoft.ChurchLogix.Tests.MemberManagement
 
             context.SaveEntity(details2, "");
 
+            AppGlobals.SystemPreferences.FiscalYearEnd = new DateTime(2024, 6, 30);
+
             Globals.ViewModel.PostCommand.Execute(null);
 
             var fundHistory = context.GetTable<FundHistory>();
@@ -104,7 +107,7 @@ namespace RingSoft.ChurchLogix.Tests.MemberManagement
             Assert.AreEqual(302, fundMonth.TotalIncome);
 
             var fundYear = fundPeriod
-                .FirstOrDefault(p => p.Date == new DateTime(2024, 12, 31)
+                .FirstOrDefault(p => p.Date == new DateTime(2025, 6, 30)
                                      && p.PeriodType == (int)PeriodTypes.YearEnding);
 
             Assert.IsNotNull(fundYear);
@@ -124,7 +127,7 @@ namespace RingSoft.ChurchLogix.Tests.MemberManagement
             Assert.AreEqual(302, memberMonth.TotalGiving);
 
             var memberYear = memberPeriod
-                .FirstOrDefault(p => p.Date == new DateTime(2024, 12, 31)
+                .FirstOrDefault(p => p.Date == new DateTime(2025, 6, 30)
                                      && p.PeriodType == (int)PeriodTypes.YearEnding);
 
             Assert.IsNotNull(memberPeriod);
