@@ -1,23 +1,41 @@
 ﻿using RingSoft.App.Controls;
+using RingSoft.App.Library;
+using RingSoft.ChurchLogix.Library.ViewModels;
+using RingSoft.ChurchLogix.Library.ViewModels.Financial_Management;
 using RingSoft.DbLookup.Controls.WPF;
 using RingSoft.DbMaintenance;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using RingSoft.ChurchLogix.Library.ViewModels;
 
 namespace RingSoft.ChurchLogix
 {
+    public class FyPostProcedure : AppProcedure
+    {
+        private ProcessingSplashWindow _splashWindow;
+
+        public override ISplashWindow SplashWindow => _splashWindow;
+
+        private SystemPreferencesViewModel _viewModel;
+        public FyPostProcedure(SystemPreferencesViewModel viewModel)
+        {
+            _viewModel = viewModel;
+        }
+
+        protected override void ShowSplash()
+        {
+            _splashWindow = new ProcessingSplashWindow("Updating Fiscal Calendar");
+            _splashWindow.ShowInTaskbar = false;
+            _splashWindow.ShowDialog();
+        }
+
+        protected override bool DoProcess()
+        {
+            var result = _viewModel.ChangeFY();
+            _splashWindow.CloseSplash();
+            return result;
+        }
+    }
+
     /// <summary>
     /// Interaction logic for SystemPreferencesWindow.xaml
     /// </summary>
@@ -29,6 +47,7 @@ namespace RingSoft.ChurchLogix
         public override Control MaintenanceButtonsControl => TopHeaderControl;
         public override DbMaintenanceStatusBar DbStatusBar => StatusBar;
 
+        private FyPostProcedure _procedure;
         public SystemPreferencesWindow()
         {
             InitializeComponent();
@@ -41,6 +60,17 @@ namespace RingSoft.ChurchLogix
         public void CloseWindow()
         {
             Close();
+        }
+
+        public void ShowPostProcedure(SystemPreferencesViewModel viewModel)
+        {
+            _procedure = new FyPostProcedure(viewModel);
+            _procedure.Start();
+        }
+
+        public void UpdateProcedure(string text)
+        {
+            _procedure.SplashWindow.SetProgress(text);
         }
     }
 }
