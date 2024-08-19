@@ -64,6 +64,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 
                 _budgetAutoFillValue = value;
                 OnPropertyChanged();
+                UpdateAmount();
             }
         }
 
@@ -106,6 +107,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 
 
         private bool? _valSave;
+        private bool _loading;
 
         public BudgetActualMaintenanceViewModel()
         {
@@ -142,9 +144,11 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 
         protected override void LoadFromEntity(BudgetActual entity)
         {
+            _loading = true;
             BudgetAutoFillValue = entity.Budget.GetAutoFillValue();
             Date = entity.Date;
             Amount = entity.Amount;
+            _loading = false;
         }
 
         protected override BudgetActual GetEntityData()
@@ -314,6 +318,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
                 if (result)
                 {
                     NewCommand.Execute(null);
+                    AppGlobals.MainViewModel.MainView.RefreshChart();
                     return true;
                 }
             }
@@ -471,6 +476,21 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             }
 
             return true;
+        }
+
+        private void UpdateAmount()
+        {
+            if (_loading || !BudgetAutoFillValue.IsValid())
+            {
+                return;
+            }
+
+            var budgetItem = BudgetAutoFillValue.GetEntity<BudgetItem>();
+            var context = SystemGlobals.DataRepository.GetDataContext();
+            budgetItem = context.GetTable<BudgetItem>()
+                .FirstOrDefault(p => p.Id == budgetItem.Id);
+            if (budgetItem != null) 
+                Amount = budgetItem.Amount;
         }
     }
 }

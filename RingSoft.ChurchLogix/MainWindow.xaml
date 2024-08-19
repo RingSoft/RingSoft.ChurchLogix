@@ -7,6 +7,7 @@
                   xmlns:lc="clr-namespace:RingSoft.DbLookup.Controls.WPF;assembly=RingSoft.DbLookup.Controls.WPF"
                   xmlns:ac="clr-namespace:RingSoft.App.Controls;assembly=RingSoft.App.Controls"
                   xmlns:vm="clr-namespace:RingSoft.ChurchLogix.Library.ViewModels;assembly=RingSoft.ChurchLogix.Library"
+                  xmlns:sp="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
                   xmlns:local="clr-namespace:RingSoft.ChurchLogix"
                   mc:Ignorable="d"
                   Style="{StaticResource BaseWindowStyle}"
@@ -77,7 +78,7 @@
         </StatusBar>
 
         <Grid>
-
+            <sp:WpfPlot x:Name="WpfPlot" Visibility="Collapsed"/>
         </Grid>
     </DockPanel>
 </ac:AppMainWindow>

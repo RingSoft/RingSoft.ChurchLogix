@@ -28,6 +28,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
 
         void ShowAbout();
 
+        void RefreshChart();
+
         void ShowMaintenanceWindow(TableDefinitionBase tableDefinition);
     }
 
