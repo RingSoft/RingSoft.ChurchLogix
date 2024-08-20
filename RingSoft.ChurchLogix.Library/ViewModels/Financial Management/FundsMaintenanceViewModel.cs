@@ -126,6 +126,39 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             }
         }
 
+        private LookupDefinition<FundPeriodLookup, FundPeriodTotals> _fundMonthlyTotalsLookupDefinition;
+
+        public LookupDefinition<FundPeriodLookup, FundPeriodTotals> FundMonthlyTotalsLookupDefinition
+        {
+            get { return _fundMonthlyTotalsLookupDefinition; }
+            set
+            {
+                if (_fundMonthlyTotalsLookupDefinition == value)
+                {
+                    return;
+                }
+                _fundMonthlyTotalsLookupDefinition = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private LookupDefinition<FundPeriodLookup, FundPeriodTotals> _fundYearlyTotalsLookupDefinition;
+
+        public LookupDefinition<FundPeriodLookup, FundPeriodTotals> FundYearlyTotalsLookupDefinition
+        {
+            get { return _fundYearlyTotalsLookupDefinition; }
+            set
+            {
+                if (_fundYearlyTotalsLookupDefinition == value)
+                {
+                    return;
+                }
+                _fundYearlyTotalsLookupDefinition = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         private string? _notes;
 
         public string? Notes
@@ -150,6 +183,16 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             FundHistoryLookupDefinition.InitialOrderByColumn = FundHistoryLookupDefinition
                 .GetColumnDefinition(p => p.Date);
             FundHistoryLookupDefinition.InitialOrderByType = OrderByTypes.Descending;
+
+            FundMonthlyTotalsLookupDefinition = AppGlobals.LookupContext.FundPeriodLookup.Clone();
+            FundMonthlyTotalsLookupDefinition.InitialOrderByColumn = FundMonthlyTotalsLookupDefinition
+                .GetColumnDefinition(p => p.Date);
+            FundMonthlyTotalsLookupDefinition.InitialOrderByType = OrderByTypes.Descending;
+
+            FundYearlyTotalsLookupDefinition = AppGlobals.LookupContext.FundPeriodLookup.Clone();
+            FundYearlyTotalsLookupDefinition.InitialOrderByColumn = FundYearlyTotalsLookupDefinition
+                .GetColumnDefinition(p => p.Date);
+            FundYearlyTotalsLookupDefinition.InitialOrderByType = OrderByTypes.Descending;
         }
 
         protected override void Initialize()
@@ -176,6 +219,26 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 
             var command = GetLookupCommand(LookupCommands.Refresh, primaryKeyValue);
             FundHistoryLookupDefinition.SetCommand(command);
+
+            FundMonthlyTotalsLookupDefinition.FilterDefinition.ClearFixedFilters();
+            FundMonthlyTotalsLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.FundId, Conditions.Equals, newEntity.Id);
+            FundMonthlyTotalsLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.PeriodType
+                , Conditions.Equals
+                , (int)PeriodTypes.MonthEnding);
+
+            FundMonthlyTotalsLookupDefinition.SetCommand(command);
+
+            FundYearlyTotalsLookupDefinition.FilterDefinition.ClearFixedFilters();
+            FundYearlyTotalsLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.FundId, Conditions.Equals, newEntity.Id);
+            FundYearlyTotalsLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.PeriodType
+                , Conditions.Equals
+                , (int)PeriodTypes.YearEnding);
+
+            FundYearlyTotalsLookupDefinition.SetCommand(command);
 
         }
 
@@ -222,6 +285,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 
             var command = GetLookupCommand(LookupCommands.Clear);
             FundHistoryLookupDefinition.SetCommand(command);
+            FundMonthlyTotalsLookupDefinition.SetCommand(command);
+            FundYearlyTotalsLookupDefinition.SetCommand(command);
         }
 
         private void UpdateDiffValues()

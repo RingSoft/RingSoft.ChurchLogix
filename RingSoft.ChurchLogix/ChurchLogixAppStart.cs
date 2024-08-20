@@ -49,6 +49,7 @@ namespace RingSoft.ChurchLogix
 
             LookupControlsGlobals.WindowRegistry.RegisterWindow<MemberMaintenanceWindow, Member>();
             LookupControlsGlobals.WindowRegistry.RegisterWindow<MemberGivingMaintenanceWindow, MemberGiving>();
+            LookupControlsGlobals.WindowRegistry.RegisterWindow<MemberGivingHistoryWindow, MemberGivingHistory>();
 
             LookupControlsGlobals.WindowRegistry.RegisterWindow<FundMaintenanceWindow, Fund>();
             LookupControlsGlobals.WindowRegistry.RegisterWindow<BudgetMaintenanceWindow, BudgetItem>();

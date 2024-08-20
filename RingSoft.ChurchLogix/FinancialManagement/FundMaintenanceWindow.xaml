@@ -103,7 +103,49 @@
                     </DockPanel>
 
                 </TabItem>
+                <TabItem Header="Monthly Totals">
+                    <DockPanel>
+                        <lc:LookupControl LookupDefinition="{Binding FundMonthlyTotalsLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
+                            <lc:LookupControl.LookupColumns>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Date, Type={x:Type lm:FundPeriodLookup}}" Header="Month Ending" Width="100"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf TotalIncome, Type={x:Type lm:FundPeriodLookup}}" Header="Total Income" Width="150"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf TotalExpenses, Type={x:Type lm:FundPeriodLookup}}" Header="Total Expenses" Width="150"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Difference, Type={x:Type lm:FundPeriodLookup}}" Header="Difference" Width="150"/>
+
+                            </lc:LookupControl.LookupColumns>
+                        </lc:LookupControl>
+                    </DockPanel>
+                </TabItem>
+                <TabItem Header="Yearly Totals">
+                    <DockPanel>
+                        <lc:LookupControl LookupDefinition="{Binding FundYearlyTotalsLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                            <lc:LookupControl.LookupColumns>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Date, Type={x:Type lm:FundPeriodLookup}}" Header="Year Ending" Width="100"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf TotalIncome, Type={x:Type lm:FundPeriodLookup}}" Header="Total Income" Width="150"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf TotalExpenses, Type={x:Type lm:FundPeriodLookup}}" Header="Total Expenses" Width="150"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Difference, Type={x:Type lm:FundPeriodLookup}}" Header="Difference" Width="150"/>
+
+                            </lc:LookupControl.LookupColumns>
+                        </lc:LookupControl>
+                    </DockPanel>
+                </TabItem>
+                <dec:DataEntryMemoTabItem Header="Notes" VerticalAlignment="Stretch">
+                    <DockPanel>
+
+                        <dec:DataEntryMemoEditor x:Name="NotesControl" Text="{Binding Path=Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    </DockPanel>
+                </dec:DataEntryMemoTabItem>
 
             </TabControl>
         </Grid>
