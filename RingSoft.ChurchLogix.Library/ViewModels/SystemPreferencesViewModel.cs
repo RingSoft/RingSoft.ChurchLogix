@@ -166,11 +166,11 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
                          && p.PeriodType == (int)PeriodTypes.YearEnding);
 
                 var existBudgetPeriods = budgetPeriodTable.Where(
-                    p => p.Date == OriginalFYEnd
+                    p => p.Date >= OriginalFYEnd
                          && p.PeriodType >= (int)PeriodTypes.YearEnding);
 
                 var existMemberPeriods = memberPeriodTable.Where(
-                    p => p.Date == OriginalFYEnd
+                    p => p.Date >= OriginalFYEnd
                          && p.PeriodType >= (int)PeriodTypes.YearEnding);
 
                 context.RemoveRange(existFundPeriods);

@@ -12,6 +12,7 @@
         mc:Ignorable="d"
         Style="{StaticResource BaseWindowStyle}"
         Title="Fund Period Totals" Width="500" Height="500">
+
     <Window.DataContext>
         <vm:FundPeriodTotalsViewModel x:Name="LocalViewModel"/>
     </Window.DataContext>
