@@ -1,6 +1,8 @@
 ﻿using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
+using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
+using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.Lookup;
 using RingSoft.DbLookup.QueryBuilder;
@@ -10,6 +12,19 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
     public interface IFundView
     {
         void RefreshView();
+
+        bool SetupRecalcFilter(LookupDefinitionBase lookupDefinition);
+
+        void StartRecalcProcedure(FundsMaintenanceViewModel viewModel
+            , LookupDefinitionBase lookupDefinition);
+
+        void UpdateProcedure(string headerText
+            , int headerTotal
+            , int headerIndex
+            , string detailText
+            , int detailTotal
+            , int detailIndex);
+
     }
     public class FundsMaintenanceViewModel : AppDbMaintenanceViewModel<Fund>
     {
@@ -177,6 +192,10 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 
         public IFundView View { get; private set; }
 
+        public RelayCommand RecalcCommand { get; }
+
+        public PrimaryKeyValue PrimaryKey { get; private set; }
+
         public FundsMaintenanceViewModel()
         {
             FundHistoryLookupDefinition = AppGlobals.LookupContext.FundHistoryLookup.Clone();
@@ -193,6 +212,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             FundYearlyTotalsLookupDefinition.InitialOrderByColumn = FundYearlyTotalsLookupDefinition
                 .GetColumnDefinition(p => p.Date);
             FundYearlyTotalsLookupDefinition.InitialOrderByType = OrderByTypes.Descending;
+
+            RecalcCommand = new RelayCommand(DoRecalc);
         }
 
         protected override void Initialize()
@@ -211,6 +232,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 
         protected override void PopulatePrimaryKeyControls(Fund newEntity, PrimaryKeyValue primaryKeyValue)
         {
+            PrimaryKey = primaryKeyValue;
             Id = newEntity.Id;
 
             FundHistoryLookupDefinition.FilterDefinition.ClearFixedFilters();
@@ -287,6 +309,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             FundHistoryLookupDefinition.SetCommand(command);
             FundMonthlyTotalsLookupDefinition.SetCommand(command);
             FundYearlyTotalsLookupDefinition.SetCommand(command);
+            PrimaryKey = null;
         }
 
         private void UpdateDiffValues()
@@ -294,6 +317,140 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             GoalDif = TotalCollected - Goal;
             FundDiff = TotalCollected - TotalSpent;
             View.RefreshView();
+        }
+
+        private void DoRecalc()
+        {
+            var recalcFilter = ViewLookupDefinition.Clone();
+            if (!View.SetupRecalcFilter(recalcFilter))
+                return;
+
+
+            View.StartRecalcProcedure(this, recalcFilter);
+            var command = GetLookupCommand(LookupCommands.Refresh, PrimaryKey);
+            FundMonthlyTotalsLookupDefinition.SetCommand(command);
+            FundYearlyTotalsLookupDefinition.SetCommand(command);
+        }
+
+        public bool StartRecalc(LookupDefinitionBase recalcFilter)
+        {
+            var lookupData = TableDefinition.LookupDefinition.GetLookupDataMaui(recalcFilter, false);
+            var recordCount = lookupData.GetRecordCount();
+            var context = SystemGlobals.DataRepository.GetDataContext();
+            var fundIndex = 0;
+            lookupData.PrintOutput += (sender, args) =>
+            {
+                foreach (var primaryKeyValue in args.Result)
+                {
+                    fundIndex++;
+                    var fundPrimaryKey = primaryKeyValue;
+                    if (fundPrimaryKey.IsValid())
+                    {
+                        var fund = TableDefinition.GetEntityFromPrimaryKeyValue(fundPrimaryKey);
+                        fund = fund.FillOutProperties(false);
+                        var periodTotals = context.GetTable<FundPeriodTotals>()
+                            .Where(p => p.FundId == fund.Id);
+                        context.RemoveRange(periodTotals);
+                        context.Commit("");
+
+                        var fundHistory = context.GetTable<FundHistory>();
+                        var historyRecs
+                            = fundHistory.Where(p => p.FundId == fund.Id)
+                                .OrderBy(p => p.Date);
+
+                        var historyIndex = 0;
+                        var historyTotal = historyRecs.Count();
+                        foreach (var historyRec in historyRecs)
+                        {
+                            historyIndex++;
+                            View.UpdateProcedure(
+                                $"Processing {fund.Description} {fundIndex} / {recordCount}"
+                                , recordCount
+                                , fundIndex
+                                , $"Processing History Record {historyIndex} / {historyTotal}"
+                                , historyTotal
+                                , historyIndex);
+                            PostPeriodTotals(historyRec, context);
+
+                        }
+
+                    }
+                }
+            };
+            lookupData.DoPrintOutput(10);
+            var result = context.Commit("");
+            return result;
+        }
+
+        private void PostPeriodTotals(FundHistory history, IDbContext context)
+        {
+            var monthEnding = new DateTime(history.Date.Year, history.Date.Month, 1);
+            monthEnding = monthEnding.AddMonths(1).AddDays(-1);
+            var yearEnding = new DateTime(
+                history.Date.Year
+                , AppGlobals.SystemPreferences.FiscalYearEnd.Value.Month
+                , AppGlobals.SystemPreferences.FiscalYearEnd.Value.Day);
+
+            var periodsTable = context.GetTable<FundPeriodTotals>();
+            var monthRec = periodsTable.FirstOrDefault(p => p.FundId == history.FundId
+                                                            && p.Date == monthEnding
+                                                            && p.PeriodType ==
+                                                            (int)PeriodTypes.MonthEnding);
+
+            var totalGiving = 0.0;
+            var totalExpenses = 0.0;
+            switch ((HistoryAmountTypes)history.AmountType)
+            {
+                case HistoryAmountTypes.Income:
+                    totalGiving = history.Amount;
+                    break;
+                case HistoryAmountTypes.Expense:
+                    totalExpenses = history.Amount;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            if (monthRec == null)
+            {
+                monthRec = new FundPeriodTotals()
+                {
+                    FundId = history.FundId.GetValueOrDefault(),
+                    Date = monthEnding,
+                    PeriodType = (int)PeriodTypes.MonthEnding,
+                    TotalIncome = totalGiving,
+                    TotalExpenses = totalExpenses
+                };
+                context.AddSaveEntity(monthRec, "");
+            }
+            else
+            {
+                monthRec.TotalIncome += totalGiving;
+                monthRec.TotalExpenses += totalExpenses;
+                context.SaveNoCommitEntity(monthRec, "");
+            }
+            var yearRec = periodsTable.FirstOrDefault(p => p.FundId == history.FundId
+                                                            && p.Date == yearEnding
+                                                            && p.PeriodType ==
+                                                            (int)PeriodTypes.YearEnding);
+            if (yearRec == null)
+            {
+                yearRec = new FundPeriodTotals()
+                {
+                    FundId = history.FundId.GetValueOrDefault(),
+                    Date = yearEnding,
+                    PeriodType = (int)PeriodTypes.YearEnding,
+                    TotalIncome = totalGiving,
+                    TotalExpenses = totalExpenses
+                };
+                context.AddSaveEntity(yearRec, "");
+            }
+            else
+            {
+                yearRec.TotalIncome += totalGiving;
+                yearRec.TotalExpenses += totalExpenses;
+                context.SaveNoCommitEntity(yearRec, "");
+            }
+
         }
     }
 }

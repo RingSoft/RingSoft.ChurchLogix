@@ -1,24 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using RingSoft.App.Controls;
-using RingSoft.App.Library;
+﻿using RingSoft.App.Controls;
+using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.Library.ViewModels.MemberManagement;
 using RingSoft.DataEntryControls.WPF;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.Controls.WPF;
 using RingSoft.DbLookup.Lookup;
 using RingSoft.DbMaintenance;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace RingSoft.ChurchLogix.MemberManagement
 {
@@ -87,11 +76,27 @@ namespace RingSoft.ChurchLogix.MemberManagement
                         LocalViewModel.RecalcCommand;
 
                     memberHeaderControl.RecalculateButton.ToolTip.HeaderText = "Recalculate Member Totals (Alt + R)";
-                    memberHeaderControl.RecalculateButton.ToolTip.DescriptionText = "Recalculate Member Totals (Alt + R)";
+                    memberHeaderControl.RecalculateButton.ToolTip.DescriptionText =
+                        "Recalculate Member Totals (Alt + R)";
+
+                    if (!LocalViewModel.TableDefinition.HasSpecialRight((int)MemberSpecialRights.AllowViewGiving))
+                    {
+                        memberHeaderControl.RecalculateButton.Visibility = Visibility.Collapsed;
+                    }
                 }
             };
 
             RegisterFormKeyControl(NameControl);
+
+            Loaded += (sender, args) =>
+            {
+                if (!LocalViewModel.TableDefinition.HasSpecialRight((int)MemberSpecialRights.AllowViewGiving))
+                {
+                    HistoryTab.Visibility = Visibility.Collapsed;
+                    MonthlyTab.Visibility = Visibility.Collapsed;
+                    YearlyTab.Visibility = Visibility.Collapsed;
+                }
+            };
         }
 
         public void RefreshView()

@@ -114,7 +114,7 @@
 
                     </Grid>
                 </TabItem>
-                <TabItem Header="History">
+                <TabItem Header="Giving History" x:Name="HistoryTab">
 
                     <DockPanel>
                         <lc:LookupControl LookupDefinition="{Binding HistoryLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -132,7 +132,7 @@
                     </DockPanel>
 
                 </TabItem>
-                <TabItem Header="Monthly Totals">
+                <TabItem Header="Monthly Totals" x:Name="MonthlyTab">
                     <DockPanel>
                         <lc:LookupControl LookupDefinition="{Binding MonthlyTotalsLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
@@ -146,7 +146,7 @@
                         </lc:LookupControl>
                     </DockPanel>
                 </TabItem>
-                <TabItem Header="Yearly Totals">
+                <TabItem Header="Yearly Totals" x:Name="YearlyTab">
                     <DockPanel>
                         <lc:LookupControl LookupDefinition="{Binding YearlyTotalsLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 

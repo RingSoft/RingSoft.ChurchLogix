@@ -366,6 +366,9 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 
 
             View.StartRecalcProcedure(this, recalcFilter);
+            var command = GetLookupCommand(LookupCommands.Refresh, PrimaryKey);
+            MonthlyTotalsLookupDefinition.SetCommand(command);
+            YearlyTotalsLookupDefinition.SetCommand(command);
         }
 
         public bool StartRecalc(LookupDefinitionBase recalcFilter)
@@ -396,7 +399,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
                                 .OrderBy(p => p.Date);
 
                         var historyIndex = 0;
-                        var historyTotal = memberGivingHistory.Count();
+                        var historyTotal = historyRecs.Count();
                         foreach (var givingHistory in historyRecs)
                         {
                             historyIndex++;
@@ -414,12 +417,6 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             };
             lookupData.DoPrintOutput(10);
             var result = context.Commit("");
-            if (result && PrimaryKey != null)
-            {
-                var command = GetLookupCommand(LookupCommands.Refresh, PrimaryKey);
-                MonthlyTotalsLookupDefinition.SetCommand(command);
-                YearlyTotalsLookupDefinition.SetCommand(command);
-            }
             return result;
         }
 

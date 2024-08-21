@@ -391,7 +391,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             MemberGivingDetails memberGivingDetail, IDbContext context)
         {
             var memberMonthRec = memberPeriodTotalsTable
-                .FirstOrDefault(p => p.Date == endDayMonth
+                .FirstOrDefault(p => p.MemberId == memberGivingDetail.MemberGiving.MemberId
+                    && p.Date == endDayMonth
                                      && p.PeriodType == (int)PeriodTypes.MonthEnding);
 
             if (memberMonthRec == null)
@@ -425,7 +426,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             MemberGivingDetails memberGivingDetail, IDbContext context)
         {
             var memberYearRec = memberPeriodTotalsTable
-                .FirstOrDefault(p => p.Date == endYear
+                .FirstOrDefault(p => p.MemberId == memberGivingDetail.MemberGiving.MemberId
+            && p.Date == endYear
                                      && p.PeriodType == (int)PeriodTypes.YearEnding);
 
             if (memberYearRec == null)

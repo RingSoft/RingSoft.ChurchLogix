@@ -13,6 +13,47 @@
                         Style="{StaticResource BaseWindowStyle}"
                         Title="Fund Maintenance" Width="650" Height="500">
 
+    <Window.Resources>
+        <Style TargetType="{x:Type local:FundHeaderControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type local:FundHeaderControl}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+
+                            <Grid VerticalAlignment="Stretch">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ac:DbMaintenanceButton Grid.Row="0" Grid.Column="0" x:Name="RecalculateButton" Content="_Recalculate Totals" ImageSource="{StaticResource DecimalEditImage}" Style="{StaticResource SubButton}" HorizontalContentAlignment="Left"/>
+
+                            </Grid>
+
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type ac:DbMaintenanceTopHeaderControl}" BasedOn="{StaticResource {x:Type ac:DbMaintenanceTopHeaderControl}}">
+
+            <Setter Property="CustomPanel">
+                <Setter.Value>
+                    <local:FundHeaderControl/>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+    </Window.Resources>
+
     <Window.DataContext>
         <vm:FundsMaintenanceViewModel x:Name="LocalViewModel"/>
     </Window.DataContext>

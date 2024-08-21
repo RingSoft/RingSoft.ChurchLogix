@@ -79,11 +79,16 @@ namespace RingSoft.ChurchLogix.DataAccess
                 e.AllowView = false;
             }
 
-            if (e.AllowView && e.TableDefinition == Members)
+            if (e.AllowView)
             {
-                if (!Members.HasSpecialRight((int)MemberSpecialRights.AllowViewGiving))
+                if (e.TableDefinition == MembersGiving
+                    || e.TableDefinition == MembersGivingHistory
+                    || e.TableDefinition == MembersPeriodGiving)
                 {
-                    
+                    if (!Members.HasSpecialRight((int)MemberSpecialRights.AllowViewGiving))
+                    {
+                        e.AllowView = false;
+                    }
                 }
             }
 

@@ -330,7 +330,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             IDbContext context)
         {
             var fundYearRec = fundPeriodTotalsTable
-                .FirstOrDefault(p => p.Date == endYear
+                .FirstOrDefault(p => p.FundId == budgetActual.Budget.FundId
+                                     && p.Date == endYear
                                      && p.PeriodType == (int)PeriodTypes.YearEnding);
 
             if (fundYearRec == null)
@@ -363,7 +364,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             BudgetActual budgetActual, IDbContext context)
         {
             var fundMonthRec = fundPeriodTotalsTable
-                .FirstOrDefault(p => p.Date == endDayMonth
+                .FirstOrDefault(p => p.FundId == budgetActual.Budget.FundId
+                    && p.Date == endDayMonth
                                      && p.PeriodType == (int)PeriodTypes.MonthEnding);
 
             if (fundMonthRec == null)
@@ -416,7 +418,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             BudgetActual budgetActual, IDbContext context)
         {
             var budgetMonthRec = budgetPeriodTotalsTable
-                .FirstOrDefault(p => p.Date == endDayMonth
+                .FirstOrDefault(p => p.BudgetId == budgetActual.BudgetId
+                                     && p.Date == endDayMonth
                                      && p.PeriodType == (int)PeriodTypes.MonthEnding);
 
             if (budgetMonthRec == null)
@@ -449,7 +452,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             BudgetActual budgetActual, IDbContext context)
         {
             var budgetYearRec = budgetPeriodTotalsTable
-                .FirstOrDefault(p => p.Date == endYear
+                .FirstOrDefault(p => p.BudgetId == budgetActual.BudgetId
+                                     && p.Date == endYear
                                      && p.PeriodType == (int)PeriodTypes.YearEnding);
 
             if (budgetYearRec == null)
