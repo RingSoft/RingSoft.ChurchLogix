@@ -1,5 +1,6 @@
 ﻿using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess;
+using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
@@ -18,6 +19,18 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
     public interface IMemberView : IDbMaintenanceView
     {
         public void RefreshView();
+
+        public bool SetupRecalcFilter(LookupDefinitionBase lookupDefinition);
+
+        public void StartRecalcProcedure(MemberMaintenanceViewModel viewModel
+        , LookupDefinitionBase lookupDefinition);
+
+        public void UpdateProcedure(string headerText
+        , int headerTotal
+        , int headerIndex
+        , string detailText
+        , int detailTotal
+        , int detailIndex);
     }
     public class MemberMaintenanceViewModel : AppDbMaintenanceViewModel<Member>
     {
@@ -120,6 +133,53 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             }
         }
 
+        private LookupDefinition<MemberGivingHistoryLookup, MemberGivingHistory> _historyLookupDefinition;
+
+        public LookupDefinition<MemberGivingHistoryLookup, MemberGivingHistory> HistoryLookupDefinition
+        {
+            get { return _historyLookupDefinition; }
+            set
+            {
+                if (_historyLookupDefinition == value)
+                    return;
+
+                _historyLookupDefinition = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private LookupDefinition<MemberPeriodGivingLookup, MemberPeriodGiving> _monthlyTotalsLookupDefinition;
+
+        public LookupDefinition<MemberPeriodGivingLookup, MemberPeriodGiving> MonthlyTotalsLookupDefinition
+        {
+            get { return _monthlyTotalsLookupDefinition; }
+            set
+            {
+                if (_monthlyTotalsLookupDefinition == value)
+                {
+                    return;
+                }
+                _monthlyTotalsLookupDefinition = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private LookupDefinition<MemberPeriodGivingLookup, MemberPeriodGiving> _yearlyTotalsLookupDefinition;
+
+        public LookupDefinition<MemberPeriodGivingLookup, MemberPeriodGiving> YearlyTotalsLookupDefinition
+        {
+            get { return _yearlyTotalsLookupDefinition; }
+            set
+            {
+                if (_yearlyTotalsLookupDefinition == value)
+                {
+                    return;
+                }
+                _yearlyTotalsLookupDefinition = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string? _notes;
 
         public string? Notes
@@ -140,6 +200,10 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 
         public RelayCommand AddModifyHouseholdLookupCommand { get; }
 
+        public RelayCommand RecalcCommand { get; }
+
+        public PrimaryKeyValue PrimaryKey { get; private set; }
+
         public AutoFillValue DefaultHouseHoldAutoFillValue { get; private set; }
 
         private LookupDefinition<MemberLookup, Member> _householdLookupDefinition;
@@ -147,12 +211,29 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
         public MemberMaintenanceViewModel()
         {
             _householdLookupDefinition = AppGlobals.LookupContext.MemberLookup.Clone();
-                
             HouseholdAutoFillSetup = new AutoFillSetup(_householdLookupDefinition);
 
             HouseholdMembersLookupDefinition = AppGlobals.LookupContext.MemberLookup.Clone();
 
             AddModifyHouseholdLookupCommand = new RelayCommand(AddModifyHousehold);
+
+            RecalcCommand = new RelayCommand(DoRecalc);
+
+            HistoryLookupDefinition = AppGlobals.LookupContext.MemberGivingHistoryLookup.Clone();
+            HistoryLookupDefinition.InitialOrderByColumn = HistoryLookupDefinition
+                .GetColumnDefinition(p => p.Date);
+            HistoryLookupDefinition.InitialOrderByType = OrderByTypes.Descending;
+
+            MonthlyTotalsLookupDefinition = AppGlobals.LookupContext.MemberPeriodGivingLookup.Clone();
+            MonthlyTotalsLookupDefinition.InitialOrderByColumn = MonthlyTotalsLookupDefinition
+                .GetColumnDefinition(p => p.Date);
+            MonthlyTotalsLookupDefinition.InitialOrderByType = OrderByTypes.Descending;
+
+            YearlyTotalsLookupDefinition = AppGlobals.LookupContext.MemberPeriodGivingLookup.Clone();
+            YearlyTotalsLookupDefinition.InitialOrderByColumn = YearlyTotalsLookupDefinition
+                .GetColumnDefinition(p => p.Date);
+            YearlyTotalsLookupDefinition.InitialOrderByType = OrderByTypes.Descending;
+
         }
 
         protected override void Initialize()
@@ -183,6 +264,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 
         protected override void PopulatePrimaryKeyControls(Member newEntity, PrimaryKeyValue primaryKeyValue)
         {
+            PrimaryKey = primaryKeyValue;
             Id = newEntity.Id;
             View.RefreshView();
             _householdLookupDefinition.FilterDefinition.ClearFixedFilters();
@@ -196,6 +278,33 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
                 , Conditions.Equals, Id);
             var command = GetLookupCommand(LookupCommands.Refresh, primaryKeyValue);
             HouseholdMembersLookupDefinition.SetCommand(command);
+
+            HistoryLookupDefinition.FilterDefinition.ClearFixedFilters();
+            HistoryLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.MemberId, Conditions.Equals, newEntity.Id);
+
+            HistoryLookupDefinition.SetCommand(command);
+
+            MonthlyTotalsLookupDefinition.FilterDefinition.ClearFixedFilters();
+            MonthlyTotalsLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.MemberId, Conditions.Equals, newEntity.Id);
+            MonthlyTotalsLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.PeriodType
+                , Conditions.Equals
+                , (int)PeriodTypes.MonthEnding);
+
+            MonthlyTotalsLookupDefinition.SetCommand(command);
+
+            YearlyTotalsLookupDefinition.FilterDefinition.ClearFixedFilters();
+            YearlyTotalsLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.MemberId, Conditions.Equals, newEntity.Id);
+            YearlyTotalsLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.PeriodType
+                , Conditions.Equals
+                , (int)PeriodTypes.YearEnding);
+
+            YearlyTotalsLookupDefinition.SetCommand(command);
+
         }
 
         protected override void LoadFromEntity(Member entity)
@@ -234,7 +343,12 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             Email = null;
             Notes = null;
             View.RefreshView();
-            HouseholdMembersLookupDefinition.SetCommand(GetLookupCommand(LookupCommands.Clear));
+            var command = GetLookupCommand(LookupCommands.Clear);
+            HistoryLookupDefinition.SetCommand(command);
+            MonthlyTotalsLookupDefinition.SetCommand(command);
+            YearlyTotalsLookupDefinition.SetCommand(command);
+            HouseholdMembersLookupDefinition.SetCommand(command);
+            PrimaryKey = null;
         }
 
         private void AddModifyHousehold()
@@ -242,6 +356,123 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             if (ExecuteAddModifyCommand() == DbMaintenanceResults.Success)
                 HouseholdMembersLookupDefinition.SetCommand(GetLookupCommand(LookupCommands.AddModify
                 , null, new HouseholdToken()));
+        }
+
+        private void DoRecalc()
+        {
+            var recalcFilter = ViewLookupDefinition.Clone();
+            if (!View.SetupRecalcFilter(recalcFilter))
+                return;
+
+
+            View.StartRecalcProcedure(this, recalcFilter);
+        }
+
+        public bool StartRecalc(LookupDefinitionBase recalcFilter)
+        {
+            var lookupData = TableDefinition.LookupDefinition.GetLookupDataMaui(recalcFilter, false);
+            var recordCount = lookupData.GetRecordCount();
+            var context = SystemGlobals.DataRepository.GetDataContext();
+            var memberIndex = 0;
+            lookupData.PrintOutput += (sender, args) =>
+            {
+                foreach (var primaryKeyValue in args.Result)
+                {
+                    memberIndex++;
+                    var memberPrimaryKey = primaryKeyValue;
+                    if (memberPrimaryKey.IsValid())
+                    {
+                        var member = TableDefinition.GetEntityFromPrimaryKeyValue(memberPrimaryKey);
+                        member = member.FillOutProperties(false);
+
+                        var periodTotals = context.GetTable<MemberPeriodGiving>()
+                            .Where(p => p.MemberId == member.Id);
+                        context.RemoveRange(periodTotals);
+                        context.Commit("");
+
+                        var memberGivingHistory = context.GetTable<MemberGivingHistory>();
+                        var historyRecs 
+                            = memberGivingHistory.Where(p => p.MemberId == member.Id)
+                                .OrderBy(p => p.Date);
+
+                        var historyIndex = 0;
+                        var historyTotal = memberGivingHistory.Count();
+                        foreach (var givingHistory in historyRecs)
+                        {
+                            historyIndex++;
+                            View.UpdateProcedure(
+                                $"Processing {member.Name} {memberIndex} / {recordCount}"
+                                , recordCount
+                                , memberIndex
+                                , $"Processing History Record {historyIndex} / {historyTotal}"
+                                , historyTotal
+                                , historyIndex);
+                            PostHistory(context, givingHistory);
+                        }
+                    }
+                }
+            };
+            lookupData.DoPrintOutput(10);
+            var result = context.Commit("");
+            if (result && PrimaryKey != null)
+            {
+                var command = GetLookupCommand(LookupCommands.Refresh, PrimaryKey);
+                MonthlyTotalsLookupDefinition.SetCommand(command);
+                YearlyTotalsLookupDefinition.SetCommand(command);
+            }
+            return result;
+        }
+
+        private void PostHistory(IDbContext context, MemberGivingHistory history)
+        {
+            var monthEnding = new DateTime(history.Date.Year, history.Date.Month, 1);
+            monthEnding = monthEnding.AddMonths(1).AddDays(-1);
+            var yearEnding = new DateTime(
+                history.Date.Year
+                , AppGlobals.SystemPreferences.FiscalYearEnd.Value.Month
+                , AppGlobals.SystemPreferences.FiscalYearEnd.Value.Day);
+
+            var periodsTable = context.GetTable<MemberPeriodGiving>();
+            var monthRec = periodsTable.FirstOrDefault(p => p.MemberId == history.MemberId
+                && p.Date == monthEnding
+                            && p.PeriodType ==
+                            (int)PeriodTypes.MonthEnding);
+            if (monthRec == null)
+            {
+                monthRec = new MemberPeriodGiving
+                {
+                    MemberId = history.MemberId,
+                    Date = monthEnding,
+                    PeriodType = (int)PeriodTypes.MonthEnding,
+                    TotalGiving = history.Amount,
+                };
+                context.AddSaveEntity(monthRec, "");
+            }
+            else
+            {
+                monthRec.TotalGiving += history.Amount;
+                context.SaveNoCommitEntity(monthRec, "");
+            }
+
+            var yearRec = periodsTable
+                .FirstOrDefault(p => p.MemberId == history.MemberId && p.Date == yearEnding
+                                                            && p.PeriodType == (int)PeriodTypes.YearEnding);
+            if (yearRec == null)
+            {
+                yearRec = new MemberPeriodGiving
+                {
+                    MemberId = history.MemberId,
+                    Date = yearEnding,
+                    PeriodType = (int)PeriodTypes.YearEnding,
+                    TotalGiving = history.Amount,
+                };
+                context.AddSaveEntity(yearRec, "");
+            }
+            else
+            {
+                yearRec.TotalGiving += history.Amount;
+                context.SaveNoCommitEntity(yearRec, "");
+            }
         }
     }
 }

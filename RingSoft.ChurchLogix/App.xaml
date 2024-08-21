@@ -92,6 +92,8 @@
 
             <Style TargetType="lc:ListWindow" BasedOn="{StaticResource BaseWindowStyle}"/>
 
+            <Style TargetType="dec:TwoTierProcessingWindow" BasedOn="{StaticResource BaseWindowStyle}"/>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

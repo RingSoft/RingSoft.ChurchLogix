@@ -13,6 +13,47 @@
                         Style="{StaticResource BaseWindowStyle}"
                         Title="Member Maintenance" Width="650" Height="500">
 
+    <Window.Resources>
+        <Style TargetType="{x:Type local:MemberHeaderControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type local:MemberHeaderControl}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+
+                            <Grid VerticalAlignment="Stretch">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ac:DbMaintenanceButton Grid.Row="0" Grid.Column="0" x:Name="RecalculateButton" Content="_Recalculate Totals" ImageSource="{StaticResource DecimalEditImage}" Style="{StaticResource SubButton}" HorizontalContentAlignment="Left"/>
+
+                            </Grid>
+
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type ac:DbMaintenanceTopHeaderControl}" BasedOn="{StaticResource {x:Type ac:DbMaintenanceTopHeaderControl}}">
+
+            <Setter Property="CustomPanel">
+                <Setter.Value>
+                    <local:MemberHeaderControl/>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+    </Window.Resources>
+
     <Window.DataContext>
         <vm:MemberMaintenanceViewModel x:Name="LocalViewModel"/>
     </Window.DataContext>
@@ -72,6 +113,52 @@
                         <lc:AutoFillControl Grid.Row="2" Grid.Column="1" Setup="{Binding HouseholdAutoFillSetup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="{Binding HouseholdAutoFillValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" HorizontalAlignment="Left"/>
 
                     </Grid>
+                </TabItem>
+                <TabItem Header="History">
+
+                    <DockPanel>
+                        <lc:LookupControl LookupDefinition="{Binding HistoryLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                            <lc:LookupControl.LookupColumns>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Date, Type={x:Type lm:MemberGivingHistoryLookup}}" Header="Date" Width="100"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Fund, Type={x:Type lm:MemberGivingHistoryLookup}}" Header="Fund" Width="200"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Amount, Type={x:Type lm:MemberGivingHistoryLookup}}" Header="Amount" Width="100"/>
+
+                            </lc:LookupControl.LookupColumns>
+                        </lc:LookupControl>
+                    </DockPanel>
+
+                </TabItem>
+                <TabItem Header="Monthly Totals">
+                    <DockPanel>
+                        <lc:LookupControl LookupDefinition="{Binding MonthlyTotalsLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                            <lc:LookupControl.LookupColumns>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Date, Type={x:Type lm:MemberPeriodGivingLookup}}" Header="Month Ending" Width="100"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Total, Type={x:Type lm:MemberPeriodGivingLookup}}" Header="Total Giving" Width="150"/>
+
+                            </lc:LookupControl.LookupColumns>
+                        </lc:LookupControl>
+                    </DockPanel>
+                </TabItem>
+                <TabItem Header="Yearly Totals">
+                    <DockPanel>
+                        <lc:LookupControl LookupDefinition="{Binding YearlyTotalsLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                            <lc:LookupControl.LookupColumns>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Date, Type={x:Type lm:MemberPeriodGivingLookup}}" Header="Year Ending" Width="100"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Total, Type={x:Type lm:MemberPeriodGivingLookup}}" Header="Total Giving" Width="150"/>
+
+                            </lc:LookupControl.LookupColumns>
+                        </lc:LookupControl>
+                    </DockPanel>
                 </TabItem>
                 <TabItem Header="Household Members">
                     <DockPanel>

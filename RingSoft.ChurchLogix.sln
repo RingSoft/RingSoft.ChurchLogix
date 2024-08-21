@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.DbMaintenance", ".
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.DbLookup.EfCore", "..\RingSoft.DbLookup\RingSoft.DbLookup.EfCore\RingSoft.DbLookup.EfCore.csproj", "{8CC5E527-534A-4533-931F-EB1CCEC81D9C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.DbLookup.Controls.WPF", "..\RingSoft.DbLookup\RingSoft.DbLookup.Controls.WPF\RingSoft.DbLookup.Controls.WPF.csproj", "{42A3CB29-AD76-40C4-9828-0841E0DC3EC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{8CC5E527-534A-4533-931F-EB1CCEC81D9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CC5E527-534A-4533-931F-EB1CCEC81D9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CC5E527-534A-4533-931F-EB1CCEC81D9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42A3CB29-AD76-40C4-9828-0841E0DC3EC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42A3CB29-AD76-40C4-9828-0841E0DC3EC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42A3CB29-AD76-40C4-9828-0841E0DC3EC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42A3CB29-AD76-40C4-9828-0841E0DC3EC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
