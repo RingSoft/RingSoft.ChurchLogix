@@ -32,6 +32,7 @@ namespace RingSoft.ChurchLogix.DataAccess
             modelBuilder.ApplyConfiguration(new BudgetActualConfiguration());
 
             modelBuilder.ApplyConfiguration(new EventConfiguration());
+            modelBuilder.ApplyConfiguration(new EventMemberConfiguration());
         }
 
         public static void SetupSysPrefs()

@@ -42,7 +42,9 @@ namespace RingSoft.ChurchLogix.DataAccess
         public TableDefinition<FundPeriodTotals> FundPeriodTotals { get; set; }
         public TableDefinition< BudgetPeriodTotals> BudgetPeriodTotals { get; set; }
         public TableDefinition<BudgetActual> BudgetActuals { get; set; }
+        
         public TableDefinition<Event> Events { get; set; }
+        public TableDefinition<EventMember> EventsMember { get; set; }
 
         public LookupDefinition<SystemPreferencesLookup, SystemPreferences> SystemPreferencesLookup { get; set; }
         public LookupDefinition<StaffLookup, StaffPerson> StaffLookup { get; set; }
@@ -63,6 +65,7 @@ namespace RingSoft.ChurchLogix.DataAccess
         public LookupDefinition<BudgetActualsLookup, BudgetActual> BudgetActualsLookupDefinition { get; set; }
 
         public LookupDefinition<EventLookup, Event> EventLookupDefinition { get; set; }
+        public LookupDefinition<EventMemberLookup, EventMember> EventMemberLookupDefinition { get; set; }
 
         private DbContext _dbContext;
         private DbDataProcessor _dbDataProcessor;
@@ -477,19 +480,40 @@ namespace RingSoft.ChurchLogix.DataAccess
             EventLookupDefinition.AddVisibleColumnDefinition(
                 p => p.Name
                 , "Name"
-                , p => p.Name, 60);
+                , p => p.Name, 50);
 
             EventLookupDefinition.AddVisibleColumnDefinition(
                 p => p.BeginDate
                 , "Begin Date/Time"
-                , p => p.BeginDate, 20);
+                , p => p.BeginDate, 25);
 
             EventLookupDefinition.AddVisibleColumnDefinition(
                 p => p.EndDate
                 , "End Date/Time"
-                , p => p.EndDate, 20);
+                , p => p.EndDate, 25);
 
             Events.HasLookupDefinition(EventLookupDefinition);
+
+            EventMemberLookupDefinition = new LookupDefinition<EventMemberLookup, EventMember>(EventsMember);
+
+            EventMemberLookupDefinition.Include(p => p.Event)
+                .AddVisibleColumnDefinition(
+                    p => p.Event
+                    , "Event"
+                    , p => p.Name, 40);
+
+            EventMemberLookupDefinition.Include(p => p.Member)
+                .AddVisibleColumnDefinition(
+                    p => p.Member
+                    , "Member"
+                    , p => p.Name, 40);
+
+            EventMemberLookupDefinition.AddVisibleColumnDefinition(
+                p => p.AmountPaid
+                , "Amount Paid"
+                , p => p.AmountPaid, 20);
+
+            EventsMember.HasLookupDefinition(EventMemberLookupDefinition);
         }
 
         protected override void SetupModel()
@@ -498,6 +522,7 @@ namespace RingSoft.ChurchLogix.DataAccess
             Groups.PriorityLevel = 100;
             Funds.PriorityLevel = 100;
             Events.PriorityLevel = 100;
+            EventsMember.PriorityLevel = 200;
             MembersGivingHistory.PriorityLevel = 200;
             MembersPeriodGiving.PriorityLevel = 200;
             MembersGiving.PriorityLevel = 200;
@@ -567,6 +592,8 @@ namespace RingSoft.ChurchLogix.DataAccess
             Events.GetFieldDefinition(
                 p => p.TotalPaid).HasDecimalFieldType(DecimalFieldTypes.Currency);
 
+            EventsMember.GetFieldDefinition(
+                p => p.AmountPaid).HasDecimalFieldType(DecimalFieldTypes.Currency);
         }
 
         public override UserAutoFill GetUserAutoFill(string userName)

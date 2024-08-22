@@ -157,6 +157,7 @@ namespace RingSoft.ChurchLogix
             MakeStaffMenu();
             MakeMemberMenu();
             MakeFinancesMenu();
+            MakeChurchLifeMenu();
             MakeSystemMenu();
 
             MainMenu.Items.Add(new MenuItem()
@@ -280,6 +281,30 @@ namespace RingSoft.ChurchLogix
                         Header = "_Enter Budget Costs...",
                         Command = ViewModel.ShowMaintenanceWindowCommand,
                         CommandParameter = AppGlobals.LookupContext.BudgetActuals,
+                    });
+                }
+            }
+        }
+
+        private void MakeChurchLifeMenu()
+        {
+            var churchLifeCategory =
+                SystemGlobals.Rights.UserRights.Categories.FirstOrDefault(p =>
+                    p.MenuCategoryId == (int)MenuCategories.ChurchLife);
+
+            var items = churchLifeCategory.Items.Where(p => p.TableDefinition.HasRight(RightTypes.AllowView));
+            if (items.Any())
+            {
+                var menuItem = new MenuItem() { Header = "_Church Life" };
+                MainMenu.Items.Add(menuItem);
+
+                if (AppGlobals.LookupContext.Events.HasRight(RightTypes.AllowView))
+                {
+                    menuItem.Items.Add(new MenuItem()
+                    {
+                        Header = "Add/Edit _Events...",
+                        Command = ViewModel.ShowMaintenanceWindowCommand,
+                        CommandParameter = AppGlobals.LookupContext.Events,
                     });
                 }
             }

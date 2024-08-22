@@ -10,6 +10,7 @@ namespace RingSoft.ChurchLogix.Library
         System = 1,
         MemberManagement = 2,
         FinancialManagement = 3,
+        ChurchLife = 4,
     }
 
     public class ChurchLogixRights : ItemRights
@@ -42,6 +43,14 @@ namespace RingSoft.ChurchLogix.Library
             category.Items.Add(rightItem);
 
             rightItem = new RightCategoryItem(item: "Add/Edit Budget Costs", AppGlobals.LookupContext.BudgetActuals);
+            category.Items.Add(rightItem);
+
+            Categories.Add(category);
+
+            category = new RightCategory("Church Life", (int)MenuCategories.ChurchLife);
+
+            rightItem = new RightCategoryItem(item: "Add/Edit Events"
+                , AppGlobals.LookupContext.Events);
             category.Items.Add(rightItem);
 
             Categories.Add(category);

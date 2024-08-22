@@ -57,6 +57,24 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.ToTable("Events");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.EventMember", b =>
+                {
+                    b.Property<int>("EventId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal?>("AmountPaid")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("EventId", "MemberId");
+
+                    b.HasIndex("MemberId");
+
+                    b.ToTable("EventsMember");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetActual", b =>
                 {
                     b.Property<int>("Id")
@@ -629,6 +647,25 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.ToTable("RecordLocks");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.EventMember", b =>
+                {
+                    b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.Event", "Event")
+                        .WithMany("Members")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", "Member")
+                        .WithMany("EventMembers")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetActual", b =>
                 {
                     b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetItem", "Budget")
@@ -818,6 +855,11 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.Navigation("SearchForAdvancedFind");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.Event", b =>
+                {
+                    b.Navigation("Members");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetItem", b =>
                 {
                     b.Navigation("Actuals");
@@ -842,6 +884,8 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", b =>
                 {
+                    b.Navigation("EventMembers");
+
                     b.Navigation("Giving");
 
                     b.Navigation("GivingHistory");

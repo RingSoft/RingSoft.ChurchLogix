@@ -24,5 +24,12 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.ChurchLife
         public double? TotalPaid { get; set; }
 
         public string? Notes { get; set; }
+
+        public ICollection<EventMember> Members { get; set; }
+
+        public Event()
+        {
+            Members = new HashSet<EventMember>();
+        }
     }
 }

@@ -46,6 +46,8 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         DbSet<Event> Events { get; set; }
 
+        DbSet<EventMember> EventsMember { get; set; }
+
         void SetLookupContext(ChurchLogixLookupContext lookupContext);
     }
 }

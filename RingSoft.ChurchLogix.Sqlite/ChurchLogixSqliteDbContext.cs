@@ -30,6 +30,7 @@ namespace RingSoft.ChurchLogix.Sqlite
         public DbSet<BudgetPeriodTotals> BudgetsPeriodTotals { get; set; }
         public DbSet<BudgetActual> BudgetActuals { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<EventMember> EventsMember { get; set; }
 
         public bool IsDesignTime { get; set; }
 
