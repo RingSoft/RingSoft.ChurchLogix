@@ -167,4 +167,13 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         public double Amount { get; set; }
     }
+
+    public class EventLookup
+    {
+        public string Name { get; set; }
+
+        public DateTime BeginDate { get; set; }
+
+        public DateTime EndDate { get; set; }
+    }
 }

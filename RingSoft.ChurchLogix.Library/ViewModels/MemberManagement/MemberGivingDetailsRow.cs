@@ -18,6 +18,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 
         public double Amount { get; private set; }
 
+        public int RowId { get; set; }
+
         public DecimalEditControlSetup AmountSetup { get; }
         public MemberGivingDetailsRow(MemberGivingDetailsManager manager) : base(manager)
         {
@@ -75,6 +77,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 
         public override void LoadFromEntity(MemberGivingDetails entity)
         {
+            RowId = Manager.NewRowId;
+            Manager.NewRowId++;
             FundAutoFillValue = entity.Fund.GetAutoFillValue();
             Amount = entity.Amount;
         }

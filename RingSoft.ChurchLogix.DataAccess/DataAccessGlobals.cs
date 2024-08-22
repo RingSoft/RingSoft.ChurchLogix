@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RingSoft.ChurchLogix.DataAccess.Configurations.ChurchLife;
 using RingSoft.ChurchLogix.DataAccess.Configurations.FinancialManagement;
 using RingSoft.ChurchLogix.DataAccess.Configurations.MemberManagement;
 using RingSoft.ChurchLogix.DataAccess.Configurations.StaffManagement;
@@ -29,6 +30,8 @@ namespace RingSoft.ChurchLogix.DataAccess
             modelBuilder.ApplyConfiguration(new FundPeriodTotalsConfiguration());
             modelBuilder.ApplyConfiguration(new BudgetPeriodTotalsConfiguration());
             modelBuilder.ApplyConfiguration(new BudgetActualConfiguration());
+
+            modelBuilder.ApplyConfiguration(new EventConfiguration());
         }
 
         public static void SetupSysPrefs()

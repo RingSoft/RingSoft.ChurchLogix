@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RingSoft.ChurchLogix.DataAccess.Model;
+using RingSoft.ChurchLogix.DataAccess.Model.ChurchLife;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
@@ -42,6 +43,8 @@ namespace RingSoft.ChurchLogix.DataAccess
         DbSet<BudgetPeriodTotals> BudgetsPeriodTotals { get; set; }
 
         DbSet<BudgetActual> BudgetActuals { get; set; }
+
+        DbSet<Event> Events { get; set; }
 
         void SetLookupContext(ChurchLogixLookupContext lookupContext);
     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RingSoft.ChurchLogix.DataAccess;
 using RingSoft.ChurchLogix.DataAccess.Model;
+using RingSoft.ChurchLogix.DataAccess.Model.ChurchLife;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
@@ -28,6 +29,7 @@ namespace RingSoft.ChurchLogix.SqlServer
         public DbSet<FundPeriodTotals> FundPeriodTotals { get; set; }
         public DbSet<BudgetPeriodTotals> BudgetsPeriodTotals { get; set; }
         public DbSet<BudgetActual> BudgetActuals { get; set; }
+        public DbSet<Event> Events { get; set; }
 
         public bool IsDesignTime { get; set; }
 

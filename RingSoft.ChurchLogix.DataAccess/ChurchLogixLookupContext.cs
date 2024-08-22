@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess.Model;
+using RingSoft.ChurchLogix.DataAccess.Model.ChurchLife;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
@@ -41,6 +42,7 @@ namespace RingSoft.ChurchLogix.DataAccess
         public TableDefinition<FundPeriodTotals> FundPeriodTotals { get; set; }
         public TableDefinition< BudgetPeriodTotals> BudgetPeriodTotals { get; set; }
         public TableDefinition<BudgetActual> BudgetActuals { get; set; }
+        public TableDefinition<Event> Events { get; set; }
 
         public LookupDefinition<SystemPreferencesLookup, SystemPreferences> SystemPreferencesLookup { get; set; }
         public LookupDefinition<StaffLookup, StaffPerson> StaffLookup { get; set; }
@@ -59,6 +61,8 @@ namespace RingSoft.ChurchLogix.DataAccess
         public LookupDefinition<FundPeriodLookup, FundPeriodTotals> FundPeriodLookup { get; set; }
         public LookupDefinition<BudgetPeriodTotalsLookup, BudgetPeriodTotals> BudgetPeriodLookup { get; set; }
         public LookupDefinition<BudgetActualsLookup, BudgetActual> BudgetActualsLookupDefinition { get; set; }
+
+        public LookupDefinition<EventLookup, Event> EventLookupDefinition { get; set; }
 
         private DbContext _dbContext;
         private DbDataProcessor _dbDataProcessor;
@@ -467,6 +471,25 @@ namespace RingSoft.ChurchLogix.DataAccess
                 , p => p.Amount, 25);
 
             BudgetActuals.HasLookupDefinition(BudgetActualsLookupDefinition);
+
+            EventLookupDefinition = new LookupDefinition<EventLookup, Event>(Events);
+
+            EventLookupDefinition.AddVisibleColumnDefinition(
+                p => p.Name
+                , "Name"
+                , p => p.Name, 60);
+
+            EventLookupDefinition.AddVisibleColumnDefinition(
+                p => p.BeginDate
+                , "Begin Date/Time"
+                , p => p.BeginDate, 20);
+
+            EventLookupDefinition.AddVisibleColumnDefinition(
+                p => p.EndDate
+                , "End Date/Time"
+                , p => p.EndDate, 20);
+
+            Events.HasLookupDefinition(EventLookupDefinition);
         }
 
         protected override void SetupModel()
@@ -474,6 +497,7 @@ namespace RingSoft.ChurchLogix.DataAccess
             Members.PriorityLevel = 100;
             Groups.PriorityLevel = 100;
             Funds.PriorityLevel = 100;
+            Events.PriorityLevel = 100;
             MembersGivingHistory.PriorityLevel = 200;
             MembersPeriodGiving.PriorityLevel = 200;
             MembersGiving.PriorityLevel = 200;
@@ -527,6 +551,22 @@ namespace RingSoft.ChurchLogix.DataAccess
 
             BudgetActuals.GetFieldDefinition(p => p.Amount)
                 .HasDecimalFieldType(DecimalFieldTypes.Currency);
+
+            Events.GetFieldDefinition(
+                p => p.Notes).IsMemo();
+            Events.GetFieldDefinition(
+                    p => p.BeginDate).HasDateType(DbDateTypes.DateTime)
+                .DoConvertToLocalTime();
+            Events.GetFieldDefinition(
+                    p => p.EndDate).HasDateType(DbDateTypes.DateTime)
+                .DoConvertToLocalTime();
+            Events.GetFieldDefinition(
+                p => p.MemberCost).HasDecimalFieldType(DecimalFieldTypes.Currency);
+            Events.GetFieldDefinition(
+                p => p.TotalCost).HasDecimalFieldType(DecimalFieldTypes.Currency);
+            Events.GetFieldDefinition(
+                p => p.TotalPaid).HasDecimalFieldType(DecimalFieldTypes.Currency);
+
         }
 
         public override UserAutoFill GetUserAutoFill(string userName)
