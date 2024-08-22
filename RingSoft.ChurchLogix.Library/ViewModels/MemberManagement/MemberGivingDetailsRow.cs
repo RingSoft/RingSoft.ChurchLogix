@@ -77,8 +77,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 
         public override void LoadFromEntity(MemberGivingDetails entity)
         {
-            RowId = Manager.NewRowId;
-            Manager.NewRowId++;
+            RowId = entity.RowId;
             FundAutoFillValue = entity.Fund.GetAutoFillValue();
             Amount = entity.Amount;
         }

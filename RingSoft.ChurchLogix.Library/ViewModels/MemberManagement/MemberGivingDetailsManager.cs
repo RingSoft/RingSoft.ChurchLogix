@@ -14,8 +14,6 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
     {
         public new MemberGivingMaintenanceViewModel ViewModel { get; }
 
-        public int NewRowId { get; set; } = 1;
-
         public const int FundColumnId = (int)MemberGivingDetailsColumns.Fund;
         public const int AmountColumnId = (int)MemberGivingDetailsColumns.Amount;
 
@@ -56,7 +54,6 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 
         public override void LoadGrid(IEnumerable<MemberGivingDetails> entityList)
         {
-            NewRowId = 1;
             base.LoadGrid(entityList);
             CalculateTotal();
             if (_rowIdSelected >= 0)
