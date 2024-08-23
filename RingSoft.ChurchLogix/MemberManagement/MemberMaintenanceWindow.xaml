@@ -11,7 +11,7 @@
                         xmlns:local="clr-namespace:RingSoft.ChurchLogix.MemberManagement"
                         mc:Ignorable="d"
                         Style="{StaticResource BaseWindowStyle}"
-                        Title="Member Maintenance" Width="650" Height="500">
+                        Title="Member Maintenance" Width="750" Height="500">
 
     <Window.Resources>
         <Style TargetType="{x:Type local:MemberHeaderControl}">
@@ -113,6 +113,34 @@
                         <lc:AutoFillControl Grid.Row="2" Grid.Column="1" Setup="{Binding HouseholdAutoFillSetup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="{Binding HouseholdAutoFillValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" HorizontalAlignment="Left"/>
 
                     </Grid>
+                </TabItem>
+                <TabItem Header="Small Groups">
+
+                    <DockPanel>
+                        <lc:LookupControl LookupDefinition="{Binding SmallGroupLookupDefinition}">
+
+                            <lc:LookupControl.LookupColumns>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf SmallGroup, Type={x:Type lm:SmallGroupMemberLookup}}" Header="Small Group" Width="200"/>
+
+                            </lc:LookupControl.LookupColumns>
+                        </lc:LookupControl>
+                    </DockPanel>
+
+                </TabItem>
+                <TabItem Header="Events">
+
+                    <DockPanel>
+                        <lc:LookupControl LookupDefinition="{Binding EventLookupDefinition}">
+
+                            <lc:LookupControl.LookupColumns>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Event, Type={x:Type lm:EventMemberLookup}}" Header="Event" Width="200"/>
+
+                            </lc:LookupControl.LookupColumns>
+                        </lc:LookupControl>
+                    </DockPanel>
+
                 </TabItem>
                 <TabItem Header="Giving History" x:Name="HistoryTab">
 

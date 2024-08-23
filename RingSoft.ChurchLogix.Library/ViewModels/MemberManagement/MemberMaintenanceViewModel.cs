@@ -1,5 +1,6 @@
 ﻿using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess;
+using RingSoft.ChurchLogix.DataAccess.Model.ChurchLife;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.DataEntryControls.Engine;
@@ -133,6 +134,36 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             }
         }
 
+        private LookupDefinition<SmallGroupMemberLookup, SmallGroupMember> _smallGroupLookupDefinition;
+
+        public LookupDefinition<SmallGroupMemberLookup, SmallGroupMember> SmallGroupLookupDefinition
+        {
+            get { return _smallGroupLookupDefinition; }
+            set
+            {
+                if (_smallGroupLookupDefinition == value)
+                    return;
+
+                _smallGroupLookupDefinition = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private LookupDefinition<EventMemberLookup, EventMember> _eventLookupDefinition;
+
+        public LookupDefinition<EventMemberLookup, EventMember> EventLookupDefinition
+        {
+            get { return _eventLookupDefinition; }
+            set
+            {
+                if (_eventLookupDefinition == value)
+                    return;
+
+                _eventLookupDefinition = value;
+                OnPropertyChanged();
+            }
+        }
+
         private LookupDefinition<MemberGivingHistoryLookup, MemberGivingHistory> _historyLookupDefinition;
 
         public LookupDefinition<MemberGivingHistoryLookup, MemberGivingHistory> HistoryLookupDefinition
@@ -234,6 +265,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
                 .GetColumnDefinition(p => p.Date);
             YearlyTotalsLookupDefinition.InitialOrderByType = OrderByTypes.Descending;
 
+            SmallGroupLookupDefinition = AppGlobals.LookupContext.SmallGroupMemberLookupDefinition.Clone();
+            EventLookupDefinition = AppGlobals.LookupContext.EventMemberLookupDefinition.Clone();
         }
 
         protected override void Initialize()
@@ -305,6 +338,15 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 
             YearlyTotalsLookupDefinition.SetCommand(command);
 
+            SmallGroupLookupDefinition.FilterDefinition.ClearFixedFilters();
+            SmallGroupLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.MemberId, Conditions.Equals, newEntity.Id);
+            SmallGroupLookupDefinition.SetCommand(command);
+
+            EventLookupDefinition.FilterDefinition.ClearFixedFilters();
+            EventLookupDefinition.FilterDefinition.AddFixedFilter(
+                p => p.MemberId, Conditions.Equals, newEntity.Id);
+            EventLookupDefinition.SetCommand(command);
         }
 
         protected override void LoadFromEntity(Member entity)
@@ -348,6 +390,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             MonthlyTotalsLookupDefinition.SetCommand(command);
             YearlyTotalsLookupDefinition.SetCommand(command);
             HouseholdMembersLookupDefinition.SetCommand(command);
+            SmallGroupLookupDefinition.SetCommand(command);
+            EventLookupDefinition.SetCommand(command);
             PrimaryKey = null;
         }
 
