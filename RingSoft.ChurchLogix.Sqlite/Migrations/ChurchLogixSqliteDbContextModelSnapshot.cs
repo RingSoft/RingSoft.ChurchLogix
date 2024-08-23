@@ -68,6 +68,21 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                     b.ToTable("EventsMember");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetActual", b =>
                 {
                     b.Property<int>("Id")

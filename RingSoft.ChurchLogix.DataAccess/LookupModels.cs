@@ -185,4 +185,9 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         public double AmountPaid { get; set; }
     }
+
+    public class RoleLookup
+    {
+        public string Name { get; set; }
+    }
 }

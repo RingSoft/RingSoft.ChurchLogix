@@ -48,6 +48,8 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         DbSet<EventMember> EventsMember { get; set; }
 
+        DbSet<Role> Roles { get; set; }
+
         void SetLookupContext(ChurchLogixLookupContext lookupContext);
     }
 }

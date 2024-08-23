@@ -45,6 +45,7 @@ namespace RingSoft.ChurchLogix.DataAccess
         
         public TableDefinition<Event> Events { get; set; }
         public TableDefinition<EventMember> EventsMember { get; set; }
+        public TableDefinition<Role> Roles { get; set; }
 
         public LookupDefinition<SystemPreferencesLookup, SystemPreferences> SystemPreferencesLookup { get; set; }
         public LookupDefinition<StaffLookup, StaffPerson> StaffLookup { get; set; }
@@ -66,6 +67,7 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         public LookupDefinition<EventLookup, Event> EventLookupDefinition { get; set; }
         public LookupDefinition<EventMemberLookup, EventMember> EventMemberLookupDefinition { get; set; }
+        public LookupDefinition<RoleLookup, Role> RoleLookupDefinition { get; set; }
 
         private DbContext _dbContext;
         private DbDataProcessor _dbDataProcessor;
@@ -514,6 +516,15 @@ namespace RingSoft.ChurchLogix.DataAccess
                 , p => p.AmountPaid, 20);
 
             EventsMember.HasLookupDefinition(EventMemberLookupDefinition);
+
+            RoleLookupDefinition = new LookupDefinition<RoleLookup, Role>(Roles);
+
+            RoleLookupDefinition.AddVisibleColumnDefinition(
+                p => p.Name
+                , "Name"
+                , p => p.Name, 99);
+
+            Roles.HasLookupDefinition(RoleLookupDefinition);
         }
 
         protected override void SetupModel()
@@ -522,6 +533,7 @@ namespace RingSoft.ChurchLogix.DataAccess
             Groups.PriorityLevel = 100;
             Funds.PriorityLevel = 100;
             Events.PriorityLevel = 100;
+            Roles.PriorityLevel = 100;
             EventsMember.PriorityLevel = 200;
             MembersGivingHistory.PriorityLevel = 200;
             MembersPeriodGiving.PriorityLevel = 200;
