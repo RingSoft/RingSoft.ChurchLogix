@@ -1,0 +1,66 @@
+﻿using RingSoft.App.Library;
+using RingSoft.ChurchLogix.DataAccess.Model.ChurchLife;
+using RingSoft.DbLookup;
+
+namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
+{
+    public class SmallGroupMaintenanceViewModel : AppDbMaintenanceViewModel<SmallGroup>
+    {
+        private int _id;
+
+        public int Id
+        {
+            get { return _id; }
+            set
+            {
+                if (_id == value)
+                {
+                    return;
+                }
+                _id = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string? _notes;
+
+        public string? Notes
+        {
+            get { return _notes; }
+            set
+            {
+                if (_notes == value)
+                    return;
+
+                _notes = value;
+                OnPropertyChanged();
+            }
+        }
+
+        protected override void PopulatePrimaryKeyControls(SmallGroup newEntity, PrimaryKeyValue primaryKeyValue)
+        {
+            Id = newEntity.Id;
+        }
+
+        protected override void LoadFromEntity(SmallGroup entity)
+        {
+            Notes = entity.Notes;
+        }
+
+        protected override SmallGroup GetEntityData()
+        {
+            return new SmallGroup
+            {
+                Id = Id,
+                Name = KeyAutoFillValue.Text,
+                Notes = Notes,
+            };
+        }
+
+        protected override void ClearData()
+        {
+            Id = 0;
+            Notes = null;
+        }
+    }
+}

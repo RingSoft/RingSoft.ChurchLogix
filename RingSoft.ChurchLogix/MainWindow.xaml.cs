@@ -308,6 +308,16 @@ namespace RingSoft.ChurchLogix
                     });
                 }
 
+                if (AppGlobals.LookupContext.SmallGroups.HasRight(RightTypes.AllowView))
+                {
+                    menuItem.Items.Add(new MenuItem()
+                    {
+                        Header = "Add/Edit _Small Groups...",
+                        Command = ViewModel.ShowMaintenanceWindowCommand,
+                        CommandParameter = AppGlobals.LookupContext.SmallGroups,
+                    });
+                }
+
                 if (AppGlobals.LookupContext.Roles.HasRight(RightTypes.AllowView))
                 {
                     menuItem.Items.Add(new MenuItem()
