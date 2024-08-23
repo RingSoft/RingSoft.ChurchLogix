@@ -1,9 +1,14 @@
 ﻿using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess.Model.ChurchLife;
 using RingSoft.DbLookup;
+using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
 {
+    public interface IEventView: IDbMaintenanceView
+    {
+        void RefreshTotals();
+    }
     public class EventMaintenanceViewModel : AppDbMaintenanceViewModel<Event>
     {
         private int _id;
@@ -79,6 +84,11 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
 
                 _totalCost = value;
                 OnPropertyChanged();
+                if (!_loading)
+                {
+                    Difference = TotalPaid.GetValueOrDefault() - TotalCost.GetValueOrDefault();
+                    View.RefreshTotals();
+                }
             }
         }
 
@@ -97,6 +107,38 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
             }
         }
 
+        private double _difference;
+
+        public double Difference
+        {
+            get { return _difference; }
+            set
+            {
+                if (_difference == value) 
+                    return;
+
+                _difference = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        private EventMemberManager _memberManager;
+
+        public EventMemberManager MemberManager
+        {
+            get { return _memberManager; }
+            set
+            {
+                if (_memberManager == value)
+                    return;
+
+                _memberManager = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         private string? _notes;
 
         public string? Notes
@@ -112,6 +154,25 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
             }
         }
 
+        public IEventView View { get; private set; }
+
+        private bool _loading;
+
+        public EventMaintenanceViewModel()
+        {
+            MemberManager = new EventMemberManager(this);
+
+            RegisterGrid(MemberManager);
+        }
+
+        protected override void Initialize()
+        {
+            if (base.View is IEventView eventView)
+            {
+                View = eventView;
+            }
+            base.Initialize();
+        }
 
         protected override void PopulatePrimaryKeyControls(Event newEntity, PrimaryKeyValue primaryKeyValue)
         {
@@ -120,12 +181,14 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
 
         protected override void LoadFromEntity(Event entity)
         {
+            _loading = true;
             BeginDate = entity.BeginDate.ToLocalTime();
             EndDate = entity.EndDate.ToLocalTime();
             MemberCost = entity.MemberCost;
             TotalCost = entity.TotalCost;
             TotalPaid = entity.TotalPaid;
             Notes = entity.Notes;
+            _loading = false;
         }
 
         protected override Event GetEntityData()
@@ -152,7 +215,9 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
             MemberCost = 0;
             TotalCost = 0;
             TotalPaid = 0;
+            Difference = 0;
             Notes = null;
+            View.RefreshTotals();
         }
     }
 }

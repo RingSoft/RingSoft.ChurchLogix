@@ -72,19 +72,48 @@
 
                         <Label Grid.Row="2" Grid.Column="0" Content="Member Cost"/>
 
-                        <dec:DecimalEditControl Grid.Row="2" Grid.Column="1" Value="{Binding MemberCost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" HorizontalAlignment="Left" FormatType="Currency"/>
+                        <dec:DecimalEditControl Grid.Row="2" Grid.Column="1" Value="{Binding MemberCost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150" HorizontalAlignment="Left" FormatType="Currency"/>
 
                         <Label Grid.Row="3" Grid.Column="0" Content="Total Cost"/>
 
-                        <dec:DecimalEditControl Grid.Row="3" Grid.Column="1" Value="{Binding TotalCost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" HorizontalAlignment="Left" FormatType="Currency"/>
+                        <dec:DecimalEditControl Grid.Row="3" Grid.Column="1" Value="{Binding TotalCost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150" HorizontalAlignment="Left" FormatType="Currency"/>
 
                         <Label Grid.Row="4" Grid.Column="0" Content="Total Paid"/>
 
-                        <dec:DecimalReadOnlyBox Grid.Row="4" Grid.Column="1" Value="{Binding TotalPaid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" HorizontalAlignment="Left" FormatType="Currency"/>
+                        <dec:DecimalReadOnlyBox Grid.Row="4" Grid.Column="1" Value="{Binding TotalPaid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150" HorizontalAlignment="Left" FormatType="Currency"/>
+
+                        <Label Grid.Row="5" Grid.Column="0" Content="Difference"/>
+
+                        <dec:DecimalReadOnlyBox Grid.Row="5" Grid.Column="1" x:Name="DiffBox" Value="{Binding Difference, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150" HorizontalAlignment="Left" FormatType="Currency"/>
 
 
                     </Grid>
 
+                </TabItem>
+                <TabItem Header="Members">
+
+                    <DockPanel>
+
+                        <StackPanel DockPanel.Dock="Top" Margin="5" Orientation="Horizontal">
+
+                            <Label Content="Total Paid"/>
+
+                            <dec:DecimalReadOnlyBox Value="{Binding TotalPaid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150" TextAlignment="Left" FormatType="Currency"/>
+
+                        </StackPanel>
+
+                        <deg:DataEntryGrid Manager="{Binding MemberManager}">
+
+                            <deg:DataEntryGrid.Columns>
+
+                                <deg:DataEntryGridTextColumn Header="Member" ColumnId="{x:Static vm:EventMemberManager.MemberColumnId}" Width="200"/>
+
+                                <deg:DataEntryGridTextColumn Header="Amount Paid" ColumnId="{x:Static vm:EventMemberManager.AmountPaidColumnId}" Width="100" Alignment="Right"/>
+
+                            </deg:DataEntryGrid.Columns>
+                        </deg:DataEntryGrid>
+
+                    </DockPanel>
                 </TabItem>
                 <dec:DataEntryMemoTabItem Header="Notes" VerticalAlignment="Stretch">
                     <DockPanel>
