@@ -115,6 +115,26 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.ToTable("SmallGroups");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.SmallGroupMember", b =>
+                {
+                    b.Property<int>("SmallGroupId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("SmallGroupId", "MemberId");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("SmallGroupsMember");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetActual", b =>
                 {
                     b.Property<int>("Id")
@@ -706,6 +726,33 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.Navigation("Member");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.SmallGroupMember", b =>
+                {
+                    b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", "Member")
+                        .WithMany("SmallGroupMembers")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.Role", "Role")
+                        .WithMany("SmallGroupMembers")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.SmallGroup", "SmallGroup")
+                        .WithMany("Members")
+                        .HasForeignKey("SmallGroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+
+                    b.Navigation("Role");
+
+                    b.Navigation("SmallGroup");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetActual", b =>
                 {
                     b.HasOne("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetItem", "Budget")
@@ -900,6 +947,16 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.Navigation("Members");
                 });
 
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.Role", b =>
+                {
+                    b.Navigation("SmallGroupMembers");
+                });
+
+            modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.SmallGroup", b =>
+                {
+                    b.Navigation("Members");
+                });
+
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetItem", b =>
                 {
                     b.Navigation("Actuals");
@@ -933,6 +990,8 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.Navigation("HouseholdMembers");
 
                     b.Navigation("PeriodGiving");
+
+                    b.Navigation("SmallGroupMembers");
 
                     b.Navigation("Staff");
                 });

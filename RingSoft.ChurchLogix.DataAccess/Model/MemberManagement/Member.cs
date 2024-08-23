@@ -38,6 +38,7 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.MemberManagement
         public virtual ICollection<MemberPeriodGiving> PeriodGiving { get; set; }
         public virtual ICollection<MemberGiving> Giving { get; set; }
         public virtual ICollection<EventMember> EventMembers { get; set; }
+        public virtual ICollection<SmallGroupMember> SmallGroupMembers { get; set; }
 
         public Member()
         {
@@ -47,6 +48,7 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.MemberManagement
             PeriodGiving = new HashSet<MemberPeriodGiving>();
             Giving = new HashSet<MemberGiving>();
             EventMembers = new HashSet<EventMember>();
+            SmallGroupMembers = new HashSet<SmallGroupMember>();
         }
     }
 }

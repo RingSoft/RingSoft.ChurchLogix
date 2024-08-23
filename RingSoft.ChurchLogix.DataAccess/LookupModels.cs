@@ -194,4 +194,13 @@ namespace RingSoft.ChurchLogix.DataAccess
     {
         public string Name { get; set; }
     }
+
+    public class SmallGroupMemberLookup
+    {
+        public string SmallGroup { get; set; }
+
+        public string Member { get; set; }
+
+        public string Role { get; set; }
+    }
 }

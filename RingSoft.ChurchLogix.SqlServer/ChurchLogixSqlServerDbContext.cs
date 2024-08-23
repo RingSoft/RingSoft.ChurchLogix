@@ -33,6 +33,7 @@ namespace RingSoft.ChurchLogix.SqlServer
         public DbSet<EventMember> EventsMember { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<SmallGroup> SmallGroups { get; set; }
+        public DbSet<SmallGroupMember> SmallGroupsMember { get; set; }
 
         public bool IsDesignTime { get; set; }
 

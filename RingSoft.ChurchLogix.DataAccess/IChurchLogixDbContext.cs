@@ -52,6 +52,8 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         DbSet<SmallGroup> SmallGroups { get; set; }
 
+        DbSet<SmallGroupMember> SmallGroupsMember { get; set; }
+
         void SetLookupContext(ChurchLogixLookupContext lookupContext);
     }
 }

@@ -13,5 +13,12 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.ChurchLife
         public string Name { get; set; }
 
         public string? Notes { get; set; }
+
+        public virtual ICollection<SmallGroupMember> Members { get; set; }
+
+        public SmallGroup()
+        {
+            Members = new HashSet<SmallGroupMember>();
+        }
     }
 }

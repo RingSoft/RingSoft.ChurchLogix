@@ -34,6 +34,7 @@ namespace RingSoft.ChurchLogix.DataAccess
             modelBuilder.ApplyConfiguration(new EventMemberConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new SmallGroupConfiguration());
+            modelBuilder.ApplyConfiguration(new SmallGroupMemberConfiguration());
         }
 
         public static void SetupSysPrefs()

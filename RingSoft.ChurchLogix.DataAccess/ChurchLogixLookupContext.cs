@@ -47,6 +47,7 @@ namespace RingSoft.ChurchLogix.DataAccess
         public TableDefinition<EventMember> EventsMember { get; set; }
         public TableDefinition<Role> Roles { get; set; }
         public TableDefinition<SmallGroup> SmallGroups { get; set; }
+        public TableDefinition<SmallGroupMember> SmallGroupsMember { get; set; }
 
         public LookupDefinition<SystemPreferencesLookup, SystemPreferences> SystemPreferencesLookup { get; set; }
         public LookupDefinition<StaffLookup, StaffPerson> StaffLookup { get; set; }
@@ -70,6 +71,7 @@ namespace RingSoft.ChurchLogix.DataAccess
         public LookupDefinition<EventMemberLookup, EventMember> EventMemberLookupDefinition { get; set; }
         public LookupDefinition<RoleLookup, Role> RoleLookupDefinition { get; set; }
         public LookupDefinition<SmallGroupLookup, SmallGroup> SmallGroupLookupDefinition { get; set; }
+        public LookupDefinition<SmallGroupMemberLookup, SmallGroupMember> SmallGroupMemberLookupDefinition { get; set; }
 
         private DbContext _dbContext;
         private DbDataProcessor _dbDataProcessor;
@@ -536,6 +538,29 @@ namespace RingSoft.ChurchLogix.DataAccess
                 , p => p.Name, 99);
 
             SmallGroups.HasLookupDefinition(SmallGroupLookupDefinition);
+
+            SmallGroupMemberLookupDefinition = new LookupDefinition<SmallGroupMemberLookup, SmallGroupMember>(
+                SmallGroupsMember);
+
+            SmallGroupMemberLookupDefinition.Include(p => p.SmallGroup)
+                .AddVisibleColumnDefinition(
+                    p => p.SmallGroup
+                    , "Small Group"
+                    , p => p.Name, 33);
+
+            SmallGroupMemberLookupDefinition.Include(p => p.Member)
+                .AddVisibleColumnDefinition(
+                    p => p.Member
+                    , "Member"
+                    , p => p.Name, 33);
+
+            SmallGroupMemberLookupDefinition.Include(p => p.Role)
+                .AddVisibleColumnDefinition(
+                    p => p.Role
+                    , "Role"
+                    , p => p.Name, 34);
+
+            SmallGroupsMember.HasLookupDefinition(SmallGroupMemberLookupDefinition);
         }
 
         protected override void SetupModel()
@@ -546,6 +571,7 @@ namespace RingSoft.ChurchLogix.DataAccess
             Events.PriorityLevel = 100;
             Roles.PriorityLevel = 100;
             SmallGroups.PriorityLevel = 100;
+            SmallGroupsMember.PriorityLevel = 200;
             EventsMember.PriorityLevel = 200;
             MembersGivingHistory.PriorityLevel = 200;
             MembersPeriodGiving.PriorityLevel = 200;
