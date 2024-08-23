@@ -8,6 +8,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
     public interface IEventView: IDbMaintenanceView
     {
         void RefreshTotals();
+
+        void ActivateGrid();
     }
     public class EventMaintenanceViewModel : AppDbMaintenanceViewModel<Event>
     {

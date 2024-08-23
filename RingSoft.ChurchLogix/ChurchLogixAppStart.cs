@@ -63,6 +63,7 @@ namespace RingSoft.ChurchLogix
             LookupControlsGlobals.WindowRegistry.RegisterWindow<BudgetPeriodWindow, BudgetPeriodTotals>();
 
             LookupControlsGlobals.WindowRegistry.RegisterWindow<EventMaintenanceWindow, Event>();
+            LookupControlsGlobals.WindowRegistry.RegisterWindow<EventMaintenanceWindow, EventMember>();
 
             LookupControlsGlobals.WindowRegistry.RegisterWindow<SystemPreferencesWindow, SystemPreferences>();
 

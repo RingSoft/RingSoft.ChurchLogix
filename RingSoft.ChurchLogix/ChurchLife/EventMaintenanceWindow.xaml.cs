@@ -39,5 +39,11 @@ namespace RingSoft.ChurchLogix.ChurchLife
                 DiffBox.Foreground = Brushes.Black;
             }
         }
+
+        public void ActivateGrid()
+        {
+            TabControl.Focus();
+            TabControl.SelectedItem = MembersTab;
+        }
     }
 }
