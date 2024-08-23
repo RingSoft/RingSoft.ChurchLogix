@@ -53,6 +53,10 @@ namespace RingSoft.ChurchLogix.Library
                 , AppGlobals.LookupContext.Events);
             category.Items.Add(rightItem);
 
+            rightItem = new RightCategoryItem(item: "Add/Edit Small Group Roles"
+                , AppGlobals.LookupContext.Roles);
+            category.Items.Add(rightItem);
+
             Categories.Add(category);
 
             category = new RightCategory("System", (int)MenuCategories.System);
