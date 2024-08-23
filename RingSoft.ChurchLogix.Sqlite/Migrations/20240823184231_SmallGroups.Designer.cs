@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RingSoft.ChurchLogix.Sqlite;
 
@@ -10,9 +11,11 @@ using RingSoft.ChurchLogix.Sqlite;
 namespace RingSoft.ChurchLogix.Sqlite.Migrations
 {
     [DbContext(typeof(ChurchLogixSqliteDbContext))]
-    partial class ChurchLogixSqliteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240823184231_SmallGroups")]
+    partial class SmallGroups
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.6");

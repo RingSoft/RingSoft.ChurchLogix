@@ -2,7 +2,7 @@
 
 namespace RingSoft.ChurchLogix.DataAccess.Model.ChurchLife
 {
-    public class Role
+    public class SmallGroup
     {
         [Required]
         [Key]
@@ -11,5 +11,7 @@ namespace RingSoft.ChurchLogix.DataAccess.Model.ChurchLife
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
+
+        public string? Notes { get; set; }
     }
 }

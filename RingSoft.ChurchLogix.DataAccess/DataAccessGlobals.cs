@@ -3,7 +3,6 @@ using RingSoft.ChurchLogix.DataAccess.Configurations.ChurchLife;
 using RingSoft.ChurchLogix.DataAccess.Configurations.FinancialManagement;
 using RingSoft.ChurchLogix.DataAccess.Configurations.MemberManagement;
 using RingSoft.ChurchLogix.DataAccess.Configurations.StaffManagement;
-using RingSoft.ChurchLogix.DataAccess.Model;
 using RingSoft.DbLookup.EfCore;
 
 namespace RingSoft.ChurchLogix.DataAccess
@@ -34,6 +33,7 @@ namespace RingSoft.ChurchLogix.DataAccess
             modelBuilder.ApplyConfiguration(new EventConfiguration());
             modelBuilder.ApplyConfiguration(new EventMemberConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new SmallGroupConfiguration());
         }
 
         public static void SetupSysPrefs()

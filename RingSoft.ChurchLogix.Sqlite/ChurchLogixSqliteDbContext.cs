@@ -32,6 +32,7 @@ namespace RingSoft.ChurchLogix.Sqlite
         public DbSet<Event> Events { get; set; }
         public DbSet<EventMember> EventsMember { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<SmallGroup> SmallGroups { get; set; }
 
         public bool IsDesignTime { get; set; }
 
