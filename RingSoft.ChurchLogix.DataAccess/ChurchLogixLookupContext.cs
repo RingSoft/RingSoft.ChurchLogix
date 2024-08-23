@@ -49,6 +49,7 @@ namespace RingSoft.ChurchLogix.DataAccess
         public TableDefinition<SmallGroup> SmallGroups { get; set; }
         public TableDefinition<SmallGroupMember> SmallGroupsMember { get; set; }
 
+        public LookupDefinition<FundLookup, SystemMaster> SystemMasterLookupDefinition { get; set; }
         public LookupDefinition<SystemPreferencesLookup, SystemPreferences> SystemPreferencesLookup { get; set; }
         public LookupDefinition<StaffLookup, StaffPerson> StaffLookup { get; set; }
         public LookupDefinition<GroupsLookup, Group> GroupsLookup { get; set; }
@@ -184,6 +185,13 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         protected override void InitializeLookupDefinitions()
         {
+            SystemMasterLookupDefinition = new LookupDefinition<FundLookup, SystemMaster>(SystemMaster);
+            SystemMasterLookupDefinition.AddVisibleColumnDefinition(
+                p => p.Description
+                , "Name"
+                , p => p.ChurchName, 99);
+            SystemMaster.HasLookupDefinition(SystemMasterLookupDefinition);
+
             SystemPreferencesLookup =
                 new LookupDefinition<SystemPreferencesLookup, SystemPreferences>(SystemPreferences);
 

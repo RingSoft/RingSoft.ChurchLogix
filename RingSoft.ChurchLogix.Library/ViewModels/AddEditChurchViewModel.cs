@@ -1,6 +1,10 @@
-﻿using RingSoft.App.Interop;
+﻿using Microsoft.EntityFrameworkCore;
+using RingSoft.App.Interop;
 using RingSoft.App.Library;
+using RingSoft.ChurchLogix.DataAccess;
 using RingSoft.ChurchLogix.MasterData;
+using RingSoft.ChurchLogix.Sqlite;
+using RingSoft.ChurchLogix.SqlServer;
 using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup.DataProcessor;
 using RingSoft.DbLookup.EfCore;
@@ -98,7 +102,102 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
 
         protected override bool PreDataCopy(ref LookupContext context, ref DbDataProcessor destinationProcessor, ITwoTierProcedure procedure)
         {
-            throw new NotImplementedException();
+            DbContext destinationDbContext = null;
+            IChurchLogixDbContext sourceDbContext = null;
+            context = AppGlobals.LookupContext;
+            switch (DbPlatform)
+            {
+                case DbPlatforms.Sqlite:
+                    destinationProcessor = AppGlobals.LookupContext.SqliteDataProcessor;
+                    LoadDbDataProcessor(destinationProcessor);
+                    var sqliteHomeLogixDbContext = new ChurchLogixSqliteDbContext();
+                    sqliteHomeLogixDbContext.SetLookupContext(AppGlobals.LookupContext);
+                    destinationDbContext = sqliteHomeLogixDbContext;
+                    break;
+                case DbPlatforms.SqlServer:
+                    var sqlServerProcessor = AppGlobals.LookupContext.SqlServerDataProcessor;
+                    destinationProcessor = sqlServerProcessor;
+                    LoadDbDataProcessor(destinationProcessor);
+                    var sqlServerContext = new ChurchLogixSqlServerDbContext();
+                    sqlServerContext.SetLookupContext(AppGlobals.LookupContext);
+                    destinationDbContext = sqlServerContext;
+
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+
+            }
+
+            AppGlobals.DbPlatform = OriginalDbPlatform;
+            switch (OriginalDbPlatform)
+            {
+                case DbPlatforms.Sqlite:
+                    sourceDbContext = new ChurchLogixSqliteDbContext();
+                    sourceDbContext.SetLookupContext(AppGlobals.LookupContext);
+                    break;
+                case DbPlatforms.SqlServer:
+                    sourceDbContext = new ChurchLogixSqlServerDbContext();
+                    sourceDbContext.SetLookupContext(AppGlobals.LookupContext);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            AppGlobals.LoadDataProcessor(Object, OriginalDbPlatform);
+            switch (OriginalDbPlatform)
+            {
+                case DbPlatforms.Sqlite:
+                    break;
+                case DbPlatforms.SqlServer:
+                    if (!AppGlobals.AllowMigrate(AppGlobals.LookupContext.SqlServerDataProcessor))
+                    {
+                        var message = "You do not have the permission to copy this database's data.";
+                        var caption = "Copy Error";
+                        procedure.ShowMessage(message, caption, RsMessageBoxIcons.Exclamation);
+                        return false;
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            switch (OriginalDbPlatform)
+            {
+                case DbPlatforms.Sqlite:
+                    break;
+                case DbPlatforms.SqlServer:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            var dropResult = destinationProcessor.DropDatabase();
+            if (dropResult.ResultCode != GetDataResultCodes.Success)
+            {
+                procedure.ShowError(dropResult.Message, "Error Dropping Database");
+                return false;
+            }
+
+            procedure.SetCursor(WindowCursorTypes.Wait);
+            sourceDbContext = AppGlobals.GetNewDbContext();
+            sourceDbContext.SetLookupContext(AppGlobals.LookupContext);
+            AppGlobals.LookupContext.Initialize(sourceDbContext, OriginalDbPlatform);
+
+
+            var result = AppGlobals.MigrateContext(AppGlobals.GetNewDbContext().DbContext);
+            if (!result.IsNullOrEmpty())
+            {
+                procedure.SetCursor(WindowCursorTypes.Default);
+                procedure.ShowError(result, "File Access Error");
+                return false;
+            }
+
+            result = AppGlobals.MigrateContext(destinationDbContext);
+            if (!result.IsNullOrEmpty())
+            {
+                procedure.SetCursor(WindowCursorTypes.Default);
+                procedure.ShowError(result, "File Access Error");
+                return false;
+            }
+            return true;
         }
     }
 }
