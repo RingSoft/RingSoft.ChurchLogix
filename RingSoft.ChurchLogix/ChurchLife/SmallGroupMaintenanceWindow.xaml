@@ -44,6 +44,21 @@
 
             <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" x:Name="TabControl">
 
+                <TabItem Header="Members">
+
+                    <deg:DataEntryGrid Manager="{Binding MemberManager}">
+
+                        <deg:DataEntryGrid.Columns>
+
+                            <deg:DataEntryGridTextColumn ColumnId="{x:Static vm:SmallGroupMemberManager.MemberColumnId}" Header="Member" Width="200"/>
+
+                            <deg:DataEntryGridTextColumn ColumnId="{x:Static vm:SmallGroupMemberManager.RoleColumnId}" Header="Role" Width="200"/>
+
+                        </deg:DataEntryGrid.Columns>
+
+                    </deg:DataEntryGrid>
+                </TabItem>
+
                 <dec:DataEntryMemoTabItem Header="Notes" VerticalAlignment="Stretch">
                     <DockPanel>
 

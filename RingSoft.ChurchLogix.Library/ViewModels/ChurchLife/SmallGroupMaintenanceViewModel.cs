@@ -22,6 +22,21 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
             }
         }
 
+        private SmallGroupMemberManager _memberManager;
+
+        public SmallGroupMemberManager MemberManager
+        {
+            get { return _memberManager; }
+            set
+            {
+                if (_memberManager == value)
+                    return;
+
+                _memberManager = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string? _notes;
 
         public string? Notes
@@ -35,6 +50,13 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
                 _notes = value;
                 OnPropertyChanged();
             }
+        }
+
+        public SmallGroupMaintenanceViewModel()
+        {
+            MemberManager = new SmallGroupMemberManager(this);
+
+            RegisterGrid(MemberManager);
         }
 
         protected override void PopulatePrimaryKeyControls(SmallGroup newEntity, PrimaryKeyValue primaryKeyValue)
