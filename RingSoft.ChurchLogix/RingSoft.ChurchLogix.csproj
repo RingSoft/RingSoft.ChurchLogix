@@ -11,6 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Church.png" />
+    <None Remove="Resources\logout32.png" />
+    <None Remove="Resources\Members.png" />
+    <None Remove="Resources\user32.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Resources\Church.ico" />
   </ItemGroup>
 
@@ -25,6 +32,13 @@
   <ItemGroup>
     <ProjectReference Include="..\..\RingSoft.DbLookup\RingSoft.DbLookup.Controls.WPF\RingSoft.DbLookup.Controls.WPF.csproj" />
     <ProjectReference Include="..\RingSoft.ChurchLogix.Library\RingSoft.ChurchLogix.Library.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Church.png" />
+    <Resource Include="Resources\logout32.png" />
+    <Resource Include="Resources\Members.png" />
+    <Resource Include="Resources\user32.png" />
   </ItemGroup>
 
 </Project>

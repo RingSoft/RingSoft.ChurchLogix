@@ -109,6 +109,14 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
         public RelayCommand ExitCommand { get; }
 
         public RelayCommand AdvFindCommand { get; }
+        public RelayCommand StaffMaintenanceCommand { get; }
+        public RelayCommand MemberMaintenanceCommand { get; }
+        public RelayCommand FundMaintenanceCommand { get; }
+        public RelayCommand BudgetMaintenanceCommand { get; }
+        public RelayCommand EventMaintenanceCommand { get; }
+        public RelayCommand SmallGroupMaintenanceCommand { get; }
+        public RelayCommand AboutCommand { get; }
+        public RelayCommand UpgradeCommand { get; }
 
         public RelayCommand<TableDefinitionBase> ShowMaintenanceWindowCommand { get; }
 
@@ -125,6 +133,43 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
             LogoutCommand = new RelayCommand(Logout);
 
             ShowMaintenanceWindowCommand = new RelayCommand<TableDefinitionBase>(ShowMaintenanceWindow);
+
+            MemberMaintenanceCommand = new RelayCommand((() =>
+            {
+                MainView.ShowMaintenanceWindow(AppGlobals.LookupContext.Members);
+            }));
+            FundMaintenanceCommand = new RelayCommand((() =>
+            {
+                MainView.ShowMaintenanceWindow(AppGlobals.LookupContext.Funds);
+            }));
+            BudgetMaintenanceCommand = new RelayCommand((() =>
+            {
+                MainView.ShowMaintenanceWindow(AppGlobals.LookupContext.Budgets);
+            }));
+            EventMaintenanceCommand = new RelayCommand((() =>
+            {
+                MainView.ShowMaintenanceWindow(AppGlobals.LookupContext.Events);
+            }));
+            SmallGroupMaintenanceCommand = new RelayCommand((() =>
+            {
+                MainView.ShowMaintenanceWindow(AppGlobals.LookupContext.SmallGroups);
+            }));
+
+            AboutCommand = new RelayCommand((() =>
+            {
+                MainView.ShowAbout();
+            }));
+
+            UpgradeCommand = new RelayCommand(() =>
+            {
+                if (!MainView.UpgradeVersion())
+                {
+                    var message = "You are already on the latest version.";
+                    var caption = "Upgrade Not Necessary";
+                    ControlsGlobals.UserInterface.ShowMessageBox(message, caption, RsMessageBoxIcons.Information);
+                }
+            });
+
         }
 
         public void Initialize(IMainView view)

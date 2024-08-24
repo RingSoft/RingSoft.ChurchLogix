@@ -16,20 +16,22 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Timers;
 using Timer = System.Timers.Timer;
+using RingSoft.App.Controls;
+using RingSoft.App.Library;
 
 namespace RingSoft.ChurchLogix
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : IMainView
+    public partial class MainWindow : IMainView, ICheckVersionView
     {
         private Timer _timer = new Timer(1000);
         private const int _refresh = 60;
         public MainWindow()
         {
             InitializeComponent();
-
+            SetupToolbar();
             ContentRendered += (sender, args) =>
             {
 #if DEBUG
@@ -122,6 +124,18 @@ namespace RingSoft.ChurchLogix
             ShowWindow(new AdvancedFindWindow());
         }
 
+        private void ProcessButton(DbMaintenanceButton button, TableDefinitionBase tableDefinition)
+        {
+            if (tableDefinition.HasRight(RightTypes.AllowView))
+            {
+                button.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                button.Visibility = Visibility.Collapsed;
+            }
+        }
+
         public void MakeMenu()
         {
             MainMenu.Items.Clear();
@@ -165,6 +179,18 @@ namespace RingSoft.ChurchLogix
                 Header = "_Advanced Find",
                 Command = ViewModel.AdvFindCommand
             });
+
+            MainMenu.Items.Add(new MenuItem()
+            {
+                Header = "A_bout ChurchLogix...",
+                Command = ViewModel.AboutCommand,
+            });
+            MainMenu.Items.Add(new MenuItem()
+            {
+                Header = "Upgrade _Version...",
+                Command = ViewModel.UpgradeCommand,
+            });
+
         }
 
         public void ClearMenu()
@@ -216,7 +242,7 @@ namespace RingSoft.ChurchLogix
             var items = memberCategory.Items.Where(p => p.TableDefinition.HasRight(RightTypes.AllowView));
             if (items.Any())
             {
-                var menuItem = new MenuItem() { Header = "_Member Management" };
+                var menuItem = new MenuItem() { Header = "M_ember Management" };
                 MainMenu.Items.Add(menuItem);
 
                 if (AppGlobals.LookupContext.Members.HasRight(RightTypes.AllowView))
@@ -356,16 +382,74 @@ namespace RingSoft.ChurchLogix
 
         private void SetupToolbar()
         {
+            ChangeChurchButton.ToolTip.HeaderText = "Change Church (Alt + C)";
+            ChangeChurchButton.ToolTip.DescriptionText =
+                "Change to a different church.";
+
+            LogoutButton.ToolTip.HeaderText = "Logout Current User (Alt + L)";
+            LogoutButton.ToolTip.DescriptionText =
+                "Log out of the current user and log into a different user.";
+
+            if (AppGlobals.LookupContext == null)
+            {
+                StaffButton.Visibility = Visibility.Collapsed;
+                MemberButton.Visibility = Visibility.Collapsed;
+                FundButton.Visibility = Visibility.Collapsed;
+                BudgetButton.Visibility = Visibility.Collapsed;
+                EventButton.Visibility = Visibility.Collapsed;
+                SmallGroupButton.Visibility = Visibility.Collapsed;
+                AdvancedFindButton.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            ProcessButton(StaffButton, AppGlobals.LookupContext.Staff);
+            MemberButton.ToolTip.HeaderText = "Show the Staff Maintenance Window (Alt + F)";
+            MemberButton.ToolTip.DescriptionText =
+                "Add or edit Staff.";
+
+            ProcessButton(MemberButton, AppGlobals.LookupContext.Members);
+            MemberButton.ToolTip.HeaderText = "Show the Member Maintenance Window (Alt + M)";
+            MemberButton.ToolTip.DescriptionText =
+                "Add or edit Members.";
+
+            ProcessButton(FundButton, AppGlobals.LookupContext.Funds);
+            FundButton.ToolTip.HeaderText = "Show the Fund Maintenance Window (Alt + U)";
+            FundButton.ToolTip.DescriptionText =
+                "Add or edit Funds.";
+
+            ProcessButton(BudgetButton, AppGlobals.LookupContext.Budgets);
+            BudgetButton.ToolTip.HeaderText = "Show the Budget Maintenance Window (Alt + B)";
+            BudgetButton.ToolTip.DescriptionText =
+                "Add or edit Budgets.";
+
+            ProcessButton(EventButton, AppGlobals.LookupContext.Events);
+            EventButton.ToolTip.HeaderText = "Show the Event Maintenance Window (Alt + E)";
+            EventButton.ToolTip.DescriptionText =
+                "Add or edit Events.";
+
+            ProcessButton(SmallGroupButton, AppGlobals.LookupContext.SmallGroups);
+            SmallGroupButton.ToolTip.HeaderText = "Show the Small Group Maintenance Window (Alt + S)";
+            SmallGroupButton.ToolTip.DescriptionText =
+                "Add or edit Small Groups.";
+
+            ProcessButton(AdvancedFindButton, AppGlobals.LookupContext.AdvancedFinds);
+            AdvancedFindButton.ToolTip.HeaderText = "Advanced Find (Alt + A)";
+            AdvancedFindButton.ToolTip.DescriptionText =
+                "Search any table in the database for information you're looking for.";
         }
 
         public bool UpgradeVersion()
         {
-            throw new NotImplementedException();
+            return AppStart.CheckVersion(this, true);
         }
 
         public void ShowAbout()
         {
-            throw new NotImplementedException();
+            var splashWindow = new AppSplashWindow(false);
+            splashWindow.Title = "About ChurchLogix";
+            splashWindow.Owner = this;
+            splashWindow.ShowInTaskbar = false;
+            splashWindow.ShowDialog();
         }
 
         public void ShowMaintenanceWindow(TableDefinitionBase tableDefinition)
@@ -488,6 +572,12 @@ namespace RingSoft.ChurchLogix
             result.TotalIncome = periods.Sum(p => p.TotalIncome);
             result.TotalExpenses = periods.Sum(p => p.TotalExpenses);
             return result;
+        }
+
+        public void ShutDownApp()
+        {
+            System.Windows.Application.Current.Shutdown();
+            Environment.Exit(0);
         }
     }
 }
