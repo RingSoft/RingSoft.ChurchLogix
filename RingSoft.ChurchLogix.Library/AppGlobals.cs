@@ -52,7 +52,7 @@ namespace RingSoft.ChurchLogix.Library
             RingSoftAppGlobals.AppCopyright = "©2024 by Peter Ringering";
             RingSoftAppGlobals.PathToDownloadUpgrade = MasterDbContext.ProgramDataFolder;
             RingSoftAppGlobals.AppGuid = "cd59af5f-799d-4203-8bfa-f4fdbe35c49c";
-            RingSoftAppGlobals.AppVersion = 252;
+            RingSoftAppGlobals.AppVersion = 277;
             SystemGlobals.ProgramDataFolder = MasterDbContext.ProgramDataFolder;
         }
 
@@ -243,7 +243,16 @@ namespace RingSoft.ChurchLogix.Library
                 }
                 else
                 {
-                    result = SystemPreferences.FiscalYearEnd.Value;
+                    if (currentDate.Year < SystemPreferences.FiscalYearEnd.Value.Year)
+                    {
+                        result = new DateTime(currentDate.Year
+                            , SystemPreferences.FiscalYearEnd.Value.Month
+                            , SystemPreferences.FiscalYearEnd.Value.Day);
+                    }
+                    else
+                    {
+                        result = SystemPreferences.FiscalYearEnd.Value;
+                    }
                 }
             }
             else

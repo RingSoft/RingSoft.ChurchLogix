@@ -119,7 +119,13 @@ namespace RingSoft.ChurchLogix
 
         public AddEditChurchViewModel GetChurchConnection()
         {
-            throw new NotImplementedException();
+            var addEditChurchWindow = new AddEditChurchWindow(DbLoginProcesses.Connect)
+            {
+                Owner = this,
+                ShowInTaskbar = false
+            };
+            addEditChurchWindow.ShowDialog();
+            return addEditChurchWindow.ViewModel;
         }
 
         public void CloseWindow()

@@ -45,6 +45,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
                     if (AmountPaid == 0 && !RecordDirty && !IsNew)
                     {
                         AmountPaid = Manager.ViewModel.MemberCost.GetValueOrDefault();
+                        Manager.GetTotalPaid();
                     }
                     return new DataEntryGridDecimalCellProps(this
                         , columnId

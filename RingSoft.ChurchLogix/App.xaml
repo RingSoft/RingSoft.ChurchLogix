@@ -18,10 +18,10 @@
             <BitmapImage x:Key="LogoutImage" UriSource="/Resources/logout32.png" />
             <BitmapImage x:Key="StaffImage" UriSource="/Resources/user32.png" />
             <BitmapImage x:Key="MembersImage" UriSource="/Resources/Members.png" />
-            <BitmapImage x:Key="FundImage" UriSource="/Resources/Members.png" />
-            <BitmapImage x:Key="BudgetImage" UriSource="/Resources/Members.png" />
-            <BitmapImage x:Key="EventImage" UriSource="/Resources/Members.png" />
-            <BitmapImage x:Key="SmallGroupImage" UriSource="/Resources/Members.png" />
+            <BitmapImage x:Key="FundImage" UriSource="/Resources/Fund.png" />
+            <BitmapImage x:Key="BudgetImage" UriSource="/Resources/manage_budget.png" />
+            <BitmapImage x:Key="EventImage" UriSource="/Resources/Event.png" />
+            <BitmapImage x:Key="SmallGroupImage" UriSource="/Resources/SmallGroup.png" />
 
             <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0.5,0" EndPoint="0.5,1">
                 <GradientStop Color="Gray" Offset="0"/>

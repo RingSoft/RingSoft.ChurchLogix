@@ -229,6 +229,12 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             base.Initialize();
         }
 
+        protected override Fund GetEntityFromDb(Fund newEntity, PrimaryKeyValue primaryKeyValue)
+        {
+            var context = SystemGlobals.DataRepository.GetDataContext();
+            var table = context.GetTable<Fund>();
+            return table.FirstOrDefault(p => p.Id == newEntity.Id);
+        }
 
         protected override void PopulatePrimaryKeyControls(Fund newEntity, PrimaryKeyValue primaryKeyValue)
         {

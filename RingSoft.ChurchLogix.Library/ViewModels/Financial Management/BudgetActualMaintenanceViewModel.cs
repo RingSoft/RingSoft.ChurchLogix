@@ -4,6 +4,7 @@ using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 {
@@ -249,7 +250,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             {
                 var fundPeriodTotalsTable = context.GetTable<FundPeriodTotals>();
                 var budgetPeriodTotalsTable = context.GetTable<BudgetPeriodTotals>();
-                var actualTable = context.GetTable<BudgetActual>();
+                var actualTable = context.GetTable<BudgetActual>()
+                    .Include(p => p.Budget);
                 var fundTable = context.GetTable<Fund>();
                 var totalRecords = actualTable.Count();
                 var index = 0;
@@ -258,7 +260,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
                 foreach (var budgetActual in actualTable)
                 {
                     index++;
-                    budgetActual.FillOutEntity();
+                    budgetActual.UtFillOutEntity();
                     View.UpdateProcedure($"Processing Budget Cost {index} / {totalRecords}");
 
                     var fundHistoryRec = new FundHistory()
@@ -296,7 +298,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
                         return false;
                     }
 
-                    budgetActual.Budget = null;
+                    //budgetActual.Budget = null;
                     budgetsToDelete.Add(budgetActual);
                 }
 
