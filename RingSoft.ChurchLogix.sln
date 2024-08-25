@@ -17,14 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.ChurchLogix.SqlSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.ChurchLogix.Tests", "RingSoft.ChurchLogix.Tests\RingSoft.ChurchLogix.Tests.csproj", "{0318B985-3022-4F8D-853D-B7E9504F6905}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.DbLookup", "..\RingSoft.DbLookup\RingSoft.DbLookup\RingSoft.DbLookup.csproj", "{AD936091-11D2-4266-8753-BDC57B7F765C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.DbMaintenance", "..\RingSoft.DbLookup\RingSoft.DbMaintenance\RingSoft.DbMaintenance.csproj", "{CF6BA71C-B969-4257-9159-1F1349A56665}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.DbLookup.EfCore", "..\RingSoft.DbLookup\RingSoft.DbLookup.EfCore\RingSoft.DbLookup.EfCore.csproj", "{8CC5E527-534A-4533-931F-EB1CCEC81D9C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.DbLookup.Controls.WPF", "..\RingSoft.DbLookup\RingSoft.DbLookup.Controls.WPF\RingSoft.DbLookup.Controls.WPF.csproj", "{42A3CB29-AD76-40C4-9828-0841E0DC3EC9}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,22 +51,6 @@ Global
 		{0318B985-3022-4F8D-853D-B7E9504F6905}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0318B985-3022-4F8D-853D-B7E9504F6905}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0318B985-3022-4F8D-853D-B7E9504F6905}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AD936091-11D2-4266-8753-BDC57B7F765C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD936091-11D2-4266-8753-BDC57B7F765C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD936091-11D2-4266-8753-BDC57B7F765C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD936091-11D2-4266-8753-BDC57B7F765C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF6BA71C-B969-4257-9159-1F1349A56665}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF6BA71C-B969-4257-9159-1F1349A56665}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF6BA71C-B969-4257-9159-1F1349A56665}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF6BA71C-B969-4257-9159-1F1349A56665}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8CC5E527-534A-4533-931F-EB1CCEC81D9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8CC5E527-534A-4533-931F-EB1CCEC81D9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8CC5E527-534A-4533-931F-EB1CCEC81D9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8CC5E527-534A-4533-931F-EB1CCEC81D9C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{42A3CB29-AD76-40C4-9828-0841E0DC3EC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42A3CB29-AD76-40C4-9828-0841E0DC3EC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42A3CB29-AD76-40C4-9828-0841E0DC3EC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{42A3CB29-AD76-40C4-9828-0841E0DC3EC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
