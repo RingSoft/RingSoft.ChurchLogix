@@ -133,7 +133,7 @@
 
                                 <lc:LookupColumn PropertyName="{lc:NameOf Date, Type={x:Type lm:FundHistoryLookup}}" Header="Date" Width="100"/>
 
-                                <lc:LookupColumn PropertyName="{lc:NameOf Budget, Type={x:Type lm:FundHistoryLookup}}" Header="Budget" Width="100"/>
+                                <lc:LookupColumn PropertyName="{lc:NameOf Budget, Type={x:Type lm:FundHistoryLookup}}" Header="Budget" Width="150"/>
 
                                 <lc:LookupColumn PropertyName="{lc:NameOf AmountType, Type={x:Type lm:FundHistoryLookup}}" Header="Amount Type" Width="100"/>
 

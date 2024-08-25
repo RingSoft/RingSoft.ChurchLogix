@@ -1,7 +1,6 @@
 ﻿using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
-using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.Lookup;
@@ -202,6 +201,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             FundHistoryLookupDefinition.InitialOrderByColumn = FundHistoryLookupDefinition
                 .GetColumnDefinition(p => p.Date);
             FundHistoryLookupDefinition.InitialOrderByType = OrderByTypes.Descending;
+            RegisterLookup(FundHistoryLookupDefinition);
 
             FundMonthlyTotalsLookupDefinition = AppGlobals.LookupContext.FundPeriodLookup.Clone();
             FundMonthlyTotalsLookupDefinition.InitialOrderByColumn = FundMonthlyTotalsLookupDefinition
@@ -241,12 +241,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             PrimaryKey = primaryKeyValue;
             Id = newEntity.Id;
 
-            FundHistoryLookupDefinition.FilterDefinition.ClearFixedFilters();
-            FundHistoryLookupDefinition.FilterDefinition.AddFixedFilter(
-                p => p.FundId, Conditions.Equals, newEntity.Id);
-
             var command = GetLookupCommand(LookupCommands.Refresh, primaryKeyValue);
-            FundHistoryLookupDefinition.SetCommand(command);
 
             FundMonthlyTotalsLookupDefinition.FilterDefinition.ClearFixedFilters();
             FundMonthlyTotalsLookupDefinition.FilterDefinition.AddFixedFilter(
@@ -312,7 +307,6 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             Notes = null;
 
             var command = GetLookupCommand(LookupCommands.Clear);
-            FundHistoryLookupDefinition.SetCommand(command);
             FundMonthlyTotalsLookupDefinition.SetCommand(command);
             FundYearlyTotalsLookupDefinition.SetCommand(command);
             PrimaryKey = null;
