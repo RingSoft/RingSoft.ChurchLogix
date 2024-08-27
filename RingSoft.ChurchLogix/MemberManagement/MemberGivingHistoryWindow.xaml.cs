@@ -31,6 +31,10 @@ namespace RingSoft.ChurchLogix.MemberManagement
         public MemberGivingHistoryWindow()
         {
             InitializeComponent();
+            Loaded += (sender, args) =>
+            {
+                StatusBar.Visibility = Visibility.Collapsed;
+            };
         }
     }
 }

@@ -160,11 +160,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
                 throw new Exception($"View must implement IFundPeriodView.");
             }
 
-            if (Processor is IAppDbMaintenanceProcessor appDbMaintenanceProcessor)
-            {
-                appDbMaintenanceProcessor.WindowReadOnlyMode = true;
-            }
-
+            ReadOnlyMode = true;
             base.Initialize();
         }
 

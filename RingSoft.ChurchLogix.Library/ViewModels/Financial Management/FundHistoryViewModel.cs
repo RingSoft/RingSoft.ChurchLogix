@@ -144,11 +144,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 
         protected override void Initialize()
         {
-            if (Processor is IAppDbMaintenanceProcessor appDbMaintenanceProcessor)
-            {
-                appDbMaintenanceProcessor.WindowReadOnlyMode = true;
-            }
-
+            ReadOnlyMode = true;
             base.Initialize();
         }
 

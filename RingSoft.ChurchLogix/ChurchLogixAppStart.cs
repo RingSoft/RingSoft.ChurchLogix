@@ -45,8 +45,6 @@ namespace RingSoft.ChurchLogix
 
             AppGlobals.AppSplashProgress -= AppGlobals_AppSplashProgress;
 
-            var factory = new NewDbMaintProcessorFactory();
-
             LookupControlsGlobals.WindowRegistry.RegisterWindow<StaffMaintenanceWindow, StaffPerson>();
             LookupControlsGlobals.WindowRegistry.RegisterWindow<GroupsMaintenanceWindow, Group>();
             LookupControlsGlobals.WindowRegistry.RegisterWindow<StaffMaintenanceWindow, StaffGroup>();
