@@ -64,6 +64,16 @@ namespace RingSoft.ChurchLogix
                     }
                 };
 
+                viewModel.SelectEvent += (sender, args) =>
+                {
+                    if (viewModel.SaveButtonEnabled)
+                    {
+                        var result = viewModel.DoSave();
+                        if (result != DbMaintenanceResults.Success)
+                            args.Cancel = true;
+                    }
+                };
+
                 if (topHeaderControl.SaveButton == null)
                 {
                     topHeaderControl.Loaded += (sender, args) =>
