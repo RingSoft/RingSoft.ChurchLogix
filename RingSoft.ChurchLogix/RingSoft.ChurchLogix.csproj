@@ -34,10 +34,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="RingSoft.App.Controls" Version="8.11.7" />
+    <PackageReference Include="RingSoft.App.Controls" Version="8.11.7.12" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\RingSoft.DbLookup\RingSoft.DbLookup.Controls.WPF\RingSoft.DbLookup.Controls.WPF.csproj" />
     <ProjectReference Include="..\RingSoft.ChurchLogix.Library\RingSoft.ChurchLogix.Library.csproj" />
   </ItemGroup>
 
