@@ -1,12 +1,13 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using RingSoft.App.Controls;
 using RingSoft.App.Library;
 using RingSoft.DataEntryControls.WPF;
 using RingSoft.DbLookup.Controls.WPF;
 using RingSoft.DbLookup.Lookup;
 using RingSoft.DbMaintenance;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
+using Control = System.Windows.Controls.Control;
 
 namespace RingSoft.ChurchLogix
 {
@@ -37,10 +38,26 @@ namespace RingSoft.ChurchLogix
             if (buttonsControl is DbMaintenanceTopHeaderControl topHeaderControl)
             {
                 _topHeaderControl = topHeaderControl;
-                CreateButtons(_topHeaderControl);
+                if (topHeaderControl.SaveButton == null)
+                {
+                    topHeaderControl.Loaded += (sender, args) =>
+                    {
+                        ContinueInit(window, buttonsControl, viewModel, view, statusBar);
+                    };
+                    base.Initialize(window, buttonsControl, viewModel, view, statusBar);
+                    return;
+                }
+                base.Initialize(window, buttonsControl, viewModel, view, statusBar);
+                ContinueInit(window, buttonsControl, viewModel, view, statusBar);
             }
+        }
 
-            base.Initialize(window, buttonsControl, viewModel, view, statusBar);
+        private void ContinueInit(BaseWindow window
+        , Control buttonsControl
+        , DbMaintenanceViewModelBase viewModel,
+        IDbMaintenanceView view, DbMaintenanceStatusBar statusBar = null)
+        {
+            CreateButtons(_topHeaderControl);
             if (IsAddOnTheFly())
             {
                 if (_readOnly)
@@ -57,8 +74,8 @@ namespace RingSoft.ChurchLogix
             {
                 _topHeaderControl.SaveSelectButton.Visibility = Visibility.Collapsed;
             }
-        }
 
+        }
         public override void OnReadOnlyModeSet(bool readOnlyValue)
         {
             _readOnly = readOnlyValue;
