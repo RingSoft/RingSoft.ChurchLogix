@@ -1,10 +1,12 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using RingSoft.App.Controls;
+using RingSoft.App.Library;
 using RingSoft.DataEntryControls.WPF;
 using RingSoft.DbLookup.Controls.WPF;
 using RingSoft.DbLookup.Lookup;
 using RingSoft.DbMaintenance;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 
 namespace RingSoft.ChurchLogix
 {
@@ -21,18 +23,34 @@ namespace RingSoft.ChurchLogix
         public override Button PrintButton => _topHeaderControl.PrintButton;
 
         private DbMaintenanceTopHeaderControl _topHeaderControl;
+        private string _itemText;
+        private bool _readOnly;
+        private RingSoft.App.Controls.DbMaintenanceWindow _dbMaintenanceWindow;
 
         public override void Initialize(BaseWindow window, Control buttonsControl, DbMaintenanceViewModelBase viewModel,
             IDbMaintenanceView view, DbMaintenanceStatusBar statusBar = null)
         {
+            if (window is RingSoft.App.Controls.DbMaintenanceWindow dbMaintenanceWindow)
+            {
+                _dbMaintenanceWindow = dbMaintenanceWindow;
+            }
             if (buttonsControl is DbMaintenanceTopHeaderControl topHeaderControl)
             {
                 _topHeaderControl = topHeaderControl;
+                CreateButtons(_topHeaderControl);
             }
 
             base.Initialize(window, buttonsControl, viewModel, view, statusBar);
             if (IsAddOnTheFly())
             {
+                if (_readOnly)
+                {
+                    _topHeaderControl.SaveSelectButton.Content = "Se_lect";
+                    _topHeaderControl.SaveSelectButton.ToolTip.HeaderText = "Select (Alt + L)";
+                    _topHeaderControl.SaveSelectButton.ToolTip.DescriptionText =
+                        $"Select this {_itemText}.";
+
+                }
                 _topHeaderControl.SaveSelectButton.Visibility = Visibility.Visible;
             }
             else
@@ -43,14 +61,14 @@ namespace RingSoft.ChurchLogix
 
         public override void OnReadOnlyModeSet(bool readOnlyValue)
         {
+            _readOnly = readOnlyValue;
             if (readOnlyValue)
             {
-                if (IsAddOnTheFly())
-                {
-                    SelectButton.Content = "Se_lect";
-                    
-                }
                 _topHeaderControl.SetWindowReadOnlyMode();
+                _topHeaderControl.SaveSelectButton.Content = "Se_lect";
+                _topHeaderControl.SaveSelectButton.ToolTip.HeaderText = "Select (Alt + L)";
+                _topHeaderControl.SaveSelectButton.ToolTip.DescriptionText =
+                    $"Select this {_itemText}.";
             }
 
             _topHeaderControl.ReadOnlyMode = readOnlyValue;
@@ -78,6 +96,53 @@ namespace RingSoft.ChurchLogix
                 }
             }
             return addOnFlyMode;
+        }
+
+        private void CreateButtons(DbMaintenanceTopHeaderControl dbMaintenanceButtons)
+        {
+            var itemText = "Advanced Find";
+            if (_dbMaintenanceWindow != null)
+            {
+                itemText = _dbMaintenanceWindow.ItemText;
+                _itemText = _dbMaintenanceWindow.ItemText;
+            }
+
+            dbMaintenanceButtons.PreviousButton.ToolTip.HeaderText = "Previous (Ctrl + Left Arrow)";
+            dbMaintenanceButtons.PreviousButton.ToolTip.DescriptionText =
+                $"Go to the previous {itemText} in the database.";
+
+            dbMaintenanceButtons.SaveButton.ToolTip.HeaderText = "Save (Alt + S)";
+            dbMaintenanceButtons.SaveButton.ToolTip.DescriptionText =
+                $"Save this {itemText} to the database.";
+
+            if (!_readOnly)
+            {
+                dbMaintenanceButtons.SaveSelectButton.ToolTip.HeaderText = "Save/Select (Alt + L)";
+                dbMaintenanceButtons.SaveSelectButton.ToolTip.DescriptionText =
+                    $"Save and select this {itemText}.";
+            }
+
+            dbMaintenanceButtons.DeleteButton.ToolTip.HeaderText = "Delete (Alt + D)";
+            dbMaintenanceButtons.DeleteButton.ToolTip.DescriptionText =
+                $"Delete this {itemText} from the database.";
+
+            dbMaintenanceButtons.FindButton.ToolTip.HeaderText = "Find (Alt + F)";
+            dbMaintenanceButtons.FindButton.ToolTip.DescriptionText =
+                $"Find {itemText.GetArticle()} {itemText} in the database.";
+
+            dbMaintenanceButtons.NewButton.ToolTip.HeaderText = "New (Alt + N)";
+            dbMaintenanceButtons.NewButton.ToolTip.DescriptionText =
+                $"Clear existing {itemText} data in this window and create a new {itemText}.";
+
+            dbMaintenanceButtons.CloseButton.ToolTip.HeaderText = "Close (Alt + C)";
+            dbMaintenanceButtons.CloseButton.ToolTip.DescriptionText = "Close this window.";
+
+            dbMaintenanceButtons.PrintButton.ToolTip.HeaderText = "Print (Alt + P)";
+            dbMaintenanceButtons.PrintButton.ToolTip.DescriptionText = $"Print {itemText} report.";
+
+            dbMaintenanceButtons.NextButton.ToolTip.HeaderText = "Next (Ctrl + Right Arrow)";
+            dbMaintenanceButtons.NextButton.ToolTip.DescriptionText =
+                $"Go to the next {itemText} in the database.";
         }
     }
 }
