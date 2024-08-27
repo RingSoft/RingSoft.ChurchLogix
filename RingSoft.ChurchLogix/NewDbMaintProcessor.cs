@@ -1,7 +1,9 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using RingSoft.App.Controls;
 using RingSoft.DataEntryControls.WPF;
 using RingSoft.DbLookup.Controls.WPF;
+using RingSoft.DbLookup.Lookup;
 using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix
@@ -29,6 +31,53 @@ namespace RingSoft.ChurchLogix
             }
 
             base.Initialize(window, buttonsControl, viewModel, view, statusBar);
+            if (IsAddOnTheFly())
+            {
+                _topHeaderControl.SaveSelectButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                _topHeaderControl.SaveSelectButton.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        public override void OnReadOnlyModeSet(bool readOnlyValue)
+        {
+            if (readOnlyValue)
+            {
+                if (IsAddOnTheFly())
+                {
+                    SelectButton.Content = "Se_lect";
+                    
+                }
+                _topHeaderControl.SetWindowReadOnlyMode();
+            }
+
+            _topHeaderControl.ReadOnlyMode = readOnlyValue;
+            base.OnReadOnlyModeSet(readOnlyValue);
+        }
+
+        public bool IsAddOnTheFly()
+        {
+            var addOnFlyMode = false;
+            if (ViewModel.LookupAddViewArgs != null)
+            {
+                switch (ViewModel.LookupAddViewArgs.LookupFormMode)
+                {
+                    case LookupFormModes.Add:
+                    case LookupFormModes.View:
+                        if (!ViewModel.LookupAddViewArgs.FromLookupControl)
+                        {
+                            if (!ViewModel.LookupAddViewArgs.LookupReadOnlyMode)
+                            {
+                                addOnFlyMode = true;
+                            }
+                        }
+
+                        break;
+                }
+            }
+            return addOnFlyMode;
         }
     }
 }

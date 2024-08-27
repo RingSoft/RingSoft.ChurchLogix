@@ -127,12 +127,12 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 
         protected override void Initialize()
         {
-            if (Processor is IAppDbMaintenanceProcessor appDbMaintenanceProcessor)
-            {
-                appDbMaintenanceProcessor.WindowReadOnlyMode = true;
-            }
-
+            //if (Processor is IAppDbMaintenanceProcessor appDbMaintenanceProcessor)
+            //{
+            //    appDbMaintenanceProcessor.WindowReadOnlyMode = true;
+            //}
             base.Initialize();
+            ReadOnlyMode = true;
         }
 
         protected override void PopulatePrimaryKeyControls(MemberGivingHistory newEntity, PrimaryKeyValue primaryKeyValue)
