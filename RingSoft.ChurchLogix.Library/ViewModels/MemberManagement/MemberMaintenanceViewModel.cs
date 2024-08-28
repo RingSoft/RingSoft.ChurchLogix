@@ -1,5 +1,4 @@
-﻿using RingSoft.App.Library;
-using RingSoft.ChurchLogix.DataAccess;
+﻿using RingSoft.ChurchLogix.DataAccess;
 using RingSoft.ChurchLogix.DataAccess.Model.ChurchLife;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
@@ -33,7 +32,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
         , int detailTotal
         , int detailIndex);
     }
-    public class MemberMaintenanceViewModel : AppDbMaintenanceViewModel<Member>
+    public class MemberMaintenanceViewModel : DbMaintenanceViewModel<Member>
     {
         private int _id;
 
