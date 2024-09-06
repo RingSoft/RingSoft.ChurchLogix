@@ -1,5 +1,4 @@
-﻿using RingSoft.App.Library;
-using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
+﻿using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
 using RingSoft.DbMaintenance;
@@ -8,6 +7,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 {
     public class MemberGivingHistoryViewModel : DbMaintenanceViewModel<MemberGivingHistory>
     {
+        #region Properties
+
         private int _id;
 
         public int Id
@@ -114,6 +115,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             }
         }
 
+        #endregion
 
         public MemberGivingHistoryViewModel()
         {

@@ -1,8 +1,6 @@
-﻿using RingSoft.App.Library;
-using RingSoft.ChurchLogix.DataAccess;
+﻿using RingSoft.ChurchLogix.DataAccess;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
-using RingSoft.ChurchLogix.Library.ViewModels.Financial_Management;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
 using RingSoft.DbLookup.Lookup;
@@ -13,6 +11,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 {
     public class MemberGivingPeriodTotalsViewModel : DbMaintenanceViewModel<MemberPeriodGiving>
     {
+        #region Properties
+
         private AutoFillSetup _memberAutoFillSetup;
 
         public AutoFillSetup MemberAutoFillSetup
@@ -104,6 +104,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             }
         }
 
+        #endregion
 
         public MemberGivingPeriodTotalsViewModel()
         {

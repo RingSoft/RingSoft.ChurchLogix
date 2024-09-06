@@ -1,5 +1,4 @@
-﻿using RingSoft.App.Library;
-using RingSoft.ChurchLogix.DataAccess;
+﻿using RingSoft.ChurchLogix.DataAccess;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
@@ -28,6 +27,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
     }
     public class FundsMaintenanceViewModel : DbMaintenanceViewModel<Fund>
     {
+        #region Properties
+
         private int _id;
 
         public int Id
@@ -189,6 +190,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             }
         }
 
+        #endregion
 
         public IFundView View { get; private set; }
 

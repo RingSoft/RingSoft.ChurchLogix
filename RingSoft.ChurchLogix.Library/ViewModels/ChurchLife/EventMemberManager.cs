@@ -1,6 +1,5 @@
 ﻿using RingSoft.ChurchLogix.DataAccess.Model.ChurchLife;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
-using RingSoft.ChurchLogix.Library.ViewModels.MemberManagement;
 using RingSoft.DataEntryControls.Engine.DataEntryGrid;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;

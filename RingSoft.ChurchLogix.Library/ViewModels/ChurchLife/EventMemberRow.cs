@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Internal;
-using RingSoft.ChurchLogix.DataAccess.Model.ChurchLife;
+﻿using RingSoft.ChurchLogix.DataAccess.Model.ChurchLife;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.DataEntryControls.Engine;
 using RingSoft.DataEntryControls.Engine.DataEntryGrid;

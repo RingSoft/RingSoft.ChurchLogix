@@ -1,5 +1,4 @@
-﻿using RingSoft.App.Library;
-using RingSoft.ChurchLogix.DataAccess.Model.ChurchLife;
+﻿using RingSoft.ChurchLogix.DataAccess.Model.ChurchLife;
 using RingSoft.DbLookup;
 using RingSoft.DbMaintenance;
 

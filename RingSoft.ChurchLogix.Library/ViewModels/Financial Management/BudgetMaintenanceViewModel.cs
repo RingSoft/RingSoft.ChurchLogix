@@ -15,6 +15,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
     }
     public class BudgetMaintenanceViewModel : DbMaintenanceViewModel<BudgetItem>
     {
+        #region Properties
+
         private int _id;
 
         public int Id
@@ -138,6 +140,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
                 OnPropertyChanged();
             }
         }
+
+        #endregion
 
         public IBudgetView View { get; private set; }
         public RelayCommand EnterCostsCommand { get; }

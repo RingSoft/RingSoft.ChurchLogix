@@ -1,18 +1,15 @@
 ﻿using RingSoft.App.Interop;
-using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
 using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
-using RingSoft.DbLookup.Lookup;
 using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
 {
     public interface IStaffView : IDbMaintenanceView
     {
-
         public string GetRights();
 
         public void LoadRights(string rightsString);
@@ -21,14 +18,14 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
 
         public void RefreshView();
 
-        void SetExistRecordFocus(int rowId);
-
         string GetPassword();
 
         void SetPassword(string password);
     }
     public class StaffMaintenanceViewModel : DbMaintenanceViewModel<StaffPerson>
     {
+        #region Properties
+
         private int _id;
 
         public int Id
@@ -162,7 +159,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
             }
         }
 
-
+        #endregion
 
         public IStaffView View { get; private set; }
 

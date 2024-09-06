@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.Library.ViewModels.Financial_Management;
@@ -18,6 +17,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
     }
     public class MemberGivingMaintenanceViewModel : DbMaintenanceViewModel<MemberGiving>
     {
+        #region Properties
+
         private int _id;
 
         public int Id
@@ -110,6 +111,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             }
         }
 
+        #endregion
 
         public UiCommand MemberUiCommand { get; }
 

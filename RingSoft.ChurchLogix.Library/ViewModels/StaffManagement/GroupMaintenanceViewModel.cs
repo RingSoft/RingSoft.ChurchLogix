@@ -1,5 +1,4 @@
 ﻿using RingSoft.App.Interop;
-using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
 using RingSoft.DbLookup;
 using RingSoft.DbMaintenance;
@@ -16,6 +15,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
     }
     public class GroupMaintenanceViewModel : DbMaintenanceViewModel<Group>
     {
+        #region Properties
+
         private int _id;
 
         public int Id
@@ -79,6 +80,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
             }
         }
 
+        #endregion
 
         public new IGroupView View { get; private set; }
 

@@ -34,6 +34,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
     }
     public class MemberMaintenanceViewModel : DbMaintenanceViewModel<Member>
     {
+        #region Properties
+
         private int _id;
 
         public int Id
@@ -225,6 +227,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
                 OnPropertyChanged();
             }
         }
+
+        #endregion
 
         public IMemberView View { get; private set; }
 

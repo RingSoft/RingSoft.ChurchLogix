@@ -1,5 +1,4 @@
-﻿using RingSoft.App.Library;
-using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
+﻿using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
@@ -9,6 +8,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 {
     public class FundHistoryViewModel : DbMaintenanceViewModel<FundHistory>
     {
+        #region Properties
+
         private int _id;
 
         public int Id
@@ -130,6 +131,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             }
         }
 
+        #endregion
 
         public UiCommand BudgetUiCommand { get; }
 

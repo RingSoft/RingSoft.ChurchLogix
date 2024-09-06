@@ -1,10 +1,8 @@
-﻿using RingSoft.App.Library;
+﻿using Microsoft.EntityFrameworkCore;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
-using System;
-using Microsoft.EntityFrameworkCore;
 using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
@@ -23,6 +21,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
     }
     public class BudgetActualMaintenanceViewModel : DbMaintenanceViewModel<BudgetActual>
     {
+        #region Properties
+
         private int _id;
 
         public int Id
@@ -100,6 +100,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
                 OnPropertyChanged();
             }
         }
+
+        #endregion
 
         public UiCommand BudgetAutoFillCommand { get; }
 

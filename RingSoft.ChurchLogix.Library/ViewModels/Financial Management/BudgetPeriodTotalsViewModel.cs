@@ -1,5 +1,4 @@
-﻿using RingSoft.App.Library;
-using RingSoft.ChurchLogix.DataAccess;
+﻿using RingSoft.ChurchLogix.DataAccess;
 using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
@@ -11,6 +10,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 {
     public class BudgetPeriodTotalsViewModel : DbMaintenanceViewModel<BudgetPeriodTotals>
     {
+        #region Properties
+
         private AutoFillSetup _budgetAutoFillSetup;
 
         public AutoFillSetup BudgetAutoFillSetup
@@ -101,6 +102,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
                 OnPropertyChanged();
             }
         }
+
+        #endregion
 
         public BudgetPeriodTotalsViewModel()
         {

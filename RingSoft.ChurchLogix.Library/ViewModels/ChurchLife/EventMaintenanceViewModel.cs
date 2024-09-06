@@ -1,5 +1,4 @@
-﻿using RingSoft.App.Library;
-using RingSoft.ChurchLogix.DataAccess.Model.ChurchLife;
+﻿using RingSoft.ChurchLogix.DataAccess.Model.ChurchLife;
 using RingSoft.DbLookup;
 using RingSoft.DbMaintenance;
 
@@ -13,6 +12,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
     }
     public class EventMaintenanceViewModel : DbMaintenanceViewModel<Event>
     {
+        #region Properties
+
         private int _id;
 
         public int Id
@@ -155,6 +156,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
                 OnPropertyChanged();
             }
         }
+
+        #endregion
 
         public IEventView View { get; private set; }
 
