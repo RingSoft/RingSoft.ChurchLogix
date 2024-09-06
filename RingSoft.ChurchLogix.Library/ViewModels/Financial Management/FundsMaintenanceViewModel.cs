@@ -5,6 +5,7 @@ using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.Lookup;
 using RingSoft.DbLookup.QueryBuilder;
+using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 {
@@ -25,7 +26,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             , int detailIndex);
 
     }
-    public class FundsMaintenanceViewModel : AppDbMaintenanceViewModel<Fund>
+    public class FundsMaintenanceViewModel : DbMaintenanceViewModel<Fund>
     {
         private int _id;
 

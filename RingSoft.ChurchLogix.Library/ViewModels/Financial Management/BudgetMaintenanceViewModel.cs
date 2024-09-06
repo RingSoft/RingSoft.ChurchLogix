@@ -13,7 +13,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
     public interface IBudgetView : IDbMaintenanceView
     {
     }
-    public class BudgetMaintenanceViewModel : AppDbMaintenanceViewModel<BudgetItem>
+    public class BudgetMaintenanceViewModel : DbMaintenanceViewModel<BudgetItem>
     {
         private int _id;
 

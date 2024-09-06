@@ -3,10 +3,11 @@ using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.DataEntryControls.Engine;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
+using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 {
-    public class FundHistoryViewModel : AppDbMaintenanceViewModel<FundHistory>
+    public class FundHistoryViewModel : DbMaintenanceViewModel<FundHistory>
     {
         private int _id;
 

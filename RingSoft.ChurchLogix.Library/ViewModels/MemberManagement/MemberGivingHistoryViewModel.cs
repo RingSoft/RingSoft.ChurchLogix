@@ -2,10 +2,11 @@
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
+using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 {
-    public class MemberGivingHistoryViewModel : AppDbMaintenanceViewModel<MemberGivingHistory>
+    public class MemberGivingHistoryViewModel : DbMaintenanceViewModel<MemberGivingHistory>
     {
         private int _id;
 

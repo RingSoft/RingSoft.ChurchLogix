@@ -27,7 +27,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
 
         void SetPassword(string password);
     }
-    public class StaffMaintenanceViewModel : AppDbMaintenanceViewModel<StaffPerson>
+    public class StaffMaintenanceViewModel : DbMaintenanceViewModel<StaffPerson>
     {
         private int _id;
 

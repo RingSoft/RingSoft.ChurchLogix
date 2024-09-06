@@ -5,6 +5,7 @@ using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
 using System;
 using Microsoft.EntityFrameworkCore;
+using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 {
@@ -20,7 +21,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 
         void UpdateProcedure(string text);
     }
-    public class BudgetActualMaintenanceViewModel : AppDbMaintenanceViewModel<BudgetActual>
+    public class BudgetActualMaintenanceViewModel : DbMaintenanceViewModel<BudgetActual>
     {
         private int _id;
 

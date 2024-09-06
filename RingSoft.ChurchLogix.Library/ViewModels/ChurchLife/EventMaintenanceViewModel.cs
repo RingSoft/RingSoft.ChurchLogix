@@ -11,7 +11,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
 
         void ActivateGrid();
     }
-    public class EventMaintenanceViewModel : AppDbMaintenanceViewModel<Event>
+    public class EventMaintenanceViewModel : DbMaintenanceViewModel<Event>
     {
         private int _id;
 

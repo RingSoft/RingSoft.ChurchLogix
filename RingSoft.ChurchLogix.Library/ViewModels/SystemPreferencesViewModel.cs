@@ -16,7 +16,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
 
         void UpdateProcedure(string text);
     }
-    public class SystemPreferencesViewModel : AppDbMaintenanceViewModel<SystemPreferences>
+    public class SystemPreferencesViewModel : DbMaintenanceViewModel<SystemPreferences>
     {
         private int _id;
 

@@ -7,10 +7,11 @@ using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
 using RingSoft.DbLookup.Lookup;
 using RingSoft.DbLookup.QueryBuilder;
+using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 {
-    public class MemberGivingPeriodTotalsViewModel : AppDbMaintenanceViewModel<MemberPeriodGiving>
+    public class MemberGivingPeriodTotalsViewModel : DbMaintenanceViewModel<MemberPeriodGiving>
     {
         private AutoFillSetup _memberAutoFillSetup;
 

@@ -5,10 +5,11 @@ using RingSoft.DbLookup;
 using RingSoft.DbLookup.AutoFill;
 using RingSoft.DbLookup.Lookup;
 using RingSoft.DbLookup.QueryBuilder;
+using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
 {
-    public class BudgetPeriodTotalsViewModel : AppDbMaintenanceViewModel<BudgetPeriodTotals>
+    public class BudgetPeriodTotalsViewModel : DbMaintenanceViewModel<BudgetPeriodTotals>
     {
         private AutoFillSetup _budgetAutoFillSetup;
 

@@ -16,7 +16,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
 
         void UpdateProcedure(string text);
     }
-    public class MemberGivingMaintenanceViewModel : AppDbMaintenanceViewModel<MemberGiving>
+    public class MemberGivingMaintenanceViewModel : DbMaintenanceViewModel<MemberGiving>
     {
         private int _id;
 

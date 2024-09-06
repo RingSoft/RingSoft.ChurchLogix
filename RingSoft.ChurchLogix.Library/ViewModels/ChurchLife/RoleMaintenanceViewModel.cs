@@ -1,10 +1,11 @@
 ﻿using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess.Model.ChurchLife;
 using RingSoft.DbLookup;
+using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
 {
-    public class RoleMaintenanceViewModel : AppDbMaintenanceViewModel<Role>
+    public class RoleMaintenanceViewModel : DbMaintenanceViewModel<Role>
     {
         private int _id;
 

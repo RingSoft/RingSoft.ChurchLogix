@@ -14,7 +14,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
 
         public void ResetRights();
     }
-    public class GroupMaintenanceViewModel : AppDbMaintenanceViewModel<Group>
+    public class GroupMaintenanceViewModel : DbMaintenanceViewModel<Group>
     {
         private int _id;
 

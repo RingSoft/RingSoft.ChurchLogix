@@ -13,7 +13,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
     {
         void RefreshView();
     }
-    public class FundPeriodTotalsViewModel : AppDbMaintenanceViewModel<FundPeriodTotals>
+    public class FundPeriodTotalsViewModel : DbMaintenanceViewModel<FundPeriodTotals>
     {
         private AutoFillSetup _fundAutoFillSetup;
 
