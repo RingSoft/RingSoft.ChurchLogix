@@ -20,7 +20,7 @@ namespace RingSoft.ChurchLogix.DataAccess
     public class ChurchLogixLookupContext : LookupContext
     {
         public override DbDataProcessor DataProcessor => _dbDataProcessor;
-        protected override DbContext DbContext => _dbContext;
+        //protected override DbContext DbContext => _dbContext;
         public SqliteDataProcessor SqliteDataProcessor { get; }
         public SqlServerDataProcessor SqlServerDataProcessor { get; }
 
@@ -74,7 +74,7 @@ namespace RingSoft.ChurchLogix.DataAccess
         public LookupDefinition<SmallGroupLookup, SmallGroup> SmallGroupLookupDefinition { get; set; }
         public LookupDefinition<SmallGroupMemberLookup, SmallGroupMember> SmallGroupMemberLookupDefinition { get; set; }
 
-        private DbContext _dbContext;
+        //private DbContext _dbContext;
         private DbDataProcessor _dbDataProcessor;
         private bool _initialized;
 
@@ -171,7 +171,7 @@ namespace RingSoft.ChurchLogix.DataAccess
         public void Initialize(IChurchLogixDbContext dbContext, DbPlatforms dbPlatform)
         {
             dbContext.SetLookupContext(this);
-            _dbContext = dbContext.DbContext;
+            SetDbContext(dbContext.DbContext);
 
             SetProcessor(dbPlatform);
             if (_initialized)
