@@ -17,14 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.ChurchLogix.SqlSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.ChurchLogix.Tests", "RingSoft.ChurchLogix.Tests\RingSoft.ChurchLogix.Tests.csproj", "{0318B985-3022-4F8D-853D-B7E9504F6905}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.DbLookup", "..\RingSoft.DbLookup\RingSoft.DbLookup\RingSoft.DbLookup.csproj", "{26CA8FCD-0D26-440F-8A6D-1B68A9EDA309}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.DbMaintenance", "..\RingSoft.DbLookup\RingSoft.DbMaintenance\RingSoft.DbMaintenance.csproj", "{85459A20-042A-460F-89D4-5B0A0D5F1FFD}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.DbLookup.Controls.WPF", "..\RingSoft.DbLookup\RingSoft.DbLookup.Controls.WPF\RingSoft.DbLookup.Controls.WPF.csproj", "{20B09184-B8CF-454E-8121-40A21BAB2F14}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingSoft.DbLookup.EfCore", "..\RingSoft.DbLookup\RingSoft.DbLookup.EfCore\RingSoft.DbLookup.EfCore.csproj", "{D0A8555C-CD93-4F8B-962F-EC9C9544A087}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,22 +51,6 @@ Global
 		{0318B985-3022-4F8D-853D-B7E9504F6905}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0318B985-3022-4F8D-853D-B7E9504F6905}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0318B985-3022-4F8D-853D-B7E9504F6905}.Release|Any CPU.Build.0 = Release|Any CPU
-		{26CA8FCD-0D26-440F-8A6D-1B68A9EDA309}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{26CA8FCD-0D26-440F-8A6D-1B68A9EDA309}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{26CA8FCD-0D26-440F-8A6D-1B68A9EDA309}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{26CA8FCD-0D26-440F-8A6D-1B68A9EDA309}.Release|Any CPU.Build.0 = Release|Any CPU
-		{85459A20-042A-460F-89D4-5B0A0D5F1FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{85459A20-042A-460F-89D4-5B0A0D5F1FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{85459A20-042A-460F-89D4-5B0A0D5F1FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{85459A20-042A-460F-89D4-5B0A0D5F1FFD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{20B09184-B8CF-454E-8121-40A21BAB2F14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{20B09184-B8CF-454E-8121-40A21BAB2F14}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{20B09184-B8CF-454E-8121-40A21BAB2F14}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{20B09184-B8CF-454E-8121-40A21BAB2F14}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D0A8555C-CD93-4F8B-962F-EC9C9544A087}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D0A8555C-CD93-4F8B-962F-EC9C9544A087}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D0A8555C-CD93-4F8B-962F-EC9C9544A087}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D0A8555C-CD93-4F8B-962F-EC9C9544A087}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
