@@ -37,59 +37,59 @@ namespace RingSoft.ChurchLogix.DataAccess
             modelBuilder.ApplyConfiguration(new SmallGroupMemberConfiguration());
         }
 
-        public static void SetupSysPrefs()
-        {
+        //public static void SetupSysPrefs()
+        //{
             
-        }
+        //}
 
-        public static bool SaveNoCommitEntity<TEntity>(TEntity entity, string message) where TEntity : class
-        {
-            if (!DbContext.SaveNoCommitEntity(DbContext.Set<TEntity>(), entity, message))
-                return false;
+        //public static bool SaveNoCommitEntity<TEntity>(TEntity entity, string message) where TEntity : class
+        //{
+        //    if (!DbContext.SaveNoCommitEntity(DbContext.Set<TEntity>(), entity, message))
+        //        return false;
 
-            return true;
-        }
+        //    return true;
+        //}
 
-        public static bool SaveEntity<TEntity>(TEntity entity, string message) where TEntity : class
-        {
-            return DbContext.SaveEntity(DbContext.Set<TEntity>(), entity, message);
-        }
+        //public static bool SaveEntity<TEntity>(TEntity entity, string message) where TEntity : class
+        //{
+        //    return DbContext.SaveEntity(DbContext.Set<TEntity>(), entity, message);
+        //}
 
-        public static bool DeleteEntity<TEntity>(TEntity entity, string message) where TEntity : class
-        {
-            return DbContext.DeleteEntity(DbContext.Set<TEntity>(), entity, message);
-        }
+        //public static bool DeleteEntity<TEntity>(TEntity entity, string message) where TEntity : class
+        //{
+        //    return DbContext.DeleteEntity(DbContext.Set<TEntity>(), entity, message);
+        //}
 
-        public static bool AddNewNoCommitEntity<TEntity>(TEntity entity, string message) where TEntity : class
-        {
-            return DbContext.AddNewNoCommitEntity(DbContext.Set<TEntity>(), entity, message);
-        }
+        //public static bool AddNewNoCommitEntity<TEntity>(TEntity entity, string message) where TEntity : class
+        //{
+        //    return DbContext.AddNewNoCommitEntity(DbContext.Set<TEntity>(), entity, message);
+        //}
 
-        public static bool Commit(string message)
-        {
-            var result = DbContext.SaveEfChanges(message);
+        //public static bool Commit(string message)
+        //{
+        //    var result = DbContext.SaveEfChanges(message);
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public static void RemoveRange<TEntity>(IEnumerable<TEntity> listToRemove) where TEntity : class
-        {
-            var dbSet = DbContext.Set<TEntity>();
+        //public static void RemoveRange<TEntity>(IEnumerable<TEntity> listToRemove) where TEntity : class
+        //{
+        //    var dbSet = DbContext.Set<TEntity>();
 
-            dbSet.RemoveRange(listToRemove);
-        }
+        //    dbSet.RemoveRange(listToRemove);
+        //}
 
-        public static void AddRange<TEntity>(List<TEntity> listToAdd) where TEntity : class
-        {
-            var dbSet = DbContext.Set<TEntity>();
+        //public static void AddRange<TEntity>(List<TEntity> listToAdd) where TEntity : class
+        //{
+        //    var dbSet = DbContext.Set<TEntity>();
 
-            dbSet.AddRange(listToAdd);
-        }
+        //    dbSet.AddRange(listToAdd);
+        //}
 
-        public static bool DeleteNoCommitEntity<TEntity>(TEntity entity, string message) where TEntity : class
-        {
-            return DbContext.DeleteNoCommitEntity(DbContext.Set<TEntity>(), entity, message);
-        }
+        //public static bool DeleteNoCommitEntity<TEntity>(TEntity entity, string message) where TEntity : class
+        //{
+        //    return DbContext.DeleteNoCommitEntity(DbContext.Set<TEntity>(), entity, message);
+        //}
 
     }
 }

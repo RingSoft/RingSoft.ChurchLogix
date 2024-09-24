@@ -1,19 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RingSoft.App.Interop;
 using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess;
 using RingSoft.ChurchLogix.DataAccess.Model;
+using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
 using RingSoft.ChurchLogix.Library.ViewModels;
 using RingSoft.ChurchLogix.MasterData;
-using RingSoft.DbLookup;
-using RingSoft.DbLookup.EfCore;
-using System.Runtime.InteropServices;
-using Microsoft.VisualBasic;
-using RingSoft.App.Interop;
-using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
 using RingSoft.ChurchLogix.Sqlite;
 using RingSoft.ChurchLogix.SqlServer;
 using RingSoft.DataEntryControls.Engine;
+using RingSoft.DbLookup;
 using RingSoft.DbLookup.DataProcessor;
+using RingSoft.DbLookup.EfCore;
 
 namespace RingSoft.ChurchLogix.Library
 {
@@ -143,7 +141,6 @@ namespace RingSoft.ChurchLogix.Library
                         context.DbContext.Database.Migrate();
                         systemMaster = new SystemMaster { ChurchName = church.Name };
                         context.DbContext.AddNewEntity(context.SystemMaster, systemMaster, "Saving SystemMaster");
-
                     }
 
                     break;
