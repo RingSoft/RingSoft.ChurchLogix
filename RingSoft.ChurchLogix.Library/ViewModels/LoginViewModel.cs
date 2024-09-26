@@ -189,7 +189,25 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
 
         private void UpdateDefaults()
         {
+            if (_selectingChurch)
+                return;
+
+            SelectedItem.Church.IsDefault = IsDefault;
+            MasterDbContext.SaveChurch(SelectedItem.Church);
+
+            if (IsDefault)
+            {
+                foreach (var item in Items)
+                {
+                    if (item != SelectedItem && item.Church.IsDefault)
+                    {
+                        item.Church.IsDefault = false;
+                        MasterDbContext.SaveChurch(item.Church);
+                    }
+                }
+            }
         }
+
 
         private void AddNewChurch()
         {

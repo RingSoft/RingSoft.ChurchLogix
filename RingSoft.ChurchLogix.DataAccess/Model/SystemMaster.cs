@@ -8,5 +8,9 @@ namespace RingSoft.ChurchLogix.DataAccess.Model
         [Key]
         [MaxLength(50)]
         public string ChurchName { get; set; }
+
+        [MaxLength(50)]
+        [Required]
+        public string AppGuid { get; set; }
     }
 }

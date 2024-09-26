@@ -180,6 +180,11 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
             var loadVm = true;
             if (AppGlobals.LoggedInChurch == null)
                 loadVm = view.ChangeChurch();
+            else
+            {
+                SetChurchProps();
+                MainView.RefreshChart();
+            }
 
             if (loadVm)
             {

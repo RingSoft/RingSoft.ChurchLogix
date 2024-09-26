@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
+using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess.Configurations.ChurchLife;
 using RingSoft.ChurchLogix.DataAccess.Configurations.FinancialManagement;
 using RingSoft.ChurchLogix.DataAccess.Configurations.MemberManagement;
@@ -39,7 +41,7 @@ namespace RingSoft.ChurchLogix.DataAccess
 
         //public static void SetupSysPrefs()
         //{
-            
+
         //}
 
         //public static bool SaveNoCommitEntity<TEntity>(TEntity entity, string message) where TEntity : class
@@ -91,5 +93,10 @@ namespace RingSoft.ChurchLogix.DataAccess
         //    return DbContext.DeleteNoCommitEntity(DbContext.Set<TEntity>(), entity, message);
         //}
 
+        public static void MigrateAppGuid(MigrationBuilder migrationBuilder)
+        {
+            var sql = $"UPDATE SystemMaster SET AppGuid = '{RingSoftAppGlobals.AppGuid}'";
+            migrationBuilder.Sql(sql);
+        }
     }
 }

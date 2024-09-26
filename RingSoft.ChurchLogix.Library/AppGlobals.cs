@@ -50,7 +50,7 @@ namespace RingSoft.ChurchLogix.Library
             RingSoftAppGlobals.AppCopyright = "©2024 by Peter Ringering";
             RingSoftAppGlobals.PathToDownloadUpgrade = MasterDbContext.ProgramDataFolder;
             RingSoftAppGlobals.AppGuid = "cd59af5f-799d-4203-8bfa-f4fdbe35c49c";
-            RingSoftAppGlobals.AppVersion = 297;
+            RingSoftAppGlobals.AppVersion = 301;
             SystemGlobals.ProgramDataFolder = MasterDbContext.ProgramDataFolder;
         }
 
@@ -139,7 +139,11 @@ namespace RingSoft.ChurchLogix.Library
                         }
 
                         context.DbContext.Database.Migrate();
-                        systemMaster = new SystemMaster { ChurchName = church.Name };
+                        systemMaster = new SystemMaster
+                        {
+                            ChurchName = church.Name,
+                            AppGuid = RingSoftAppGlobals.AppGuid,
+                        };
                         context.DbContext.AddNewEntity(context.SystemMaster, systemMaster, "Saving SystemMaster");
                     }
 
@@ -159,6 +163,18 @@ namespace RingSoft.ChurchLogix.Library
                         }
                         else
                         {
+                            var context1 = SystemGlobals.DataRepository.GetDataContext();
+                            var sysMasterTable = context1.GetTable<SystemMaster>();
+                            try
+                            {
+                                var sysMasterRecord = sysMasterTable.FirstOrDefault();
+                                var appGuid = sysMasterRecord.AppGuid;
+                            }
+                            catch (Exception e)
+                            {
+                                MigrateContext(migrateContext);
+                            }
+
                             migrate = AllowMigrate();
 
                             if (migrate)
@@ -180,7 +196,11 @@ namespace RingSoft.ChurchLogix.Library
 
                     if (systemMaster == null)
                     {
-                        systemMaster = new SystemMaster { ChurchName = church.Name };
+                        systemMaster = new SystemMaster
+                        {
+                            ChurchName = church.Name,
+                            AppGuid = RingSoftAppGlobals.AppGuid,
+                        };
                         context.DbContext.AddNewEntity(context.SystemMaster, systemMaster, "Saving SystemMaster");
                     }
                     LookupContext.Initialize(context, DbPlatform);
@@ -268,6 +288,7 @@ namespace RingSoft.ChurchLogix.Library
             var sysMaster = new SystemMaster()
             {
                 ChurchName = Guid.NewGuid().ToString(),
+                AppGuid = RingSoftAppGlobals.AppGuid,
             };
 
             var sysMasters = new List<SystemMaster>();

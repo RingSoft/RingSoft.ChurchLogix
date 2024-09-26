@@ -469,6 +469,11 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("AppGuid")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.HasKey("ChurchName");
 
                     b.ToTable("SystemMaster");

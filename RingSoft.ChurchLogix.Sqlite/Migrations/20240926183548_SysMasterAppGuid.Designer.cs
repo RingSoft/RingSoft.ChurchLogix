@@ -2,25 +2,23 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RingSoft.ChurchLogix.SqlServer;
+using RingSoft.ChurchLogix.Sqlite;
 
 #nullable disable
 
-namespace RingSoft.ChurchLogix.SqlServer.Migrations
+namespace RingSoft.ChurchLogix.Sqlite.Migrations
 {
-    [DbContext(typeof(ChurchLogixSqlServerDbContext))]
-    partial class ChurchLogixSqlServerDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ChurchLogixSqliteDbContext))]
+    [Migration("20240926183548_SysMasterAppGuid")]
+    partial class SysMasterAppGuid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.6");
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.Event", b =>
                 {
@@ -28,15 +26,13 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<DateTime>("BeginDate")
                         .HasColumnType("datetime");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime");
 
-                    b.Property<decimal?>("MemberCost")
+                    b.Property<double?>("MemberCost")
                         .HasColumnType("numeric");
 
                     b.Property<string>("Name")
@@ -47,10 +43,10 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("ntext");
 
-                    b.Property<decimal?>("TotalCost")
+                    b.Property<double?>("TotalCost")
                         .HasColumnType("numeric");
 
-                    b.Property<decimal?>("TotalPaid")
+                    b.Property<double?>("TotalPaid")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
@@ -66,7 +62,7 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.Property<int>("MemberId")
                         .HasColumnType("integer");
 
-                    b.Property<decimal?>("AmountPaid")
+                    b.Property<double?>("AmountPaid")
                         .HasColumnType("numeric");
 
                     b.HasKey("EventId", "MemberId");
@@ -81,8 +77,6 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -99,8 +93,6 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -141,9 +133,7 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
+                    b.Property<double>("Amount")
                         .HasColumnType("numeric");
 
                     b.Property<int>("BudgetId")
@@ -165,9 +155,7 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
+                    b.Property<double>("Amount")
                         .HasColumnType("numeric");
 
                     b.Property<int>("FundId")
@@ -199,7 +187,7 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime");
 
-                    b.Property<decimal>("Total")
+                    b.Property<double>("Total")
                         .HasColumnType("numeric");
 
                     b.HasKey("BudgetId", "PeriodType", "Date");
@@ -213,23 +201,21 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar");
 
-                    b.Property<decimal>("Goal")
+                    b.Property<double>("Goal")
                         .HasColumnType("numeric");
 
                     b.Property<string>("Notes")
                         .HasColumnType("ntext");
 
-                    b.Property<decimal>("TotalCollected")
+                    b.Property<double>("TotalCollected")
                         .HasColumnType("numeric");
 
-                    b.Property<decimal>("TotalSpent")
+                    b.Property<double>("TotalSpent")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
@@ -243,9 +229,7 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
+                    b.Property<double>("Amount")
                         .HasColumnType("numeric");
 
                     b.Property<int>("AmountType")
@@ -255,7 +239,7 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("FundId")
                         .HasColumnType("integer");
@@ -280,10 +264,10 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime");
 
-                    b.Property<decimal>("TotalExpenses")
+                    b.Property<double>("TotalExpenses")
                         .HasColumnType("numeric");
 
-                    b.Property<decimal>("TotalIncome")
+                    b.Property<double>("TotalIncome")
                         .HasColumnType("numeric");
 
                     b.HasKey("FundId", "PeriodType", "Date");
@@ -296,8 +280,6 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .HasMaxLength(255)
@@ -331,8 +313,6 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime");
 
@@ -354,7 +334,7 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.Property<int>("RowId")
                         .HasColumnType("integer");
 
-                    b.Property<decimal>("Amount")
+                    b.Property<double>("Amount")
                         .HasColumnType("numeric");
 
                     b.Property<int>("FundId")
@@ -373,9 +353,7 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
+                    b.Property<double>("Amount")
                         .HasColumnType("numeric");
 
                     b.Property<DateTime>("Date")
@@ -407,7 +385,7 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime");
 
-                    b.Property<decimal>("TotalGiving")
+                    b.Property<double>("TotalGiving")
                         .HasColumnType("numeric");
 
                     b.HasKey("MemberId", "PeriodType", "Date");
@@ -420,8 +398,6 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -456,8 +432,6 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .HasMaxLength(255)
@@ -496,12 +470,11 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                 {
                     b.Property<string>("ChurchName")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("AppGuid")
-                        .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ChurchName");
 
@@ -512,15 +485,13 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("FiscalYearEnd")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("FiscalYearStart")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -532,8 +503,6 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool?>("Disabled")
                         .HasColumnType("bit");
@@ -550,10 +519,10 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                         .HasColumnType("integer");
 
                     b.Property<byte?>("RefreshCondition")
-                        .HasColumnType("tinyint");
+                        .HasColumnType("smallint");
 
                     b.Property<byte?>("RefreshRate")
-                        .HasColumnType("tinyint");
+                        .HasColumnType("smallint");
 
                     b.Property<int?>("RefreshValue")
                         .HasColumnType("integer");
@@ -584,10 +553,10 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                         .HasColumnType("nvarchar");
 
                     b.Property<byte>("DecimalFormatType")
-                        .HasColumnType("tinyint");
+                        .HasColumnType("smallint");
 
                     b.Property<byte>("FieldDataType")
-                        .HasColumnType("tinyint");
+                        .HasColumnType("smallint");
 
                     b.Property<string>("FieldName")
                         .HasMaxLength(50)
@@ -600,7 +569,7 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar");
 
-                    b.Property<decimal>("PercentWidth")
+                    b.Property<double>("PercentWidth")
                         .HasColumnType("numeric");
 
                     b.Property<string>("PrimaryFieldName")
@@ -632,10 +601,10 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<byte>("DateFilterType")
-                        .HasColumnType("tinyint");
+                        .HasColumnType("smallint");
 
                     b.Property<byte>("EndLogic")
-                        .HasColumnType("tinyint");
+                        .HasColumnType("smallint");
 
                     b.Property<string>("FieldName")
                         .HasMaxLength(50)
@@ -645,17 +614,17 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                         .HasColumnType("ntext");
 
                     b.Property<byte>("FormulaDataType")
-                        .HasColumnType("tinyint");
+                        .HasColumnType("smallint");
 
                     b.Property<string>("FormulaDisplayValue")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar");
 
                     b.Property<byte>("LeftParentheses")
-                        .HasColumnType("tinyint");
+                        .HasColumnType("smallint");
 
                     b.Property<byte>("Operand")
-                        .HasColumnType("tinyint");
+                        .HasColumnType("smallint");
 
                     b.Property<string>("Path")
                         .HasMaxLength(1000)
@@ -670,7 +639,7 @@ namespace RingSoft.ChurchLogix.SqlServer.Migrations
                         .HasColumnType("nvarchar");
 
                     b.Property<byte>("RightParentheses")
-                        .HasColumnType("tinyint");
+                        .HasColumnType("smallint");
 
                     b.Property<int?>("SearchForAdvancedFindId")
                         .HasColumnType("integer");
