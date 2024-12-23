@@ -1,20 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\RingSoft.ChurchLogix.DataAccess\RingSoft.ChurchLogix.DataAccess.csproj" />
     <ProjectReference Include="..\RingSoft.ChurchLogix.MasterData\RingSoft.ChurchLogix.MasterData.csproj" />
     <ProjectReference Include="..\RingSoft.ChurchLogix.Sqlite\RingSoft.ChurchLogix.Sqlite.csproj" />
     <ProjectReference Include="..\RingSoft.ChurchLogix.SqlServer\RingSoft.ChurchLogix.SqlServer.csproj" />
   </ItemGroup>
-
 </Project>
