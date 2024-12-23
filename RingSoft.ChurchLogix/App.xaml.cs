@@ -11,6 +11,11 @@ namespace RingSoft.ChurchLogix
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            FrameworkElement.StyleProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata
+            {
+                DefaultValue = FindResource(typeof(Window))
+            });
+
             var appStart = new ChurchLogixAppStart(this);
             appStart.Start();
 

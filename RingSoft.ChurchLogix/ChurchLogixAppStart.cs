@@ -13,6 +13,7 @@ using RingSoft.ChurchLogix.MemberManagement;
 using RingSoft.ChurchLogix.StaffManagement;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.Controls.WPF;
+using RingSoft.DbLookup.Controls.WPF.AdvancedFind;
 
 namespace RingSoft.ChurchLogix
 {
@@ -46,6 +47,8 @@ namespace RingSoft.ChurchLogix
             AppGlobals.AppSplashProgress -= AppGlobals_AppSplashProgress;
 
             //var factory = new NewDbProcessorFactory();
+
+            LookupControlsGlobals.WindowRegistry.RegisterUserControl<AdvancedFindUserControl>(AppGlobals.LookupContext.AdvancedFinds);
 
             LookupControlsGlobals.WindowRegistry.RegisterWindow<StaffMaintenanceWindow, StaffPerson>();
             LookupControlsGlobals.WindowRegistry.RegisterWindow<GroupsMaintenanceWindow, Group>();

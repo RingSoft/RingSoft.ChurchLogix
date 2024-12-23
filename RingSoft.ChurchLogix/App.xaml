@@ -75,6 +75,10 @@
                 <Setter Property="Background" Value="{StaticResource WindowBackgroundBrush}"/>
             </Style>
 
+            <Style TargetType="{x:Type Window}">
+                <Setter Property="Background" Value="{StaticResource WindowBackgroundBrush}"/>
+            </Style>
+
             <Style TargetType="lc:LookupWindow" BasedOn="{StaticResource BaseWindowStyle}"/>
 
             <Style TargetType="lc:RecordLockingWindow" BasedOn="{StaticResource BaseWindowStyle}"/>

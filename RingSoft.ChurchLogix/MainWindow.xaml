@@ -87,8 +87,7 @@
 
         </StatusBar>
 
-        <Grid>
-            <sp:WpfPlot x:Name="WpfPlot" Visibility="Collapsed"/>
-        </Grid>
+        <lc:DbMaintenanceTabControl x:Name="TabControl" VerticalAlignment="Stretch"/>
+
     </DockPanel>
 </ac:AppMainWindow>

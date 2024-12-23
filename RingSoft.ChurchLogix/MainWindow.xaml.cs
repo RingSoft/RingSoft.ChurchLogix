@@ -26,11 +26,18 @@ namespace RingSoft.ChurchLogix
     /// </summary>
     public partial class MainWindow : IMainView, ICheckVersionView
     {
+        public StatsnGraphsUserControl StatsUserControl { get; private set; }
+
+
         private Timer _timer = new Timer(1000);
         private const int _refresh = 60;
         public MainWindow()
         {
             InitializeComponent();
+
+            LookupControlsGlobals.SetTabSwitcherWindow(this, TabControl);
+            TabControl.SetDestionationAsFirstTab = false;
+
             SetupToolbar();
             ContentRendered += (sender, args) =>
             {
@@ -53,7 +60,6 @@ namespace RingSoft.ChurchLogix
         {
             _timer.Stop();
             _timer.Enabled = false;
-            WpfPlot.Visibility = Visibility.Collapsed;
             var loginWindow = new LoginWindow { Owner = this };
 
             var result = false;
@@ -63,7 +69,7 @@ namespace RingSoft.ChurchLogix
             {
                 result = (bool)loginResult;
                 ViewModel.SetChurchProps();
-                RefreshChart();
+                //RefreshChart();
 
                 var interval = 0;
 
@@ -75,7 +81,7 @@ namespace RingSoft.ChurchLogix
                         interval = 0;
                         _timer.Stop();
                         _timer.Enabled = false;
-                        Dispatcher.Invoke(() => { RefreshChart(); });
+                        //Dispatcher.Invoke(() => { RefreshChart(); });
                         _timer.Enabled = true;
                         _timer.Start();
                     }
@@ -121,7 +127,8 @@ namespace RingSoft.ChurchLogix
 
         public void ShowAdvancedFindWindow()
         {
-            ShowWindow(new AdvancedFindWindow());
+            //ShowWindow(new AdvancedFindWindow());
+            ShowMaintenanceTab(AppGlobals.LookupContext.AdvancedFinds);
         }
 
         private void ProcessButton(DbMaintenanceButton button, TableDefinitionBase tableDefinition)
@@ -452,9 +459,22 @@ namespace RingSoft.ChurchLogix
             splashWindow.ShowDialog();
         }
 
+        public void RefreshChart()
+        {
+            if (StatsUserControl != null)
+            {
+                StatsUserControl.RefreshChart();
+            }
+        }
+
         public void ShowMaintenanceWindow(TableDefinitionBase tableDefinition)
         {
             LookupControlsGlobals.WindowRegistry.ShowDbMaintenanceWindow(tableDefinition, WPFControlsGlobals.ActiveWindow);
+        }
+
+        public void ShowMaintenanceTab(TableDefinitionBase tableDefinition)
+        {
+            TabControl.ShowTableControl(tableDefinition, false);
         }
 
         internal static void ProcessSendEmailLink(TextBlock sendEmailLink, string? emailAddress)
@@ -487,91 +507,6 @@ namespace RingSoft.ChurchLogix
                     sendEmailLink.Visibility = Visibility.Collapsed;
                 }
             }
-        }
-
-        public void RefreshChart()
-        {
-            WpfPlot.Plot.Clear();
-            WpfPlot.Plot.Style(dataBackground: Color.Transparent, figureBackground: Color.Transparent);
-
-            var fundPeriodTotals = GetChartData();
-            var totalIncomeMonthsList = new List<double>();
-            var totalExpenseMonthsList = new List<double>();
-            var xAxisLabelsList = new List<string>();
-
-            foreach (var fundPeriodTotal in fundPeriodTotals)
-            {
-                totalIncomeMonthsList.Add(fundPeriodTotal.TotalIncome);
-                totalExpenseMonthsList.Add(fundPeriodTotal.TotalExpenses);
-                var xAxisLabel = fundPeriodTotal.Date.ToString("MMMM\nyyyy");
-                xAxisLabelsList.Add(xAxisLabel);
-            }
-
-            double[] xs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-            double[] ys = totalIncomeMonthsList.ToArray();
-            double[] ys1 = totalExpenseMonthsList.ToArray();
-            string[] xAxisLabels = xAxisLabelsList.ToArray();
-            
-            var incomeLine = WpfPlot.Plot.AddScatter(xs, ys, Color.Blue, 3F);
-            incomeLine.Label = "Income";
-            var expenseLine = WpfPlot.Plot.AddScatter(xs, ys1, Color.Red, 3F);
-            expenseLine.Label = "Expenses";
-            WpfPlot.Plot.XAxis.TickDensity(0.01D);
-            //WpfPlot.Plot.XAxis.AutomaticTickPositions(xs, xAxisLabels);
-            WpfPlot.Plot.XAxis.ManualTickPositions(xs, xAxisLabels);
-            WpfPlot.Plot.XLabel("Month");
-            WpfPlot.Plot.YLabel("Amount");
-
-            var legend = WpfPlot.Plot.Legend(true, Alignment.UpperRight);
-            legend.FontSize = 20;
-            legend.FontBold = true;
-            WpfPlot.Plot.Title("Income vs. Expenses");
-            WpfPlot.Refresh();
-
-            var context = SystemGlobals.DataRepository.GetDataContext();
-
-            if (context.GetTable<FundPeriodTotals>().Any())
-            {
-                WpfPlot.Visibility = Visibility.Visible;
-            }
-        }
-
-        private List<FundPeriodTotals> GetChartData()
-        {
-            var resultTotals = new List<FundPeriodTotals>();
-            var monthsLeft = 13;
-
-            var currentDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).AddYears(-1);
-            var context = SystemGlobals.DataRepository.GetDataContext();
-            var periodsTable = context.GetTable<FundPeriodTotals>();
-
-            while (monthsLeft > 0)
-            {
-                resultTotals.Add(GetTotalsForDate(currentDate, periodsTable));
-                monthsLeft--;
-                if (currentDate.Month == 12 && monthsLeft > 0)
-                {
-                    currentDate = new DateTime(currentDate.Year + 1, 1, 1);
-                }
-                else if (monthsLeft > 0)
-                {
-                    currentDate = currentDate.AddMonths(1);
-                }
-            }
-            return resultTotals;
-        }
-
-        private FundPeriodTotals GetTotalsForDate(DateTime date, IQueryable<FundPeriodTotals> periodsTable)
-        {
-            var result = new FundPeriodTotals();
-            date = date.AddMonths(1).AddDays(-1);
-            var periods = periodsTable
-                .Where(p => p.Date == date
-                            && p.PeriodType == (int)PeriodTypes.MonthEnding);
-            result.Date = date;
-            result.TotalIncome = periods.Sum(p => p.TotalIncome);
-            result.TotalExpenses = periods.Sum(p => p.TotalExpenses);
-            return result;
         }
 
         public void ShutDownApp()
