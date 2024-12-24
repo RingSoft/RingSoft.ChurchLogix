@@ -324,7 +324,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
                 {
                     NewCommand.Execute(null);
                     if (AppGlobals.MainViewModel.MainView != null) 
-                        AppGlobals.MainViewModel.MainView.RefreshChart();
+                        AppGlobals.MainViewModel.MainView.RefreshChart(false);
                     return true;
                 }
             }

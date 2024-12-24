@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using RingSoft.App.Library;
+using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.ChurchLogix.DataAccess.Model.StaffManagement;
 using RingSoft.ChurchLogix.MasterData;
 using RingSoft.DataEntryControls.Engine;
@@ -28,9 +29,13 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
 
         void ShowAbout();
 
-        void RefreshChart();
+        void RefreshChart(bool sselectTab);
 
         void ShowMaintenanceWindow(TableDefinitionBase tableDefinition);
+
+        void ShowMaintenanceTab(TableDefinitionBase tableDefinition);
+
+        bool CloseAllTabs();
     }
 
     public class MainViewModel : INotifyPropertyChanged
@@ -119,6 +124,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
         public RelayCommand UpgradeCommand { get; }
 
         public RelayCommand<TableDefinitionBase> ShowMaintenanceWindowCommand { get; }
+        public RelayCommand<TableDefinitionBase> ShowMaintenanceTabCommand { get; }
 
         public MainViewModel()
         {
@@ -126,13 +132,18 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
             AdvFindCommand = new RelayCommand(ShowAdvFind);
             ChangeChurchCommand = new RelayCommand((() =>
             {
-                AppGlobals.LoggedInChurch = null;
-                MainView.ClearMenu();
-                Initialize(MainView);
+                if (MainView.CloseAllTabs())
+                {
+                    AppGlobals.LoggedInChurch = null;
+                    MainView.ClearMenu();
+                    Initialize(MainView);
+                }
             }));
             LogoutCommand = new RelayCommand(Logout);
 
             ShowMaintenanceWindowCommand = new RelayCommand<TableDefinitionBase>(ShowMaintenanceWindow);
+
+            ShowMaintenanceTabCommand = new RelayCommand<TableDefinitionBase>(ShowMaintenanceTab);
 
             MemberMaintenanceCommand = new RelayCommand((() =>
             {
@@ -183,7 +194,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
             else
             {
                 SetChurchProps();
-                MainView.RefreshChart();
+                MainView.RefreshChart(true);
             }
 
             if (loadVm)
@@ -229,6 +240,10 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
             MainView.ShowMaintenanceWindow(tableDefinition);
         }
 
+        private void ShowMaintenanceTab(TableDefinitionBase tableDefinition)
+        {
+            MainView.ShowMaintenanceTab(tableDefinition);
+        }
 
         public void SetChurchProps()
         {
@@ -254,10 +269,15 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
 
         private void Logout()
         {
-            if (MainView.LoginStaffPerson())
+            if (MainView.CloseAllTabs())
             {
-                StaffPersonAutoFillValue = DbLookup.ExtensionMethods.GetAutoFillValue(AppGlobals.LoggedInStaffPerson);
-                MainView.MakeMenu();
+                if (MainView.LoginStaffPerson())
+                {
+                    StaffPersonAutoFillValue =
+                        DbLookup.ExtensionMethods.GetAutoFillValue(AppGlobals.LoggedInStaffPerson);
+                    MainView.MakeMenu();
+                    MainView.RefreshChart(true);
+                }
             }
         }
 
@@ -274,6 +294,16 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
             field = value;
             OnPropertyChanged(propertyName);
             return true;
+        }
+
+        public bool ChurchDataExists()
+        {
+            var context = SystemGlobals.DataRepository.GetDataContext();
+            if (context == null) return false;
+
+            var table = context.GetTable<FundPeriodTotals>();
+
+            return table.Any();
         }
     }
 }

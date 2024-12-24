@@ -1,4 +1,5 @@
-﻿using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
+﻿using System.ComponentModel;
+using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.Library;
 using RingSoft.ChurchLogix.Library.ViewModels;
@@ -69,7 +70,7 @@ namespace RingSoft.ChurchLogix
             {
                 result = (bool)loginResult;
                 ViewModel.SetChurchProps();
-                //RefreshChart();
+                RefreshChart(true);
 
                 var interval = 0;
 
@@ -81,7 +82,7 @@ namespace RingSoft.ChurchLogix
                         interval = 0;
                         _timer.Stop();
                         _timer.Enabled = false;
-                        //Dispatcher.Invoke(() => { RefreshChart(); });
+                        Dispatcher.Invoke(() => { RefreshChart(true); });
                         _timer.Enabled = true;
                         _timer.Start();
                     }
@@ -107,13 +108,28 @@ namespace RingSoft.ChurchLogix
 
                 MakeMenu();
             }
-            return staffPersonLoginWindow.ViewModel.DialogResult;
+            var result = staffPersonLoginWindow.ViewModel.DialogResult;
+            if (!result)
+            {
+                CloseAllTabs();
+            }
+            return result;
 
         }
 
         public void CloseWindow()
         {
             Close();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (!CloseAllTabs())
+            {
+                e.Cancel = true;
+            }
+
+            base.OnClosing(e);
         }
 
         public void ShowWindow(System.Windows.Window window)
@@ -459,9 +475,22 @@ namespace RingSoft.ChurchLogix
             splashWindow.ShowDialog();
         }
 
-        public void RefreshChart()
+        public void RefreshChart(bool selectTab)
         {
-            if (StatsUserControl != null)
+            if (StatsUserControl == null)
+            {
+                if (ViewModel.ChurchDataExists())
+                {
+                    StatsUserControl = new StatsnGraphsUserControl();
+                    TabControl.ShowUserControl(
+                        StatsUserControl
+                        , "Statistics and Graphs"
+                        , true
+                        , selectTab);
+                    StatsUserControl.RefreshChart();
+                }
+            }
+            else
             {
                 StatsUserControl.RefreshChart();
             }
@@ -470,6 +499,13 @@ namespace RingSoft.ChurchLogix
         public void ShowMaintenanceWindow(TableDefinitionBase tableDefinition)
         {
             LookupControlsGlobals.WindowRegistry.ShowDbMaintenanceWindow(tableDefinition, WPFControlsGlobals.ActiveWindow);
+        }
+
+        public bool CloseAllTabs()
+        {
+            var result = TabControl.CloseAllTabs();
+            StatsUserControl = null;
+            return result;
         }
 
         public void ShowMaintenanceTab(TableDefinitionBase tableDefinition)

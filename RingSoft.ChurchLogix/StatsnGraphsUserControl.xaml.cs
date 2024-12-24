@@ -114,6 +114,5 @@ namespace RingSoft.ChurchLogix
             result.TotalExpenses = periods.Sum(p => p.TotalExpenses);
             return result;
         }
-
     }
 }

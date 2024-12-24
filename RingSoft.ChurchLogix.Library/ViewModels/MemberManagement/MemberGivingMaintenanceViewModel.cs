@@ -291,7 +291,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
                 if (result)
                 {
                     if (AppGlobals.MainViewModel.MainView != null) 
-                        AppGlobals.MainViewModel.MainView.RefreshChart();
+                        AppGlobals.MainViewModel.MainView.RefreshChart(false);
                     NewCommand.Execute(null);
                     return true;
                 }
