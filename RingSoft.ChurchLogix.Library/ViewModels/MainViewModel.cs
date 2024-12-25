@@ -145,6 +145,10 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
 
             ShowMaintenanceTabCommand = new RelayCommand<TableDefinitionBase>(ShowMaintenanceTab);
 
+            StaffMaintenanceCommand = new RelayCommand((() =>
+            {
+                MainView.ShowMaintenanceTab(AppGlobals.LookupContext.Staff);
+            }));
             MemberMaintenanceCommand = new RelayCommand((() =>
             {
                 MainView.ShowMaintenanceWindow(AppGlobals.LookupContext.Members);

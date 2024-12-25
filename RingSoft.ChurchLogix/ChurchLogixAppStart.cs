@@ -75,6 +75,9 @@ namespace RingSoft.ChurchLogix
 
             LookupControlsGlobals.WindowRegistry.RegisterWindow<SystemPreferencesWindow, SystemPreferences>();
 
+            LookupControlsGlobals.WindowRegistry.RegisterUserControl
+                <StaffMaintenanceUserControl, StaffPerson>();
+
             return base.DoProcess();
         }
 
