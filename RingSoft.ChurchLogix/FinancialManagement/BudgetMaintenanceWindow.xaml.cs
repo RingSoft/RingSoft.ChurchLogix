@@ -8,28 +8,6 @@ using RingSoft.ChurchLogix.Library.ViewModels.Financial_Management;
 
 namespace RingSoft.ChurchLogix.FinancialManagement
 {
-    public class BudgetHeaderControl : DbMaintenanceCustomPanel
-    {
-        public DbMaintenanceButton EditCostButton { get; set; }
-
-        static BudgetHeaderControl()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(BudgetHeaderControl), new FrameworkPropertyMetadata(typeof(BudgetHeaderControl)));
-        }
-
-        public BudgetHeaderControl()
-        {
-
-        }
-
-        public override void OnApplyTemplate()
-        {
-            EditCostButton = GetTemplateChild(nameof(EditCostButton)) as DbMaintenanceButton;
-
-            base.OnApplyTemplate();
-        }
-    }
-
     /// <summary>
     /// Interaction logic for BudgetMaintenanceWindow.xaml
     /// </summary>

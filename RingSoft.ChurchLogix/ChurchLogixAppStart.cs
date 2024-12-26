@@ -94,6 +94,9 @@ namespace RingSoft.ChurchLogix
             LookupControlsGlobals.WindowRegistry.RegisterUserControl
                 <FundMaintenanceUserControl, Fund>();
 
+            LookupControlsGlobals.WindowRegistry.RegisterUserControl
+                <BudgetMaintenanceUserControl, BudgetItem>();
+
             return base.DoProcess();
         }
 

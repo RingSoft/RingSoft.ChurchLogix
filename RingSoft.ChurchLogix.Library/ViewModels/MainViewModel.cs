@@ -159,7 +159,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
             }));
             BudgetMaintenanceCommand = new RelayCommand((() =>
             {
-                MainView.ShowMaintenanceWindow(AppGlobals.LookupContext.Budgets);
+                MainView.ShowMaintenanceTab(AppGlobals.LookupContext.Budgets);
             }));
             EventMaintenanceCommand = new RelayCommand((() =>
             {
