@@ -1,32 +1,64 @@
 ﻿using RingSoft.App.Controls;
-using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.Library.ViewModels.Financial_Management;
-using RingSoft.ChurchLogix.Library.ViewModels.MemberManagement;
-using RingSoft.ChurchLogix.MemberManagement;
 using RingSoft.DataEntryControls.WPF;
-using RingSoft.DbLookup.Controls.WPF;
 using RingSoft.DbLookup.Lookup;
-using RingSoft.DbMaintenance;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using RingSoft.DbLookup.Controls.WPF;
+using RingSoft.DbMaintenance;
 using RingSoft.DbLookup;
 
 namespace RingSoft.ChurchLogix.FinancialManagement
 {
-    /// <summary>
-    /// Interaction logic for FundMaintenanceWindow.xaml
-    /// </summary>
-    public partial class FundMaintenanceWindow : IFundView
+    public class RecalcProcedure : TwoTierProcessingProcedure
     {
-        public override DbMaintenanceTopHeaderControl DbMaintenanceTopHeaderControl => TopHeaderControl;
-        public override string ItemText => "Fund";
-        public override DbMaintenanceViewModelBase ViewModel => LocalViewModel;
-        public override Control MaintenanceButtonsControl => TopHeaderControl;
-        public override DbMaintenanceStatusBar DbStatusBar => StatusBar;
+        private FundsMaintenanceViewModel _viewModel;
+        private LookupDefinitionBase _lookupDefinition;
+        public RecalcProcedure(Window ownerWindow
+            , FundsMaintenanceViewModel fundMaintenanceViewModel
+            , LookupDefinitionBase lookupDefinition) : base(ownerWindow, "Recalculating Fund(s)")
+        {
+            _viewModel = fundMaintenanceViewModel;
+            _lookupDefinition = lookupDefinition;
+        }
 
+        public override bool DoProcedure()
+        {
+            var result = _viewModel.StartRecalc(_lookupDefinition);
+            return result;
+        }
+    }
+    public class FundHeaderControl : DbMaintenanceCustomPanel
+    {
+        public DbMaintenanceButton RecalculateButton { get; set; }
+
+        static FundHeaderControl()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(FundHeaderControl)
+                , new FrameworkPropertyMetadata(typeof(FundHeaderControl)));
+        }
+
+        public FundHeaderControl()
+        {
+
+        }
+
+        public override void OnApplyTemplate()
+        {
+            RecalculateButton = GetTemplateChild(nameof(RecalculateButton)) as DbMaintenanceButton;
+
+            base.OnApplyTemplate();
+        }
+    }
+
+    /// <summary>
+    /// Interaction logic for FundMaintenanceUserControl.xaml
+    /// </summary>
+    public partial class FundMaintenanceUserControl : IFundView
+    {
         private RecalcProcedure _procedure;
-        public FundMaintenanceWindow()
+        public FundMaintenanceUserControl()
         {
             InitializeComponent();
             RegisterFormKeyControl(NameControl);
@@ -44,6 +76,26 @@ namespace RingSoft.ChurchLogix.FinancialManagement
                 }
             };
 
+        }
+
+        protected override DbMaintenanceViewModelBase OnGetViewModel()
+        {
+            return LocalViewModel;
+        }
+
+        protected override Control OnGetMaintenanceButtons()
+        {
+            return TopHeaderControl;
+        }
+
+        protected override DbMaintenanceStatusBar OnGetStatusBar()
+        {
+            return StatusBar;
+        }
+
+        protected override string GetTitle()
+        {
+            return "Fund";
         }
 
         public void RefreshView()
@@ -85,7 +137,7 @@ namespace RingSoft.ChurchLogix.FinancialManagement
                 ProcessText = "Recalculate"
             };
             var genericWindow = new GenericReportFilterWindow(genericInput);
-            genericWindow.Owner = this;
+            genericWindow.Owner = OwnerWindow;
             genericWindow.ShowInTaskbar = false;
             genericWindow.ShowDialog();
             return genericWindow.ViewModel.DialogReesult;
@@ -94,7 +146,7 @@ namespace RingSoft.ChurchLogix.FinancialManagement
         public void StartRecalcProcedure(FundsMaintenanceViewModel viewModel
             , LookupDefinitionBase lookupDefinition)
         {
-            _procedure = new RecalcProcedure(this, viewModel, lookupDefinition);
+            _procedure = new RecalcProcedure(OwnerWindow, viewModel, lookupDefinition);
             _procedure.Start();
 
         }

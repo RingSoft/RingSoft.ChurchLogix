@@ -1,0 +1,193 @@
+﻿<lc:DbMaintenanceUserControl x:Class="RingSoft.ChurchLogix.FinancialManagement.FundMaintenanceUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dec="clr-namespace:RingSoft.DataEntryControls.WPF;assembly=RingSoft.DataEntryControls.WPF"
+             xmlns:lc="clr-namespace:RingSoft.DbLookup.Controls.WPF;assembly=RingSoft.DbLookup.Controls.WPF"
+             xmlns:ac="clr-namespace:RingSoft.App.Controls;assembly=RingSoft.App.Controls"
+             xmlns:vm="clr-namespace:RingSoft.ChurchLogix.Library.ViewModels.Financial_Management;assembly=RingSoft.ChurchLogix.Library"
+             xmlns:lm="clr-namespace:RingSoft.ChurchLogix.DataAccess;assembly=RingSoft.ChurchLogix.DataAccess"
+             xmlns:local="clr-namespace:RingSoft.ChurchLogix.FinancialManagement"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" WindowWidth="650" WindowHeight="500">
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type local:FundHeaderControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type local:FundHeaderControl}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+
+                            <Grid VerticalAlignment="Stretch">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ac:DbMaintenanceButton Grid.Row="0" Grid.Column="0" x:Name="RecalculateButton" Content="_Recalculate Totals" ImageSource="{StaticResource DecimalEditImage}" Style="{StaticResource SubButton}" HorizontalContentAlignment="Left"/>
+
+                            </Grid>
+
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type ac:DbMaintenanceTopHeaderControl}" BasedOn="{StaticResource {x:Type ac:DbMaintenanceTopHeaderControl}}">
+
+            <Setter Property="CustomPanel">
+                <Setter.Value>
+                    <local:FundHeaderControl/>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+    </UserControl.Resources>
+
+    <UserControl.DataContext>
+        <vm:FundsMaintenanceViewModel x:Name="LocalViewModel"/>
+    </UserControl.DataContext>
+
+    <DockPanel>
+        <ac:DbMaintenanceTopHeaderControl x:Name="TopHeaderControl" DockPanel.Dock="Top"/>
+        <lc:DbMaintenanceStatusBar x:Name="StatusBar" DockPanel.Dock="Bottom"/>
+        <Grid Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Content="Fund ID"/>
+
+            <dec:StringReadOnlyBox Grid.Row="0" Grid.Column="1" Text="{Binding Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="50" HorizontalAlignment="Left"/>
+
+            <Label Grid.Row="0" Grid.Column="2" Content="Name"/>
+
+            <lc:AutoFillControl Grid.Row="0" Grid.Column="3" x:Name="NameControl" Width="200" HorizontalAlignment="Left"/>
+
+            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Content="Fund Goal"/>
+
+                <dec:DecimalEditControl Grid.Row="0" Grid.Column="1" Value="{Binding Goal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FormatType="Currency" Width="100"/>
+
+                <Label Grid.Row="0" Grid.Column="2" Content="Total Collected"/>
+
+                <dec:DecimalReadOnlyBox Grid.Row="0" Grid.Column="3" Value="{Binding TotalCollected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FormatType="Currency" Width="100"/>
+
+                <Label Grid.Row="0" Grid.Column="4" Content="Goal Status"/>
+
+                <dec:DecimalReadOnlyBox Grid.Row="0" Grid.Column="5" x:Name="GoalDifReadOnlyBox" Value="{Binding GoalDif, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FormatType="Currency" Width="100"/>
+
+                <Label Grid.Row="1" Grid.Column="2" Content="Total Spent"/>
+
+                <dec:DecimalReadOnlyBox Grid.Row="1" Grid.Column="3" Value="{Binding TotalSpent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FormatType="Currency" Width="100"/>
+
+                <Label Grid.Row="2" Grid.Column="2" Content="Fund Status"/>
+
+                <dec:DecimalReadOnlyBox Grid.Row="2" Grid.Column="3" x:Name="FundDifReadOnlyBox" Value="{Binding FundDiff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FormatType="Currency" Width="100"/>
+
+            </Grid>
+
+            <dec:DataEntryTabControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5">
+
+                <TabItem Header="History">
+
+                    <DockPanel>
+                        <lc:LookupControl LookupDefinition="{Binding FundHistoryLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                            <lc:LookupControl.LookupColumns>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Date, Type={x:Type lm:FundHistoryLookup}}" Header="Date" Width="100"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Budget, Type={x:Type lm:FundHistoryLookup}}" Header="Budget" Width="150"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf AmountType, Type={x:Type lm:FundHistoryLookup}}" Header="Amount Type" Width="100"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Amount, Type={x:Type lm:FundHistoryLookup}}" Header="Amount" Width="100"/>
+
+                            </lc:LookupControl.LookupColumns>
+                        </lc:LookupControl>
+                    </DockPanel>
+
+                </TabItem>
+                <TabItem Header="Monthly Totals">
+                    <DockPanel>
+                        <lc:LookupControl LookupDefinition="{Binding FundMonthlyTotalsLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                            <lc:LookupControl.LookupColumns>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Date, Type={x:Type lm:FundPeriodLookup}}" Header="Month Ending" Width="100"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf TotalIncome, Type={x:Type lm:FundPeriodLookup}}" Header="Total Income" Width="150"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf TotalExpenses, Type={x:Type lm:FundPeriodLookup}}" Header="Total Expenses" Width="150"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Difference, Type={x:Type lm:FundPeriodLookup}}" Header="Difference" Width="150"/>
+
+                            </lc:LookupControl.LookupColumns>
+                        </lc:LookupControl>
+                    </DockPanel>
+                </TabItem>
+                <TabItem Header="Yearly Totals">
+                    <DockPanel>
+                        <lc:LookupControl LookupDefinition="{Binding FundYearlyTotalsLookupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                            <lc:LookupControl.LookupColumns>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Date, Type={x:Type lm:FundPeriodLookup}}" Header="Year Ending" Width="100"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf TotalIncome, Type={x:Type lm:FundPeriodLookup}}" Header="Total Income" Width="150"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf TotalExpenses, Type={x:Type lm:FundPeriodLookup}}" Header="Total Expenses" Width="150"/>
+
+                                <lc:LookupColumn PropertyName="{lc:NameOf Difference, Type={x:Type lm:FundPeriodLookup}}" Header="Difference" Width="150"/>
+
+                            </lc:LookupControl.LookupColumns>
+                        </lc:LookupControl>
+                    </DockPanel>
+                </TabItem>
+                <dec:DataEntryMemoTabItem Header="Notes" VerticalAlignment="Stretch">
+                    <DockPanel>
+
+                        <dec:DataEntryMemoEditor x:Name="NotesControl" Text="{Binding Path=Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    </DockPanel>
+                </dec:DataEntryMemoTabItem>
+
+            </dec:DataEntryTabControl>
+        </Grid>
+    </DockPanel>
+</lc:DbMaintenanceUserControl>

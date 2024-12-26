@@ -308,7 +308,7 @@ namespace RingSoft.ChurchLogix
                     menuItem.Items.Add(new MenuItem()
                     {
                         Header = "Add/Edit _Funds...",
-                        Command = ViewModel.ShowMaintenanceWindowCommand,
+                        Command = ViewModel.ShowMaintenanceTabCommand,
                         CommandParameter = AppGlobals.LookupContext.Funds,
                     });
                 }

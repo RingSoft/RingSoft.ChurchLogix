@@ -155,7 +155,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
             }));
             FundMaintenanceCommand = new RelayCommand((() =>
             {
-                MainView.ShowMaintenanceWindow(AppGlobals.LookupContext.Funds);
+                MainView.ShowMaintenanceTab(AppGlobals.LookupContext.Funds);
             }));
             BudgetMaintenanceCommand = new RelayCommand((() =>
             {
