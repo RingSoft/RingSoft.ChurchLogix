@@ -167,7 +167,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
             }));
             SmallGroupMaintenanceCommand = new RelayCommand((() =>
             {
-                MainView.ShowMaintenanceWindow(AppGlobals.LookupContext.SmallGroups);
+                MainView.ShowMaintenanceTab(AppGlobals.LookupContext.SmallGroups);
             }));
 
             AboutCommand = new RelayCommand((() =>

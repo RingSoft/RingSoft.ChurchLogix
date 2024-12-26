@@ -105,6 +105,11 @@ namespace RingSoft.ChurchLogix
             LookupControlsGlobals.WindowRegistry.RegisterUserControl
                 <EventMaintenanceUserControl, EventMember>();
 
+            LookupControlsGlobals.WindowRegistry.RegisterUserControl
+                <SmallGroupMaintenanceUserControl, SmallGroup>();
+            LookupControlsGlobals.WindowRegistry.RegisterUserControl
+                <SmallGroupMaintenanceUserControl, SmallGroupMember>();
+
             return base.DoProcess();
         }
 
