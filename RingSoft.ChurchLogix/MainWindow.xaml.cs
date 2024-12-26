@@ -273,7 +273,7 @@ namespace RingSoft.ChurchLogix
                     menuItem.Items.Add(new MenuItem()
                     {
                         Header = "Add/Edit _Members...",
-                        Command = ViewModel.ShowMaintenanceWindowCommand,
+                        Command = ViewModel.ShowMaintenanceTabCommand,
                         CommandParameter = AppGlobals.LookupContext.Members,
                     });
                 }
@@ -283,7 +283,7 @@ namespace RingSoft.ChurchLogix
                     menuItem.Items.Add(new MenuItem()
                     {
                         Header = "Add/Edit Member _Giving...",
-                        Command = ViewModel.ShowMaintenanceWindowCommand,
+                        Command = ViewModel.ShowMaintenanceTabCommand,
                         CommandParameter = AppGlobals.LookupContext.MembersGiving,
                     });
                 }

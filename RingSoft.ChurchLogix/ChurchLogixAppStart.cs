@@ -77,9 +77,19 @@ namespace RingSoft.ChurchLogix
 
             LookupControlsGlobals.WindowRegistry.RegisterUserControl
                 <StaffMaintenanceUserControl, StaffPerson>();
+            LookupControlsGlobals.WindowRegistry.RegisterUserControl
+                <StaffMaintenanceUserControl, StaffGroup>();
 
             LookupControlsGlobals.WindowRegistry.RegisterUserControl
                 <GroupsMaintenanceUserControl, Group>();
+
+            LookupControlsGlobals.WindowRegistry.RegisterUserControl
+                <MemberMaintenanceUserControl, Member>();
+
+            LookupControlsGlobals.WindowRegistry.RegisterUserControl
+                <MemberGivingMaintenanceUserControl, MemberGiving>();
+            LookupControlsGlobals.WindowRegistry.RegisterUserControl
+                <MemberGivingMaintenanceUserControl, MemberGivingDetails>();
 
             return base.DoProcess();
         }

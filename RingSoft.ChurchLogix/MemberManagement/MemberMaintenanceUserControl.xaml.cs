@@ -1,34 +1,68 @@
 ﻿using RingSoft.App.Controls;
-using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.Library.ViewModels.MemberManagement;
 using RingSoft.DataEntryControls.WPF;
-using RingSoft.DbLookup;
-using RingSoft.DbLookup.Controls.WPF;
 using RingSoft.DbLookup.Lookup;
-using RingSoft.DbMaintenance;
 using System.Windows;
 using System.Windows.Controls;
+using RingSoft.DbLookup.Controls.WPF;
+using RingSoft.DbMaintenance;
+using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
+using RingSoft.DbLookup;
 
 namespace RingSoft.ChurchLogix.MemberManagement
 {
 
-
-    /// <summary>
-    /// Interaction logic for MemberMaintenanceWindow.xaml
-    /// </summary>
-    public partial class MemberMaintenanceWindow : IMemberView
+    public class RecalcProcedure : TwoTierProcessingProcedure
     {
-        public override DbMaintenanceTopHeaderControl DbMaintenanceTopHeaderControl => TopHeaderControl;
-        public override string ItemText => "Member";
-        public override DbMaintenanceViewModelBase ViewModel => LocalViewModel;
-        public override Control MaintenanceButtonsControl => TopHeaderControl;
-        public override DbMaintenanceStatusBar DbStatusBar => StatusBar;
+        private MemberMaintenanceViewModel _viewModel;
+        private LookupDefinitionBase _lookupDefinition;
+        public RecalcProcedure(Window ownerWindow
+            , MemberMaintenanceViewModel memberMaintenanceViewModel
+            , LookupDefinitionBase lookupDefinition) : base(ownerWindow, "Recalculating Member(s)")
+        {
+            _viewModel = memberMaintenanceViewModel;
+            _lookupDefinition = lookupDefinition;
+        }
 
+        public override bool DoProcedure()
+        {
+            var result = _viewModel.StartRecalc(_lookupDefinition);
+            return result;
+        }
+    }
+    public class MemberHeaderControl : DbMaintenanceCustomPanel
+    {
+        public DbMaintenanceButton RecalculateButton { get; set; }
+
+        static MemberHeaderControl()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(MemberHeaderControl)
+                , new FrameworkPropertyMetadata(typeof(MemberHeaderControl)));
+        }
+
+        public MemberHeaderControl()
+        {
+
+        }
+
+        public override void OnApplyTemplate()
+        {
+            RecalculateButton = GetTemplateChild(nameof(RecalculateButton)) as DbMaintenanceButton;
+
+            base.OnApplyTemplate();
+        }
+    }
+    /// <summary>
+    /// Interaction logic for MemberMaintenanceUserControl.xaml
+    /// </summary>
+    public partial class MemberMaintenanceUserControl : IMemberView
+    {
         private RecalcProcedure _procedure;
 
-        public MemberMaintenanceWindow()
+        public MemberMaintenanceUserControl()
         {
             InitializeComponent();
+
             TopHeaderControl.Loaded += (sender, args) =>
             {
                 if (TopHeaderControl.CustomPanel is MemberHeaderControl memberHeaderControl)
@@ -60,9 +94,29 @@ namespace RingSoft.ChurchLogix.MemberManagement
             };
         }
 
+        protected override DbMaintenanceViewModelBase OnGetViewModel()
+        {
+            return LocalViewModel;
+        }
+
+        protected override Control OnGetMaintenanceButtons()
+        {
+            return TopHeaderControl;
+        }
+
+        protected override DbMaintenanceStatusBar OnGetStatusBar()
+        {
+            return StatusBar;
+        }
+
+        protected override string GetTitle()
+        {
+            return "Member";
+        }
+
         public void RefreshView()
         {
-            MainWindow.ProcessSendEmailLink(SendEmailControl,LocalViewModel.Email);
+            MainWindow.ProcessSendEmailLink(SendEmailControl, LocalViewModel.Email);
         }
 
         public bool SetupRecalcFilter(LookupDefinitionBase lookupDefinition)
@@ -75,7 +129,7 @@ namespace RingSoft.ChurchLogix.MemberManagement
                 ProcessText = "Recalculate"
             };
             var genericWindow = new GenericReportFilterWindow(genericInput);
-            genericWindow.Owner = this;
+            genericWindow.Owner = OwnerWindow;
             genericWindow.ShowInTaskbar = false;
             genericWindow.ShowDialog();
             return genericWindow.ViewModel.DialogReesult;
@@ -84,7 +138,7 @@ namespace RingSoft.ChurchLogix.MemberManagement
         public void StartRecalcProcedure(MemberMaintenanceViewModel viewModel
             , LookupDefinitionBase lookupDefinition)
         {
-            _procedure = new RecalcProcedure(this, viewModel, lookupDefinition);
+            _procedure = new RecalcProcedure(OwnerWindow, viewModel, lookupDefinition);
             _procedure.Start();
 
         }
@@ -97,11 +151,11 @@ namespace RingSoft.ChurchLogix.MemberManagement
             , int detailIndex)
         {
             _procedure.SetProgress(headerTotal
-            , headerIndex
-            , headerText
-            , detailTotal
-            , detailIndex
-            , detailText);
+                , headerIndex
+                , headerText
+                , detailTotal
+                , detailIndex
+                , detailText);
         }
     }
 }

@@ -20,53 +20,7 @@ using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.MemberManagement
 {
-    public class PostProcedure : AppProcedure
-    {
-        private ProcessingSplashWindow _splashWindow;
 
-        public override ISplashWindow SplashWindow => _splashWindow;
-
-        private MemberGivingMaintenanceViewModel _memberGivingMaintenanceViewModel;
-        public PostProcedure(MemberGivingMaintenanceViewModel memberGivingMaintenanceViewModel)
-        {
-            _memberGivingMaintenanceViewModel = memberGivingMaintenanceViewModel;
-        }
-
-        protected override void ShowSplash()
-        {
-            _splashWindow = new ProcessingSplashWindow("Posting Member Giving");
-            _splashWindow.ShowInTaskbar = false;
-            _splashWindow.ShowDialog();
-        }
-
-        protected override bool DoProcess()
-        {
-            var result = _memberGivingMaintenanceViewModel.PostGiving();
-            _splashWindow.CloseSplash();
-            return result;
-        }
-    }
-    public class MemberGivingHeaderControl : DbMaintenanceCustomPanel
-    {
-        public DbMaintenanceButton PostGivingButton { get; set; }
-
-        static MemberGivingHeaderControl()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(MemberGivingHeaderControl), new FrameworkPropertyMetadata(typeof(MemberGivingHeaderControl)));
-        }
-
-        public MemberGivingHeaderControl()
-        {
-
-        }
-
-        public override void OnApplyTemplate()
-        {
-            PostGivingButton = GetTemplateChild(nameof(PostGivingButton)) as DbMaintenanceButton;
-
-            base.OnApplyTemplate();
-        }
-    }
 
     /// <summary>
     /// Interaction logic for MemberGivingMaintenanceWindow.xaml
