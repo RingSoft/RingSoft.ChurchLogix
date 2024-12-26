@@ -37,7 +37,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\petem\source\repos\RingSoft\RingSoft.ChurchLogix\RingSoft.ChurchLogix\bin\Release\net8.0-windows\*"; Excludes: "*.xml, *.sqlite"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\petem\source\repos\RingSoft\RingSoft.ChurchLogix\RingSoft.ChurchLogix\bin\Release\net9.0-windows\*"; Excludes: "*.xml, *.sqlite"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:\Users\petem\source\repos\RingSoft\RingSoft.ChurchLogix\RingSoft.ChurchLogix\DemoData.sqlite"; DestDir: "{commonappdata}\RingSoft\ChurchLogix\"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
