@@ -100,6 +100,11 @@ namespace RingSoft.ChurchLogix
             LookupControlsGlobals.WindowRegistry.RegisterUserControl
                 <BudgetActualMaintenanceUserControl, BudgetActual>();
 
+            LookupControlsGlobals.WindowRegistry.RegisterUserControl
+                <EventMaintenanceUserControl, Event>();
+            LookupControlsGlobals.WindowRegistry.RegisterUserControl
+                <EventMaintenanceUserControl, EventMember>();
+
             return base.DoProcess();
         }
 

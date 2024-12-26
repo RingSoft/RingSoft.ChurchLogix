@@ -163,7 +163,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels
             }));
             EventMaintenanceCommand = new RelayCommand((() =>
             {
-                MainView.ShowMaintenanceWindow(AppGlobals.LookupContext.Events);
+                MainView.ShowMaintenanceTab(AppGlobals.LookupContext.Events);
             }));
             SmallGroupMaintenanceCommand = new RelayCommand((() =>
             {

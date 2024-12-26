@@ -352,7 +352,7 @@ namespace RingSoft.ChurchLogix
                     menuItem.Items.Add(new MenuItem()
                     {
                         Header = "Add/Edit _Events...",
-                        Command = ViewModel.ShowMaintenanceWindowCommand,
+                        Command = ViewModel.ShowMaintenanceTabCommand,
                         CommandParameter = AppGlobals.LookupContext.Events,
                     });
                 }
