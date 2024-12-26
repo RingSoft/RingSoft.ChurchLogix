@@ -372,7 +372,7 @@ namespace RingSoft.ChurchLogix
                     menuItem.Items.Add(new MenuItem()
                     {
                         Header = "Add/Edit Small Group _Roles...",
-                        Command = ViewModel.ShowMaintenanceWindowCommand,
+                        Command = ViewModel.ShowMaintenanceTabCommand,
                         CommandParameter = AppGlobals.LookupContext.Roles,
                     });
                 }
