@@ -328,7 +328,7 @@ namespace RingSoft.ChurchLogix
                     menuItem.Items.Add(new MenuItem()
                     {
                         Header = "_Enter Budget Costs...",
-                        Command = ViewModel.ShowMaintenanceWindowCommand,
+                        Command = ViewModel.ShowMaintenanceTabCommand,
                         CommandParameter = AppGlobals.LookupContext.BudgetActuals,
                     });
                 }

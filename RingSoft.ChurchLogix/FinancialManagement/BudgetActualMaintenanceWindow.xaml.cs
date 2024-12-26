@@ -20,54 +20,6 @@ using RingSoft.DbMaintenance;
 
 namespace RingSoft.ChurchLogix.FinancialManagement
 {
-    public class PostProcedure : AppProcedure
-    {
-        private ProcessingSplashWindow _splashWindow;
-
-        public override ISplashWindow SplashWindow => _splashWindow;
-
-        private BudgetActualMaintenanceViewModel _actualMaintenanceViewModel;
-        public PostProcedure(BudgetActualMaintenanceViewModel actualMaintenanceViewModel)
-        {
-            _actualMaintenanceViewModel = actualMaintenanceViewModel;
-        }
-
-        protected override void ShowSplash()
-        {
-            _splashWindow = new ProcessingSplashWindow("Posting Budget Costs to History");
-            _splashWindow.ShowInTaskbar = false;
-            _splashWindow.ShowDialog();
-        }
-
-        protected override bool DoProcess()
-        {
-            var result = _actualMaintenanceViewModel.PostCosts();
-            _splashWindow.CloseSplash();
-            return result;
-        }
-    }
-
-    public class BudgetActualHeaderControl : DbMaintenanceCustomPanel
-    {
-        public DbMaintenanceButton PostCostButton { get; set; }
-
-        static BudgetActualHeaderControl()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(BudgetActualHeaderControl), new FrameworkPropertyMetadata(typeof(BudgetActualHeaderControl)));
-        }
-
-        public BudgetActualHeaderControl()
-        {
-
-        }
-
-        public override void OnApplyTemplate()
-        {
-            PostCostButton = GetTemplateChild(nameof(PostCostButton)) as DbMaintenanceButton;
-
-            base.OnApplyTemplate();
-        }
-    }
 
     /// <summary>
     /// Interaction logic for BudgetActualMaintenanceWindow.xaml
