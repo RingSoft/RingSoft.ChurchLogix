@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using RingSoft.ChurchLogix.DataAccess;
 using RingSoft.ChurchLogix.DataAccess.Model;
 using RingSoft.ChurchLogix.DataAccess.Model.ChurchLife;
@@ -81,6 +82,8 @@ namespace RingSoft.ChurchLogix.SqlServer
             }
             else
                 optionsBuilder.UseSqlServer(ConnectionString);
+
+            optionsBuilder.ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
 
             base.OnConfiguring(optionsBuilder);
         }
