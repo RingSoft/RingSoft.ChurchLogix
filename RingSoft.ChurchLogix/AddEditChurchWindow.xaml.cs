@@ -79,16 +79,16 @@ namespace RingSoft.ChurchLogix
 
         }
 
-        public bool DoCopyProcedure()
-        {
-            _procedure = new TwoTierProcedure();
-            _procedure.DoProcedure += (sender, args) =>
-            {
-                args.Result = ViewModel.CopyData(_procedure);
-            };
-            var result = _procedure.Start();
-            return result;
-        }
+        //public bool DoCopyProcedure()
+        //{
+        //    _procedure = new TwoTierProcedure();
+        //    _procedure.DoProcedure += (sender, args) =>
+        //    {
+        //        args.Result = ViewModel.CopyData(_procedure);
+        //    };
+        //    var result = _procedure.Start();
+        //    return result;
+        //}
 
     }
 }
