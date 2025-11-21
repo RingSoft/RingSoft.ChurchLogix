@@ -36,12 +36,18 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
             return new SmallGroupMemberRow(this);
         }
 
-        public SmallGroupMemberRow GetRowForMember(AutoFillValue newAutoFillValue)
+        public SmallGroupMemberRow? GetRowForMember(AutoFillValue newAutoFillValue, SmallGroupMemberRow curRow)
         {
             var newMemberId = newAutoFillValue.GetEntity<Member>().Id;
 
-            return Rows.OfType<SmallGroupMemberRow>()
+            var result = Rows.OfType<SmallGroupMemberRow>()
                 .FirstOrDefault(p => p.MemberId == newMemberId);
+
+            if (result == curRow)
+            {
+                return null;
+            }
+            return result;
         }
 
         protected override void SelectRowForEntity(SmallGroupMember entity)

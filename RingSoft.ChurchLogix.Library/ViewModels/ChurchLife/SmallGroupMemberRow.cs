@@ -58,7 +58,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
                 case SmallGroupMemberColumns.Member:
                     if (value is DataEntryGridAutoFillCellProps memberAutoFillCellProps)
                     {
-                        var existRow = Manager.GetRowForMember(memberAutoFillCellProps.AutoFillValue);
+                        var existRow = Manager.GetRowForMember(memberAutoFillCellProps.AutoFillValue, this);
                         if (existRow != null)
                         {
                             var message = $"Member is already in the grid.  Would you like to edit it?";

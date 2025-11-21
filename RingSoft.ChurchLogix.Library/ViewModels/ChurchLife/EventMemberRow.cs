@@ -70,7 +70,7 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
                 case EventMemberColumns.Member:
                     if (value is DataEntryGridAutoFillCellProps autoFillCellProps)
                     {
-                        var existRow = Manager.GetRowForMember(autoFillCellProps.AutoFillValue);
+                        var existRow = Manager.GetRowForMember(autoFillCellProps.AutoFillValue, this);
                         if (existRow != null)
                         {
                             var message = $"Member is already in the grid.  Would you like to edit it?";

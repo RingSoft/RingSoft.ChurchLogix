@@ -61,12 +61,18 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
             ViewModel.View.RefreshTotals();
         }
 
-        public EventMemberRow GetRowForMember(AutoFillValue newAutoFillValue)
+        public EventMemberRow? GetRowForMember(AutoFillValue newAutoFillValue, EventMemberRow curRow)
         {
             var newMemberId = newAutoFillValue.GetEntity<Member>().Id;
 
-            return Rows.OfType<EventMemberRow>()
+            var result = Rows.OfType<EventMemberRow>()
                 .FirstOrDefault(p => p.MemberId == newMemberId);
+
+            if (result == curRow)
+            {
+                return null;
+            }
+            return result;
         }
 
         protected override void SelectRowForEntity(EventMember entity)
