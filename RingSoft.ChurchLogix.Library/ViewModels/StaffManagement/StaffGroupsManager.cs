@@ -21,5 +21,18 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.StaffManagement
         {
             return new StaffGroupsRow(this);
         }
+
+        protected override void SelectRowForEntity(StaffGroup entity)
+        {
+            var selRow = Rows.OfType<StaffGroupsRow>()
+                .FirstOrDefault(p => p.GroupId == entity.GroupId);
+
+            if (selRow != null)
+            {
+                ViewModel.View.GotoGroupsGrid();
+                GotoCell(selRow, 0);
+            }
+                base.SelectRowForEntity(entity);
+        }
     }
 }

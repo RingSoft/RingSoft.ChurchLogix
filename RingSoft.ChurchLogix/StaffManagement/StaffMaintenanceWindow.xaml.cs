@@ -102,5 +102,10 @@ namespace RingSoft.ChurchLogix.StaffManagement
         {
             PasswordBox.Password = password;
         }
+
+        public void GotoGroupsGrid()
+        {
+            
+        }
     }
 }

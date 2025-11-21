@@ -17,8 +17,6 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
         public const int FundColumnId = (int)MemberGivingDetailsColumns.Fund;
         public const int AmountColumnId = (int)MemberGivingDetailsColumns.Amount;
 
-        private int _rowIdSelected = -1;
-
         public MemberGivingDetailsManager(MemberGivingMaintenanceViewModel viewModel) : base(viewModel)
         {
             ViewModel = viewModel;
@@ -56,18 +54,13 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
         {
             base.LoadGrid(entityList);
             CalculateTotal();
-            if (_rowIdSelected >= 0)
-            {
-                var row = Rows.OfType<MemberGivingDetailsRow>()
-                    .FirstOrDefault(p => p.RowId == _rowIdSelected);
-                _rowIdSelected = -1;
-                GotoCell(row, FundColumnId);
-            }
         }
 
         protected override void SelectRowForEntity(MemberGivingDetails entity)
         {
-            _rowIdSelected = entity.RowId;
+            var row = Rows.OfType<MemberGivingDetailsRow>()
+                .FirstOrDefault(p => p.RowId == entity.RowId);
+            GotoCell(row, FundColumnId);
             base.SelectRowForEntity(entity);
         }
     }

@@ -19,8 +19,6 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
 
         public new SmallGroupMaintenanceViewModel ViewModel { get; }
 
-        private int _selectedMemberId = -1;
-
         public SmallGroupMemberManager(SmallGroupMaintenanceViewModel viewModel) : base(viewModel)
         {
             ViewModel = viewModel;
@@ -52,20 +50,10 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
 
         protected override void SelectRowForEntity(SmallGroupMember entity)
         {
-            _selectedMemberId = entity.MemberId;
+            var row = Rows.OfType<SmallGroupMemberRow>()
+                .FirstOrDefault(p => p.MemberId == entity.MemberId);
+            GotoCell(row, MemberColumnId);
             base.SelectRowForEntity(entity);
-        }
-
-        public override void LoadGrid(IEnumerable<SmallGroupMember> entityList)
-        {
-            base.LoadGrid(entityList);
-            if (_selectedMemberId >= 0)
-            {
-                var row = Rows.OfType<SmallGroupMemberRow>()
-                    .FirstOrDefault(p => p.MemberId == _selectedMemberId);
-                _selectedMemberId = -1;
-                GotoCell(row, MemberColumnId);
-            }
         }
     }
 }

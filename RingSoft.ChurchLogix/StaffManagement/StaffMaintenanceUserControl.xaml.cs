@@ -112,5 +112,13 @@ namespace RingSoft.ChurchLogix.StaffManagement
         {
             PasswordBox.Password = password;
         }
+
+        public void GotoGroupsGrid()
+        {
+            if (GroupsTab.Visibility == Visibility.Visible)
+            {
+                TabControl.SelectedItem = GroupsTab;
+            }
+        }
     }
 }

@@ -19,8 +19,6 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
 
         public new EventMaintenanceViewModel ViewModel { get; }
 
-        private int _selectedMemberId = -1;
-
         public EventMemberManager(EventMaintenanceViewModel viewModel) : base(viewModel)
         {
             ViewModel = viewModel;
@@ -40,14 +38,6 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
         {
             base.LoadGrid(entityList);
             GetTotalPaid();
-            if (_selectedMemberId >= 0)
-            {
-                var row = Rows.OfType<EventMemberRow>()
-                    .FirstOrDefault(p => p.MemberId == _selectedMemberId);
-                _selectedMemberId = -1;
-                ViewModel.View.ActivateGrid();
-                GotoCell(row, MemberColumnId);
-            }
         }
 
         public void GetTotalPaid()
@@ -77,7 +67,11 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.ChurchLife
 
         protected override void SelectRowForEntity(EventMember entity)
         {
-            _selectedMemberId = entity.MemberId;
+            var row = Rows.OfType<EventMemberRow>()
+                .FirstOrDefault(p => p.MemberId == entity.MemberId);
+            ViewModel.View.ActivateGrid();
+            GotoCell(row, MemberColumnId);
+
             base.SelectRowForEntity(entity);
         }
 
