@@ -149,6 +149,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             {
                 throw new Exception("Invalid view interface");
             }
+
+            KeyAutoFillSetup = null;
             base.Initialize();
         }
 

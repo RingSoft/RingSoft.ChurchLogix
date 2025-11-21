@@ -138,6 +138,8 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.Financial_Management
             {
                 throw new Exception($"Must implement {nameof(IBudgetActualView)}");
             }
+
+            KeyAutoFillSetup = null;
             base.Initialize();
         }
 

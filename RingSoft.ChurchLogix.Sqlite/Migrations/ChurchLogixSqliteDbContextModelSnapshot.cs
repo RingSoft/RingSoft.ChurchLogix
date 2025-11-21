@@ -15,7 +15,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.6");
+            modelBuilder.HasAnnotation("ProductVersion", "10.0.0");
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.Event", b =>
                 {
@@ -48,7 +48,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.EventMember", b =>
@@ -66,7 +66,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.ToTable("EventsMember");
+                    b.ToTable("EventsMember", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.Role", b =>
@@ -82,7 +82,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.SmallGroup", b =>
@@ -101,7 +101,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SmallGroups");
+                    b.ToTable("SmallGroups", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.SmallGroupMember", b =>
@@ -121,7 +121,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("SmallGroupsMember");
+                    b.ToTable("SmallGroupsMember", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetActual", b =>
@@ -143,7 +143,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasIndex("BudgetId");
 
-                    b.ToTable("BudgetActuals");
+                    b.ToTable("BudgetActuals", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetItem", b =>
@@ -170,7 +170,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasIndex("FundId");
 
-                    b.ToTable("Budgets");
+                    b.ToTable("Budgets", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.BudgetPeriodTotals", b =>
@@ -189,7 +189,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasKey("BudgetId", "PeriodType", "Date");
 
-                    b.ToTable("BudgetsPeriodTotals");
+                    b.ToTable("BudgetsPeriodTotals", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.Fund", b =>
@@ -217,7 +217,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Funds");
+                    b.ToTable("Funds", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.FundHistory", b =>
@@ -247,7 +247,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasIndex("FundId");
 
-                    b.ToTable("FundHistory");
+                    b.ToTable("FundHistory", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.Financial_Management.FundPeriodTotals", b =>
@@ -269,7 +269,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasKey("FundId", "PeriodType", "Date");
 
-                    b.ToTable("FundPeriodTotals");
+                    b.ToTable("FundPeriodTotals", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.Member", b =>
@@ -301,7 +301,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasIndex("HouseholdId");
 
-                    b.ToTable("Members");
+                    b.ToTable("Members", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.MemberGiving", b =>
@@ -320,7 +320,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.ToTable("MembersGiving");
+                    b.ToTable("MembersGiving", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.MemberGivingDetails", b =>
@@ -341,7 +341,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasIndex("FundId");
 
-                    b.ToTable("MembersGivingDetails");
+                    b.ToTable("MembersGivingDetails", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.MemberGivingHistory", b =>
@@ -368,7 +368,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.ToTable("MembersGivingHistory");
+                    b.ToTable("MembersGivingHistory", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.MemberManagement.MemberPeriodGiving", b =>
@@ -387,7 +387,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasKey("MemberId", "PeriodType", "Date");
 
-                    b.ToTable("MembersPeriodGiving");
+                    b.ToTable("MembersPeriodGiving", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.StaffManagement.Group", b =>
@@ -406,7 +406,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Groups");
+                    b.ToTable("Groups", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.StaffManagement.StaffGroup", b =>
@@ -421,7 +421,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("StaffGroups");
+                    b.ToTable("StaffGroups", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.StaffManagement.StaffPerson", b =>
@@ -460,7 +460,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.ToTable("Staff");
+                    b.ToTable("Staff", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.SystemMaster", b =>
@@ -476,7 +476,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasKey("ChurchName");
 
-                    b.ToTable("SystemMaster");
+                    b.ToTable("SystemMaster", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.SystemPreferences", b =>
@@ -493,7 +493,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SystemPreferences");
+                    b.ToTable("SystemPreferences", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.DbLookup.AdvancedFind.AdvancedFind", b =>
@@ -535,7 +535,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AdvancedFinds");
+                    b.ToTable("AdvancedFinds", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.DbLookup.AdvancedFind.AdvancedFindColumn", b =>
@@ -584,7 +584,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasKey("AdvancedFindId", "ColumnId");
 
-                    b.ToTable("AdvancedFindColumns");
+                    b.ToTable("AdvancedFindColumns", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.DbLookup.AdvancedFind.AdvancedFindFilter", b =>
@@ -654,7 +654,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasIndex("SearchForAdvancedFindId");
 
-                    b.ToTable("AdvancedFindFilters");
+                    b.ToTable("AdvancedFindFilters", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.DbLookup.RecordLocking.RecordLock", b =>
@@ -676,7 +676,7 @@ namespace RingSoft.ChurchLogix.Sqlite.Migrations
 
                     b.HasKey("Table", "PrimaryKey");
 
-                    b.ToTable("RecordLocks");
+                    b.ToTable("RecordLocks", (string)null);
                 });
 
             modelBuilder.Entity("RingSoft.ChurchLogix.DataAccess.Model.ChurchLife.EventMember", b =>

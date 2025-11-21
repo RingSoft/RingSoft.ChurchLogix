@@ -609,6 +609,7 @@ namespace RingSoft.ChurchLogix.DataAccess
             MembersGivingDetails.GetFieldDefinition(p => p.Amount)
                 .HasDecimalFieldType(DecimalFieldTypes.Currency);
 
+            Funds.GetFieldDefinition(p => p.Description).HasDescription("Name");
             Funds.GetFieldDefinition(p => p.Notes).IsMemo();
             Funds.GetFieldDefinition(p => p.Goal).HasDecimalFieldType(DecimalFieldTypes.Currency);
 
