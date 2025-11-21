@@ -214,6 +214,13 @@ namespace RingSoft.ChurchLogix
                 Command = ViewModel.UpgradeCommand,
             });
 
+            foreach (var mainMenuItem in MainMenu.Items)
+            {
+                if (mainMenuItem is MenuItem menuItem)
+                {
+                    menuItem.IsTabStop = false;
+                }
+            }
         }
 
         public void ClearMenu()

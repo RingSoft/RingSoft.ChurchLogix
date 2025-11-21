@@ -363,6 +363,21 @@ namespace RingSoft.ChurchLogix.Library.ViewModels.MemberManagement
             return result;
         }
 
+        protected override bool ValidateEntity(Member entity)
+        {
+            var result = base.ValidateEntity(entity);
+
+            if (result)
+            {
+                result = HouseholdAutoFillValue.IsValid(true, true);
+                if (!result)
+                {
+                    HouseholdAutoFillSetup.HandleValFail("Household", true);
+                }
+            }
+            return result;
+        }
+
         protected override void ClearData()
         {
             Id = 0;
