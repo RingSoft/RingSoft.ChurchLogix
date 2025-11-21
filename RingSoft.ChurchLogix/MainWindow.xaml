@@ -59,16 +59,16 @@
                     <GradientStop Color="Black" Offset="0.85"/>
                 </LinearGradientBrush>
             </StackPanel.Background>
-            <ac:DbMaintenanceButton x:Name="ExitButton"  Content="E_xit" Command="{Binding ExitCommand }" ImageSource="{StaticResource ExitImage}" />
-            <ac:DbMaintenanceButton x:Name="ChangeChurchButton"  Content="_Change Church" Command="{Binding ChangeChurchCommand }" ImageSource="{StaticResource ChurchImage}" />
-            <ac:DbMaintenanceButton x:Name="LogoutButton"  Content="_Logout" Command="{Binding LogoutCommand }" ImageSource="{StaticResource LogoutImage}" />
-            <ac:DbMaintenanceButton x:Name="StaffButton"  Content="Sta_ff" Command="{Binding StaffMaintenanceCommand }" ImageSource="{StaticResource StaffImage}" />
-            <ac:DbMaintenanceButton x:Name="MemberButton"  Content="_Members" Command="{Binding MemberMaintenanceCommand }" ImageSource="{StaticResource MembersImage}" />
-            <ac:DbMaintenanceButton x:Name="FundButton"  Content="F_unds" Command="{Binding FundMaintenanceCommand }" ImageSource="{StaticResource FundImage}" />
-            <ac:DbMaintenanceButton x:Name="BudgetButton"  Content="_Budgets" Command="{Binding BudgetMaintenanceCommand }" ImageSource="{StaticResource BudgetImage}" />
-            <ac:DbMaintenanceButton x:Name="EventButton"  Content="_Events" Command="{Binding EventMaintenanceCommand }" ImageSource="{StaticResource EventImage}" />
-            <ac:DbMaintenanceButton x:Name="SmallGroupButton"  Content="_Small Groups" Command="{Binding SmallGroupMaintenanceCommand }" ImageSource="{StaticResource SmallGroupImage}" />
-            <ac:DbMaintenanceButton x:Name="AdvancedFindButton" Content="_Advanced Find" ImageSource="{StaticResource FindImage}" Command="{Binding AdvFindCommand}"/>
+            <ac:DbMaintenanceButton x:Name="ExitButton"  Content="Exit" Command="{Binding ExitCommand }" ImageSource="{StaticResource ExitImage}" />
+            <ac:DbMaintenanceButton x:Name="ChangeChurchButton"  Content="Change Church" Command="{Binding ChangeChurchCommand }" ImageSource="{StaticResource ChurchImage}" />
+            <ac:DbMaintenanceButton x:Name="LogoutButton"  Content="Logout" Command="{Binding LogoutCommand }" ImageSource="{StaticResource LogoutImage}" />
+            <ac:DbMaintenanceButton x:Name="StaffButton"  Content="Staff" Command="{Binding StaffMaintenanceCommand }" ImageSource="{StaticResource StaffImage}" />
+            <ac:DbMaintenanceButton x:Name="MemberButton"  Content="Members" Command="{Binding MemberMaintenanceCommand }" ImageSource="{StaticResource MembersImage}" />
+            <ac:DbMaintenanceButton x:Name="FundButton"  Content="Funds" Command="{Binding FundMaintenanceCommand }" ImageSource="{StaticResource FundImage}" />
+            <ac:DbMaintenanceButton x:Name="BudgetButton"  Content="Budgets" Command="{Binding BudgetMaintenanceCommand }" ImageSource="{StaticResource BudgetImage}" />
+            <ac:DbMaintenanceButton x:Name="EventButton"  Content="Events" Command="{Binding EventMaintenanceCommand }" ImageSource="{StaticResource EventImage}" />
+            <ac:DbMaintenanceButton x:Name="SmallGroupButton"  Content="Small Groups" Command="{Binding SmallGroupMaintenanceCommand }" ImageSource="{StaticResource SmallGroupImage}" />
+            <ac:DbMaintenanceButton x:Name="AdvancedFindButton" Content="Advanced Find" ImageSource="{StaticResource FindImage}" Command="{Binding AdvFindCommand}"/>
 
         </StackPanel>
         <StatusBar DockPanel.Dock="Bottom" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="Transparent">

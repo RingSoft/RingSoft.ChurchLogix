@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using RingSoft.ChurchLogix.DataAccess.Model.Financial_Management;
+﻿using RingSoft.App.Controls;
+using RingSoft.App.Library;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
 using RingSoft.ChurchLogix.Library;
 using RingSoft.ChurchLogix.Library.ViewModels;
@@ -7,18 +7,14 @@ using RingSoft.DataEntryControls.Engine;
 using RingSoft.DataEntryControls.WPF;
 using RingSoft.DbLookup;
 using RingSoft.DbLookup.Controls.WPF;
-using RingSoft.DbLookup.Controls.WPF.AdvancedFind;
 using RingSoft.DbLookup.ModelDefinition;
-using ScottPlot;
+using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Timers;
+using System.Windows.Input;
 using Timer = System.Timers.Timer;
-using RingSoft.App.Controls;
-using RingSoft.App.Library;
 
 namespace RingSoft.ChurchLogix
 {
@@ -29,6 +25,7 @@ namespace RingSoft.ChurchLogix
     {
         public StatsnGraphsUserControl StatsUserControl { get; private set; }
 
+        public HotKeyProcessor HotKeyProcessor { get; } = new HotKeyProcessor();
 
         private Timer _timer = new Timer(1000);
         private const int _refresh = 60;
@@ -36,8 +33,12 @@ namespace RingSoft.ChurchLogix
         {
             InitializeComponent();
 
+            HotKeyProcessor.TopLevel = true;
+
             LookupControlsGlobals.SetTabSwitcherWindow(this, TabControl);
             TabControl.SetDestionationAsFirstTab = false;
+
+            SetupHotKeys();
 
             SetupToolbar();
             ContentRendered += (sender, args) =>
@@ -56,6 +57,14 @@ namespace RingSoft.ChurchLogix
 #endif
             };
         }
+
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            HotKeyProcessor.OnKeyPressed(e);
+
+            base.OnPreviewKeyDown(e);
+        }
+
 
         public bool ChangeChurch()
         {
@@ -410,13 +419,40 @@ namespace RingSoft.ChurchLogix
             }
         }
 
+        private void SetupHotKeys()
+        {
+            var hotkey = new HotKey(ViewModel.ExitCommand);
+            hotkey.AddKey(Key.M);
+            hotkey.AddKey(Key.X);
+            HotKeyProcessor.AddHotKey(hotkey);
+
+            hotkey = new HotKey(ViewModel.ChangeChurchCommand);
+            hotkey.AddKey(Key.M);
+            hotkey.AddKey(Key.Z);
+            HotKeyProcessor.AddHotKey(hotkey);
+
+            hotkey = new HotKey(ViewModel.LogoutCommand);
+            hotkey.AddKey(Key.M);
+            hotkey.AddKey(Key.L);
+            HotKeyProcessor.AddHotKey(hotkey);
+
+            hotkey = new HotKey(ViewModel.AdvFindCommand);
+            hotkey.AddKey(Key.M);
+            hotkey.AddKey(Key.A);
+            HotKeyProcessor.AddHotKey(hotkey);
+        }
+
         private void SetupToolbar()
         {
-            ChangeChurchButton.ToolTip.HeaderText = "Change Church (Alt + C)";
+            ExitButton.ToolTip.HeaderText = "Exit ChurchLogix (Ctrl + M, Ctrl + X)";
+            ExitButton.ToolTip.DescriptionText =
+                "Exit the ChurchLogix application.";
+
+            ChangeChurchButton.ToolTip.HeaderText = "Change Church (Ctrl + M, Ctrl + Z)";
             ChangeChurchButton.ToolTip.DescriptionText =
                 "Change to a different church.";
 
-            LogoutButton.ToolTip.HeaderText = "Logout Current User (Alt + L)";
+            LogoutButton.ToolTip.HeaderText = "Logout Current User (Ctrl + M, Ctrl + L)";
             LogoutButton.ToolTip.DescriptionText =
                 "Log out of the current user and log into a different user.";
 
@@ -463,7 +499,7 @@ namespace RingSoft.ChurchLogix
                 "Add or edit Small Groups.";
 
             ProcessButton(AdvancedFindButton, AppGlobals.LookupContext.AdvancedFinds);
-            AdvancedFindButton.ToolTip.HeaderText = "Advanced Find (Alt + A)";
+            AdvancedFindButton.ToolTip.HeaderText = "Advanced Find (Ctrl + M, Ctrl + A)";
             AdvancedFindButton.ToolTip.DescriptionText =
                 "Search any table in the database for information you're looking for.";
         }
