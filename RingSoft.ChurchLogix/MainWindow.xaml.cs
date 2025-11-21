@@ -440,6 +440,36 @@ namespace RingSoft.ChurchLogix
             hotkey.AddKey(Key.M);
             hotkey.AddKey(Key.A);
             HotKeyProcessor.AddHotKey(hotkey);
+
+            hotkey = new HotKey(ViewModel.StaffMaintenanceCommand);
+            hotkey.AddKey(Key.M);
+            hotkey.AddKey(Key.F);
+            HotKeyProcessor.AddHotKey(hotkey);
+
+            hotkey = new HotKey(ViewModel.MemberMaintenanceCommand);
+            hotkey.AddKey(Key.M);
+            hotkey.AddKey(Key.E);
+            HotKeyProcessor.AddHotKey(hotkey);
+
+            hotkey = new HotKey(ViewModel.FundMaintenanceCommand);
+            hotkey.AddKey(Key.M);
+            hotkey.AddKey(Key.U);
+            HotKeyProcessor.AddHotKey(hotkey);
+
+            hotkey = new HotKey(ViewModel.BudgetMaintenanceCommand);
+            hotkey.AddKey(Key.M);
+            hotkey.AddKey(Key.B);
+            HotKeyProcessor.AddHotKey(hotkey);
+
+            hotkey = new HotKey(ViewModel.EventMaintenanceCommand);
+            hotkey.AddKey(Key.M);
+            hotkey.AddKey(Key.V);
+            HotKeyProcessor.AddHotKey(hotkey);
+
+            hotkey = new HotKey(ViewModel.SmallGroupMaintenanceCommand);
+            hotkey.AddKey(Key.M);
+            hotkey.AddKey(Key.S);
+            HotKeyProcessor.AddHotKey(hotkey);
         }
 
         private void SetupToolbar()
@@ -469,32 +499,32 @@ namespace RingSoft.ChurchLogix
             }
 
             ProcessButton(StaffButton, AppGlobals.LookupContext.Staff);
-            MemberButton.ToolTip.HeaderText = "Show the Staff Maintenance Window (Alt + F)";
-            MemberButton.ToolTip.DescriptionText =
+            StaffButton.ToolTip.HeaderText = "Show the Staff Maintenance Window (Ctrl + M, Ctrl + F)";
+            StaffButton.ToolTip.DescriptionText =
                 "Add or edit Staff.";
 
             ProcessButton(MemberButton, AppGlobals.LookupContext.Members);
-            MemberButton.ToolTip.HeaderText = "Show the Member Maintenance Window (Alt + M)";
+            MemberButton.ToolTip.HeaderText = "Show the Member Maintenance Window (Ctrl + M, Ctrl + E)";
             MemberButton.ToolTip.DescriptionText =
                 "Add or edit Members.";
 
             ProcessButton(FundButton, AppGlobals.LookupContext.Funds);
-            FundButton.ToolTip.HeaderText = "Show the Fund Maintenance Window (Alt + U)";
+            FundButton.ToolTip.HeaderText = "Show the Fund Maintenance Window (Ctrl + M, Ctrl + U)";
             FundButton.ToolTip.DescriptionText =
                 "Add or edit Funds.";
 
             ProcessButton(BudgetButton, AppGlobals.LookupContext.Budgets);
-            BudgetButton.ToolTip.HeaderText = "Show the Budget Maintenance Window (Alt + B)";
+            BudgetButton.ToolTip.HeaderText = "Show the Budget Maintenance Window (Ctrl + M, Ctrl + B)";
             BudgetButton.ToolTip.DescriptionText =
                 "Add or edit Budgets.";
 
             ProcessButton(EventButton, AppGlobals.LookupContext.Events);
-            EventButton.ToolTip.HeaderText = "Show the Event Maintenance Window (Alt + E)";
+            EventButton.ToolTip.HeaderText = "Show the Event Maintenance Window (Ctrl + M, Ctrl + V)";
             EventButton.ToolTip.DescriptionText =
                 "Add or edit Events.";
 
             ProcessButton(SmallGroupButton, AppGlobals.LookupContext.SmallGroups);
-            SmallGroupButton.ToolTip.HeaderText = "Show the Small Group Maintenance Window (Alt + S)";
+            SmallGroupButton.ToolTip.HeaderText = "Show the Small Group Maintenance Window (Ctrl + M, Ctrl + S)";
             SmallGroupButton.ToolTip.DescriptionText =
                 "Add or edit Small Groups.";
 
