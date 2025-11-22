@@ -60,9 +60,6 @@ namespace RingSoft.ChurchLogix
             LookupControlsGlobals.WindowRegistry.RegisterWindow<MemberGivingMaintenanceWindow, MemberGivingDetails>();
             LookupControlsGlobals.WindowRegistry.RegisterWindow<MemberGivingHistoryWindow, MemberGivingHistory>();
 
-            LookupControlsGlobals.WindowRegistry.RegisterWindow<FundMaintenanceWindow, Fund>();
-            LookupControlsGlobals.WindowRegistry.RegisterWindow<BudgetMaintenanceWindow, BudgetItem>();
-            LookupControlsGlobals.WindowRegistry.RegisterWindow<BudgetActualMaintenanceWindow, BudgetActual>();
             LookupControlsGlobals.WindowRegistry.RegisterWindow<FundHistoryWindow, FundHistory>();
             LookupControlsGlobals.WindowRegistry.RegisterWindow<FundPeriodWindow, FundPeriodTotals>();
             LookupControlsGlobals.WindowRegistry.RegisterWindow<BudgetPeriodWindow, BudgetPeriodTotals>();
