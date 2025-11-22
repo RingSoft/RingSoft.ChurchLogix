@@ -2,6 +2,8 @@
 using RingSoft.ChurchLogix.Library.ViewModels.Financial_Management;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using RingSoft.DataEntryControls.WPF;
 using RingSoft.DbLookup.Controls.WPF;
 using RingSoft.DbMaintenance;
 using RingSoft.DbLookup;
@@ -44,8 +46,8 @@ namespace RingSoft.ChurchLogix.FinancialManagement
                     budgetHeaderControl.EditCostButton.Command =
                         LocalViewModel.EnterCostsCommand;
 
-                    budgetHeaderControl.EditCostButton.ToolTip.HeaderText = "Enter Costs (Alt + E)";
-                    budgetHeaderControl.EditCostButton.ToolTip.DescriptionText = "Enter Costs (Alt + E)";
+                    budgetHeaderControl.EditCostButton.ToolTip.HeaderText = "Enter Costs (Ctrl + B, Ctrl + E)";
+                    budgetHeaderControl.EditCostButton.ToolTip.DescriptionText = "Enter Costs";
 
                     if (!LocalViewModel.TableDefinition.HasRight(RightTypes.AllowEdit))
                     {
@@ -55,6 +57,11 @@ namespace RingSoft.ChurchLogix.FinancialManagement
                     budgetHeaderControl.EditCostButton.Command = LocalViewModel.EnterCostsCommand;
                 }
             };
+
+            var hotKey = new HotKey(LocalViewModel.EnterCostsCommand);
+            hotKey.AddKey(Key.B);
+            hotKey.AddKey(Key.E);
+            AddHotKey(hotKey);
 
             RegisterFormKeyControl(NameControl);
         }

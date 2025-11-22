@@ -4,6 +4,7 @@ using RingSoft.DataEntryControls.WPF;
 using RingSoft.DbLookup.Lookup;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using RingSoft.DbLookup.Controls.WPF;
 using RingSoft.DbMaintenance;
 using RingSoft.ChurchLogix.DataAccess.Model.MemberManagement;
@@ -70,9 +71,9 @@ namespace RingSoft.ChurchLogix.MemberManagement
                     memberHeaderControl.RecalculateButton.Command =
                         LocalViewModel.RecalcCommand;
 
-                    memberHeaderControl.RecalculateButton.ToolTip.HeaderText = "Recalculate Member Totals (Alt + R)";
+                    memberHeaderControl.RecalculateButton.ToolTip.HeaderText = "Recalculate Member Totals (Ctrl + E, Ctrl + R)";
                     memberHeaderControl.RecalculateButton.ToolTip.DescriptionText =
-                        "Recalculate Member Totals (Alt + R)";
+                        "Recalculate Member Totals";
 
                     if (!LocalViewModel.TableDefinition.HasSpecialRight((int)MemberSpecialRights.AllowViewGiving))
                     {
@@ -80,6 +81,11 @@ namespace RingSoft.ChurchLogix.MemberManagement
                     }
                 }
             };
+
+            var hotKey = new HotKey(LocalViewModel.RecalcCommand);
+            hotKey.AddKey(Key.E);
+            hotKey.AddKey(Key.R);
+            AddHotKey(hotKey);
 
             RegisterFormKeyControl(NameControl);
 

@@ -4,6 +4,7 @@ using RingSoft.DataEntryControls.WPF;
 using RingSoft.DbLookup.Lookup;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using RingSoft.DbLookup.Controls.WPF;
 using RingSoft.DbMaintenance;
@@ -70,12 +71,16 @@ namespace RingSoft.ChurchLogix.FinancialManagement
                     fundHeaderControl.RecalculateButton.Command =
                         LocalViewModel.RecalcCommand;
 
-                    fundHeaderControl.RecalculateButton.ToolTip.HeaderText = "Recalculate Fund Totals (Alt + R)";
+                    fundHeaderControl.RecalculateButton.ToolTip.HeaderText = "Recalculate Fund Totals (Ctrl + F, Ctrl + R)";
                     fundHeaderControl.RecalculateButton.ToolTip.DescriptionText =
-                        "Recalculate Fund Totals (Alt + R)";
+                        "Recalculate Fund Totals";
                 }
             };
 
+            var hotKey = new HotKey(LocalViewModel.RecalcCommand);
+            hotKey.AddKey(Key.F);
+            hotKey.AddKey(Key.R);
+            AddHotKey(hotKey);
         }
 
         protected override DbMaintenanceViewModelBase OnGetViewModel()

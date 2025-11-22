@@ -3,6 +3,8 @@ using RingSoft.App.Library;
 using RingSoft.ChurchLogix.Library.ViewModels.Financial_Management;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using RingSoft.DataEntryControls.WPF;
 using RingSoft.DbLookup.Controls.WPF;
 using RingSoft.DbMaintenance;
 using RingSoft.DbLookup;
@@ -74,8 +76,8 @@ namespace RingSoft.ChurchLogix.FinancialManagement
                     budgetHeaderControl.PostCostButton.Command =
                         LocalViewModel.PostCostsCommand;
 
-                    budgetHeaderControl.PostCostButton.ToolTip.HeaderText = "Post Costs (Alt + O)";
-                    budgetHeaderControl.PostCostButton.ToolTip.DescriptionText = "Post Costs (Alt + O)";
+                    budgetHeaderControl.PostCostButton.ToolTip.HeaderText = "Post Costs (Ctrl + B, Ctrl + O)";
+                    budgetHeaderControl.PostCostButton.ToolTip.DescriptionText = "Post Costs";
 
                     if (!LocalViewModel.TableDefinition.HasRight(RightTypes.AllowEdit))
                     {
@@ -85,6 +87,11 @@ namespace RingSoft.ChurchLogix.FinancialManagement
                     budgetHeaderControl.PostCostButton.Command = LocalViewModel.PostCostsCommand;
                 }
             };
+
+            var hotKey = new HotKey(LocalViewModel.PostCostsCommand);
+            hotKey.AddKey(Key.B);
+            hotKey.AddKey(Key.O);
+            AddHotKey(hotKey);
         }
 
         protected override DbMaintenanceViewModelBase OnGetViewModel()

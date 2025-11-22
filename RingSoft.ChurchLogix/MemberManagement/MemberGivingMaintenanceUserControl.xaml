@@ -31,7 +31,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <ac:DbMaintenanceButton Grid.Row="0" Grid.Column="0" x:Name="PostGivingButton" Content="P_ost Giving" ImageSource="{StaticResource DecimalEditImage}" Style="{StaticResource SubButton}" HorizontalContentAlignment="Left"/>
+                                <ac:DbMaintenanceButton Grid.Row="0" Grid.Column="0" x:Name="PostGivingButton" Content="Post Giving" ImageSource="{StaticResource DecimalEditImage}" Style="{StaticResource SubButton}" HorizontalContentAlignment="Left"/>
 
                             </Grid>
 

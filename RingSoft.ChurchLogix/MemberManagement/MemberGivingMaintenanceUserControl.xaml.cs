@@ -3,6 +3,8 @@ using RingSoft.App.Library;
 using RingSoft.ChurchLogix.Library.ViewModels.MemberManagement;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using RingSoft.DataEntryControls.WPF;
 using RingSoft.DbLookup.Controls.WPF;
 using RingSoft.DbMaintenance;
 
@@ -73,10 +75,15 @@ namespace RingSoft.ChurchLogix.MemberManagement
                     memberGivingHeaderControl.PostGivingButton.Command =
                         LocalViewModel.PostCommand;
 
-                    memberGivingHeaderControl.PostGivingButton.ToolTip.HeaderText = "Post Giving (Alt + O)";
-                    memberGivingHeaderControl.PostGivingButton.ToolTip.DescriptionText = "Post Giving (Alt + O)";
+                    memberGivingHeaderControl.PostGivingButton.ToolTip.HeaderText = "Post Giving (Ctrl + E, Ctrl + O)";
+                    memberGivingHeaderControl.PostGivingButton.ToolTip.DescriptionText = "Post Giving";
                 }
             };
+
+            var hotKey = new HotKey(LocalViewModel.PostCommand);
+            hotKey.AddKey(Key.E);
+            hotKey.AddKey(Key.O);
+            AddHotKey(hotKey);
         }
 
         protected override DbMaintenanceViewModelBase OnGetViewModel()
