@@ -50,7 +50,7 @@ namespace RingSoft.ChurchLogix.Library
             RingSoftAppGlobals.AppCopyright = $"©{DateTime.Today.Year} by Peter Ringering";
             RingSoftAppGlobals.PathToDownloadUpgrade = MasterDbContext.ProgramDataFolder;
             RingSoftAppGlobals.AppGuid = "cd59af5f-799d-4203-8bfa-f4fdbe35c49c";
-            RingSoftAppGlobals.AppVersion = 418;
+            RingSoftAppGlobals.AppVersion = 419;
             SystemGlobals.ProgramDataFolder = MasterDbContext.ProgramDataFolder;
         }
 
