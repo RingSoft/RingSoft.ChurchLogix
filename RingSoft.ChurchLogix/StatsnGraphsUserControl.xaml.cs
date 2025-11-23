@@ -86,15 +86,21 @@ namespace RingSoft.ChurchLogix
             var context = SystemGlobals.DataRepository.GetDataContext();
             var periodsTable = context.GetTable<FundPeriodTotals>();
 
+            if (periodsTable != null)
+            {
+                if (periodsTable.Any(p => p.PeriodType == (int)PeriodTypes.MonthEnding))
+                {
+                    currentDate = periodsTable
+                        .Where(p => p.PeriodType == (int)PeriodTypes.MonthEnding)
+                        .Max(p => p.Date).AddYears(-1);
+                }
+            }
+
             while (monthsLeft > 0)
             {
                 resultTotals.Add(GetTotalsForDate(currentDate, periodsTable));
                 monthsLeft--;
-                if (currentDate.Month == 12 && monthsLeft > 0)
-                {
-                    currentDate = new DateTime(currentDate.Year + 1, 1, 1);
-                }
-                else if (monthsLeft > 0)
+                if (monthsLeft > 0)
                 {
                     currentDate = currentDate.AddMonths(1);
                 }
@@ -105,11 +111,14 @@ namespace RingSoft.ChurchLogix
         private FundPeriodTotals GetTotalsForDate(DateTime date, IQueryable<FundPeriodTotals> periodsTable)
         {
             var result = new FundPeriodTotals();
-            date = date.AddMonths(1).AddDays(-1);
+            //date = date.AddMonths(1).AddDays(-1);
+            var newDate = new DateTime(date.Year, date.Month, 1);
+            newDate = newDate.AddMonths(1).AddDays(-1);
+
             var periods = periodsTable
-                .Where(p => p.Date == date
+                .Where(p => p.Date == newDate
                             && p.PeriodType == (int)PeriodTypes.MonthEnding);
-            result.Date = date;
+            result.Date = newDate;
             result.TotalIncome = periods.Sum(p => p.TotalIncome);
             result.TotalExpenses = periods.Sum(p => p.TotalExpenses);
             return result;
